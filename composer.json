@@ -1,0 +1,23 @@
+{
+    "name": "rxante/oauth",
+    "description": "A collection of OAuth related things for the RxAnte Web Services team",
+    "type": "library",
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "RxAnte Web Services"
+        }
+    ],
+    "require": {
+        "php": "^8.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "RxAnte\\OAuth\\": "php/src"
+        }
+    },
+    "config": {
+        "bin-compat": "full",
+        "sort-packages": true
+    }
+}
