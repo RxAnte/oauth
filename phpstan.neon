@@ -1,0 +1,9 @@
+parameters:
+    paths:
+        - php/src
+    level: max
+    treatPhpDocTypesAsCertain: false
+
+includes:
+    - vendor/phpstan/phpstan-deprecation-rules/rules.neon
+    - vendor/phpstan/phpstan-strict-rules/rules.neon
