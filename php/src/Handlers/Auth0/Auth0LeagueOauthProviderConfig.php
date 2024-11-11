@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace RxAnte\OAuth\Handlers\Auth0;
 
+use function implode;
+use function ltrim;
+use function rtrim;
+
 readonly class Auth0LeagueOauthProviderConfig
 {
     /** @param string[] $scopes */
@@ -23,6 +27,9 @@ readonly class Auth0LeagueOauthProviderConfig
 
     public function createCallbackUrl(string $uri): string
     {
-        return $this->callbackDomain . '/' . $uri;
+        return implode('/', [
+            rtrim($this->callbackDomain, '/'),
+            ltrim($uri, '/'),
+        ]);
     }
 }

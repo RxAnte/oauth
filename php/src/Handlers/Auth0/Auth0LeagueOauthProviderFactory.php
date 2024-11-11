@@ -5,10 +5,13 @@ declare(strict_types=1);
 namespace RxAnte\OAuth\Handlers\Auth0;
 
 use League\OAuth2\Client\Provider\AbstractProvider;
+use RxAnte\OAuth\Callback\GetCallbackAction;
+use RxAnte\OAuth\Routes\RoutesFactory;
 
 readonly class Auth0LeagueOauthProviderFactory
 {
     public function __construct(
+        private RoutesFactory $routesFactory,
         private Auth0LeagueOauthProviderConfig $config,
         private WellKnownRepository $wellKnownRepository,
     ) {
@@ -22,7 +25,9 @@ readonly class Auth0LeagueOauthProviderFactory
             'clientId' => $this->config->clientId,
             'clientSecret' => $this->config->clientSecret,
             'redirectUri' => $this->config->createCallbackUrl(
-                'auth/callback/auth0',
+                uri: $this->routesFactory->create()
+                    ->pluckClassName(className: GetCallbackAction::class)
+                    ->pattern,
             ),
             'urlAuthorize' => $wellKnown->authorizationEndpoint,
             'urlAccessToken' => $wellKnown->tokenEndpoint,
