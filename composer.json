@@ -10,14 +10,17 @@
     ],
     "require": {
         "php": "^8.2",
+        "ext-mbstring": "*",
         "dflydev/fig-cookies": "^3.1",
+        "hyperf/guzzle": "^3.1",
         "league/oauth2-client": "^2.7",
         "psr/clock": "^1.0",
         "psr/container": "^2.0",
         "psr/http-factory": "^1.1",
         "psr/http-message": "^2.0",
         "psr/http-server-middleware": "^1.0",
-        "psr/log": "^2 || ^3"
+        "psr/log": "^2 || ^3",
+        "symfony/cache": "^7.1"
     },
     "autoload": {
         "psr-4": {

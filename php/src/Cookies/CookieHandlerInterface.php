@@ -13,7 +13,7 @@ interface CookieHandlerInterface
 {
     public function getCookieName(): string;
 
-    public function getCookieExpiration(): DateTimeImmutable;
+    public function getCookieExpiration(): DateTimeImmutable|null;
 
     public function getCookieFromRequest(RequestInterface $request): Cookie;
 

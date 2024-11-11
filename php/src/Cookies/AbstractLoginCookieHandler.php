@@ -20,7 +20,7 @@ abstract readonly class AbstractLoginCookieHandler implements CookieHandlerInter
     {
     }
 
-    public function getCookieExpiration(): DateTimeImmutable
+    public function getCookieExpiration(): DateTimeImmutable|null
     {
         return $this->clock->now()->add(
             new DateInterval('P5M'),
