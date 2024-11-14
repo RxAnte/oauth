@@ -12,6 +12,7 @@
         "php": "^8.2",
         "ext-mbstring": "*",
         "dflydev/fig-cookies": "^3.1",
+        "guzzlehttp/guzzle": "^7.0",
         "hyperf/guzzle": "^3.1",
         "league/oauth2-client": "^2.7",
         "psr/cache": "^3.0",
