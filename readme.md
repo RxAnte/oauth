@@ -6,6 +6,7 @@
 
 - [RequireOauthTokenHeaderMiddleware](documentation/require-oauth-token-header-middleware.md)
 - [RequireOauthSessionLoginRedirectMiddleware](documentation/require-oauth-session-login-redirect-middleware.md)
+- [RequireOauthSessionAccessDeniedMiddleware](documentation/require-oauth-session-access-denied-middleware.md)
 - [Custom Authentication Hook](documentation/custom-auth-hook.md)
 - [OauthUserInfoRepositoryInterface](documentation/oauth-user-info-repository-interface.md)
 - [Using and Configuring the Auth0 Implementation](documentation/using-configuring-auth0-implementation.md)

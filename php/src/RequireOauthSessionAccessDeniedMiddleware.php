@@ -10,12 +10,12 @@ use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use RxAnte\OAuth\UserInfo\OauthUserInfoRepositoryInterface;
 
-readonly class RequireOauthSessionLoginRedirectMiddleware implements MiddlewareInterface
+readonly class RequireOauthSessionAccessDeniedMiddleware implements MiddlewareInterface
 {
     public function __construct(
         private CustomAuthenticationHookFactory $authHookFactory,
         private OauthUserInfoRepositoryInterface $userInfoRepository,
-        private SendToLoginResponseFactory $sendToLoginResponseFactory,
+        private AccessDeniedResponseFactory $accessDeniedResponseFactory,
     ) {
     }
 
@@ -23,12 +23,14 @@ readonly class RequireOauthSessionLoginRedirectMiddleware implements MiddlewareI
         ServerRequestInterface $request,
         RequestHandlerInterface $handler,
     ): ResponseInterface {
+        $accessDeniedResponse = $this->accessDeniedResponseFactory->create();
+
         $userInfo = $this->userInfoRepository->getUserInfoFromRequestSession(
             $request,
         );
 
         if (! $userInfo->isValid) {
-            return $this->sendToLoginResponseFactory->create($request);
+            return $accessDeniedResponse;
         }
 
         $request = $request->withAttribute(
@@ -39,9 +41,7 @@ readonly class RequireOauthSessionLoginRedirectMiddleware implements MiddlewareI
         $customAuth = $this->authHookFactory->create()->process(
             userInfo: $userInfo,
             request: $request,
-            defaultAccessDeniedResponse: $this->sendToLoginResponseFactory->create(
-                $request,
-            ),
+            defaultAccessDeniedResponse: $accessDeniedResponse,
         );
 
         $request = $customAuth->request ?? $request;

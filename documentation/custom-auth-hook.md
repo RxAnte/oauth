@@ -1,6 +1,6 @@
 # Custom Authentication Hook
 
-In some cases, you may wish to do additional authentication against your database or some local user-data, or what have you. Both `RequireOauthSessionLoginRedirectMiddleware` and `RequireOauthTokenHeaderMiddleware` check for an implementation of `\RxAnte\OAuth\CustomAuthenticationHook` in the `\RxAnte\OAuth\CustomAuthenticationHookFactory`. If you would like to provide custom authentication, create an implementation of `\RxAnte\OAuth\CustomAuthenticationHook` and add it to your container.
+In some cases, you may wish to do additional authentication against your database or some local user-data, or what have you. The middlewares `RequireOauthSessionLoginRedirectMiddleware`, `RequireOauthSessionAccessDeniedMiddleware`, and `RequireOauthTokenHeaderMiddleware` check for an implementation of `\RxAnte\OAuth\CustomAuthenticationHook` in the `\RxAnte\OAuth\CustomAuthenticationHookFactory`. If you would like to provide custom authentication, create an implementation of `\RxAnte\OAuth\CustomAuthenticationHook` and add it to your container.
 
 [PHP-DI](https://php-di.org) example
 
