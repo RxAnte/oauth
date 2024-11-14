@@ -1,6 +1,6 @@
-# RequireValidOauthSessionUserMiddleware
+# RequireOauthSessionLoginRedirectMiddleware
 
-`\RxAnte\OAuth\RequireValidOauthSessionUserMiddleware`
+`\RxAnte\OAuth\RequireOauthSessionLoginRedirectMiddleware`
 
 A [PSR-15](https://github.com/php-fig/http-server-middleware) server middleware implementation.
 
@@ -9,22 +9,22 @@ This middleware can be used to require a valid token to be present in a user's s
 This is great for use with browser PHP application access.
 
 > [!NOTE]
-> `RequireValidOauthSessionUserMiddleware` requires an implementation of [OauthUserInfoRepositoryInterface](oauth-user-info-repository-interface.md). This package provides an Auth0 implementation.
+> `RequireOauthSessionLoginRedirectMiddleware` requires an implementation of [OauthUserInfoRepositoryInterface](oauth-user-info-repository-interface.md). This package provides an Auth0 implementation.
 
 > [!NOTE]
-> `RequireValidOauthSessionUserMiddleware` requires an implementation of `RxAnte\OAuth\TokenRepository\Refresh\GetRefreshedAccessToken`. This package provides an Auth0 implementation. See [Using and Configuring the Auth0 Implementation](using-configuring-auth0-implementation.md)
+> `RequireOauthSessionLoginRedirectMiddleware` requires an implementation of `RxAnte\OAuth\TokenRepository\Refresh\GetRefreshedAccessToken`. This package provides an Auth0 implementation. See [Using and Configuring the Auth0 Implementation](using-configuring-auth0-implementation.md)
 
 > [!NOTE]
-> `RequireValidOauthSessionUserMiddleware` requires an implementation of `RxAnte\OAuth\TokenRepository\Refresh\Lock\RefreshLock`. This package provides a Redis implementation. See [Using and Configuring the Auth0 Implementation](using-configuring-auth0-implementation.md)
+> `RequireOauthSessionLoginRedirectMiddleware` requires an implementation of `RxAnte\OAuth\TokenRepository\Refresh\Lock\RefreshLock`. This package provides a Redis implementation. See [Using and Configuring the Auth0 Implementation](using-configuring-auth0-implementation.md)
 
 > [!NOTE]
-> `RequireValidOauthSessionUserMiddleware` requires an implementation of `League\OAuth2\Client\Provider\AbstractProvider`. You can learn how to implement that configuration [here](configuring-league-client.md).
+> `RequireOauthSessionLoginRedirectMiddleware` requires an implementation of `League\OAuth2\Client\Provider\AbstractProvider`. You can learn how to implement that configuration [here](configuring-league-client.md).
 
 > [!NOTE]
-> `RequireValidOauthSessionUserMiddleware` requires an implementation of `Psr\Clock\ClockInterface` to be provided. [lcobucci/clock](https://github.com/lcobucci/clock) is a good one.
+> `RequireOauthSessionLoginRedirectMiddleware` requires an implementation of `Psr\Clock\ClockInterface` to be provided. [lcobucci/clock](https://github.com/lcobucci/clock) is a good one.
 
 > [!NOTE]
-> `RequireValidOauthSessionUserMiddleware` requires the PSR-11 container to be able to provide an implementation of `Ramsey\Uuid\UuidFactoryInterface`. You can simply configure your container to serve the default implementation `\Ramsey\Uuid\UuidFactory`
+> `RequireOauthSessionLoginRedirectMiddleware` requires the PSR-11 container to be able to provide an implementation of `Ramsey\Uuid\UuidFactoryInterface`. You can simply configure your container to serve the default implementation `\Ramsey\Uuid\UuidFactory`
 
 ## Configuring
 
@@ -57,7 +57,7 @@ To use this middleware, add it to any route that needs to be protected.
 [Slim 4](https://www.slimframework.com) example
 
 ```php
-use RxAnte\OAuth\RequireValidOauthSessionUserMiddleware;
+use RxAnte\OAuth\RequireOauthSessionLoginRedirectMiddleware;
 use Slim\Factory\AppFactory;
 
 // ...you'll need to set up your dependency injection, this example does
@@ -66,7 +66,7 @@ use Slim\Factory\AppFactory;
 $app = AppFactory::create();
 
 $app->get('/some/route', SomeRoutable::class)->add(
-    RequireValidOauthSessionUserMiddleware::class,
+    RequireOauthSessionLoginRedirectMiddleware::class,
 );
 ```
 

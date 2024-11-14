@@ -1,6 +1,6 @@
 # Configuring the League Client
 
-When using `\RxAnte\OAuth\RequireValidOauthSessionUserMiddleware` the League client will need to be configured. If using the provided `Auth0` implementation, use and configure `\RxAnte\OAuth\Handlers\Auth0\Auth0LeagueOauthProvider`. Otherwise, use and configure whatever implementation of `League\OAuth2\Client\Provider\AbstractProvider` you need.
+When using `\RxAnte\OAuth\RequireOauthSessionLoginRedirectMiddleware` the League client will need to be configured. If using the provided `Auth0` implementation, use and configure `\RxAnte\OAuth\Handlers\Auth0\Auth0LeagueOauthProvider`. Otherwise, use and configure whatever implementation of `League\OAuth2\Client\Provider\AbstractProvider` you need.
 
 [PHP-DI](https://php-di.org) example:
 

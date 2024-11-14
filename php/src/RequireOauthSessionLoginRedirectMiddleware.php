@@ -4,19 +4,21 @@ declare(strict_types=1);
 
 namespace RxAnte\OAuth;
 
+use League\OAuth2\Client\Provider\AbstractProvider as OauthClientProvider;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
+use RxAnte\OAuth\Cookies\SendToLogInCookieChain;
 use RxAnte\OAuth\UserInfo\OauthUserInfoRepositoryInterface;
 
-use function json_encode;
-
-readonly class RequireValidOauthTokenHeaderMiddleware implements MiddlewareInterface
+readonly class RequireOauthSessionLoginRedirectMiddleware implements MiddlewareInterface
 {
     public function __construct(
+        private OauthClientProvider $provider,
         private ResponseFactoryInterface $responseFactory,
+        private SendToLogInCookieChain $sendToLogInCookieChain,
         private OauthUserInfoRepositoryInterface $userInfoRepository,
         private CustomAuthenticationHookFactory $authHookFactory,
     ) {
@@ -26,12 +28,12 @@ readonly class RequireValidOauthTokenHeaderMiddleware implements MiddlewareInter
         ServerRequestInterface $request,
         RequestHandlerInterface $handler,
     ): ResponseInterface {
-        $userInfo = $this->userInfoRepository->getUserInfoFromRequestToken(
+        $userInfo = $this->userInfoRepository->getUserInfoFromRequestSession(
             $request,
         );
 
         if (! $userInfo->isValid) {
-            return $this->sendAccessDenied();
+            return $this->sendToLogIn($request);
         }
 
         $request = $request->withAttribute(
@@ -42,7 +44,7 @@ readonly class RequireValidOauthTokenHeaderMiddleware implements MiddlewareInter
         $customAuth = $this->authHookFactory->create()->process(
             userInfo: $userInfo,
             request: $request,
-            defaultAccessDeniedResponse: $this->sendAccessDenied(),
+            defaultAccessDeniedResponse: $this->sendToLogIn($request),
         );
 
         $request = $customAuth->request ?? $request;
@@ -54,21 +56,24 @@ readonly class RequireValidOauthTokenHeaderMiddleware implements MiddlewareInter
         return $handler->handle($request);
     }
 
-    private function sendAccessDenied(): ResponseInterface
-    {
-        $response = $this->responseFactory->createResponse();
+    private function sendToLogIn(
+        ServerRequestInterface $request,
+    ): ResponseInterface {
+        /**
+         * It is important to make this call first, otherwise `getPkceCode` and
+         * `getState` won't work correctly (not a "stateless" service,
+         * unfortunately)
+         */
+        $authorizationUrl = $this->provider->getAuthorizationUrl();
 
-        $response = $response->withHeader(
-            'Content-type',
-            'application/json',
+        $response = $this->sendToLogInCookieChain->set(
+            request: $request,
+            response: $this->responseFactory->createResponse(),
+            oauthPkceCode: (string) $this->provider->getPkceCode(),
+            oauthState: $this->provider->getState(),
         );
 
-        $response->getBody()->write((string) json_encode([
-            'error' => 'access_denied',
-            'error_description' => 'A valid bearer token is required to access this resource',
-            'message' => 'A valid bearer token is required to access this resource',
-        ]));
-
-        return $response->withStatus(401);
+        return $response->withStatus(302)
+            ->withHeader('Location', $authorizationUrl);
     }
 }

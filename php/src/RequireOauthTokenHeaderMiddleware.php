@@ -4,21 +4,19 @@ declare(strict_types=1);
 
 namespace RxAnte\OAuth;
 
-use League\OAuth2\Client\Provider\AbstractProvider as OauthClientProvider;
 use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
-use RxAnte\OAuth\Cookies\SendToLogInCookieChain;
 use RxAnte\OAuth\UserInfo\OauthUserInfoRepositoryInterface;
 
-readonly class RequireValidOauthSessionUserMiddleware implements MiddlewareInterface
+use function json_encode;
+
+readonly class RequireOauthTokenHeaderMiddleware implements MiddlewareInterface
 {
     public function __construct(
-        private OauthClientProvider $provider,
         private ResponseFactoryInterface $responseFactory,
-        private SendToLogInCookieChain $sendToLogInCookieChain,
         private OauthUserInfoRepositoryInterface $userInfoRepository,
         private CustomAuthenticationHookFactory $authHookFactory,
     ) {
@@ -28,12 +26,12 @@ readonly class RequireValidOauthSessionUserMiddleware implements MiddlewareInter
         ServerRequestInterface $request,
         RequestHandlerInterface $handler,
     ): ResponseInterface {
-        $userInfo = $this->userInfoRepository->getUserInfoFromRequestSession(
+        $userInfo = $this->userInfoRepository->getUserInfoFromRequestToken(
             $request,
         );
 
         if (! $userInfo->isValid) {
-            return $this->sendToLogIn($request);
+            return $this->sendAccessDenied();
         }
 
         $request = $request->withAttribute(
@@ -44,7 +42,7 @@ readonly class RequireValidOauthSessionUserMiddleware implements MiddlewareInter
         $customAuth = $this->authHookFactory->create()->process(
             userInfo: $userInfo,
             request: $request,
-            defaultAccessDeniedResponse: $this->sendToLogIn($request),
+            defaultAccessDeniedResponse: $this->sendAccessDenied(),
         );
 
         $request = $customAuth->request ?? $request;
@@ -56,24 +54,21 @@ readonly class RequireValidOauthSessionUserMiddleware implements MiddlewareInter
         return $handler->handle($request);
     }
 
-    private function sendToLogIn(
-        ServerRequestInterface $request,
-    ): ResponseInterface {
-        /**
-         * It is important to make this call first, otherwise `getPkceCode` and
-         * `getState` won't work correctly (not a "stateless" service,
-         * unfortunately)
-         */
-        $authorizationUrl = $this->provider->getAuthorizationUrl();
+    private function sendAccessDenied(): ResponseInterface
+    {
+        $response = $this->responseFactory->createResponse();
 
-        $response = $this->sendToLogInCookieChain->set(
-            request: $request,
-            response: $this->responseFactory->createResponse(),
-            oauthPkceCode: (string) $this->provider->getPkceCode(),
-            oauthState: $this->provider->getState(),
+        $response = $response->withHeader(
+            'Content-type',
+            'application/json',
         );
 
-        return $response->withStatus(302)
-            ->withHeader('Location', $authorizationUrl);
+        $response->getBody()->write((string) json_encode([
+            'error' => 'access_denied',
+            'error_description' => 'A valid bearer token is required to access this resource',
+            'message' => 'A valid bearer token is required to access this resource',
+        ]));
+
+        return $response->withStatus(401);
     }
 }
