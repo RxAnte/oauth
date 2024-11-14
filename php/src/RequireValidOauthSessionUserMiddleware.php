@@ -20,6 +20,7 @@ readonly class RequireValidOauthSessionUserMiddleware implements MiddlewareInter
         private ResponseFactoryInterface $responseFactory,
         private SendToLogInCookieChain $sendToLogInCookieChain,
         private OauthUserInfoRepositoryInterface $userInfoRepository,
+        private CustomAuthenticationHookFactory $authHookFactory,
     ) {
     }
 
@@ -39,6 +40,18 @@ readonly class RequireValidOauthSessionUserMiddleware implements MiddlewareInter
             'oauthUserInfo',
             $userInfo,
         );
+
+        $customAuth = $this->authHookFactory->create()->process(
+            userInfo: $userInfo,
+            request: $request,
+            defaultAccessDeniedResponse: $this->sendToLogIn($request),
+        );
+
+        $request = $customAuth->request ?? $request;
+
+        if ($customAuth->response !== null) {
+            return $customAuth->response;
+        }
 
         return $handler->handle($request);
     }

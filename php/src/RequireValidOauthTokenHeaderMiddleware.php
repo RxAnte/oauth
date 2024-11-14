@@ -18,6 +18,7 @@ readonly class RequireValidOauthTokenHeaderMiddleware implements MiddlewareInter
     public function __construct(
         private ResponseFactoryInterface $responseFactory,
         private OauthUserInfoRepositoryInterface $userInfoRepository,
+        private CustomAuthenticationHookFactory $authHookFactory,
     ) {
     }
 
@@ -37,6 +38,18 @@ readonly class RequireValidOauthTokenHeaderMiddleware implements MiddlewareInter
             'oauthUserInfo',
             $userInfo,
         );
+
+        $customAuth = $this->authHookFactory->create()->process(
+            userInfo: $userInfo,
+            request: $request,
+            defaultAccessDeniedResponse: $this->sendAccessDenied(),
+        );
+
+        $request = $customAuth->request ?? $request;
+
+        if ($customAuth->response !== null) {
+            return $customAuth->response;
+        }
 
         return $handler->handle($request);
     }
