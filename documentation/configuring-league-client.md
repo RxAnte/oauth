@@ -14,7 +14,7 @@ use RxAnte\OAuth\Handlers\Auth0\Auth0LeagueOauthProviderFactory;
 $di = (new ContainerBuilder())
     ->useAutowiring(true)
     ->addDefinitions([
-        Auth0LeagueOauthProviderConfig::class => static fn (): Auth0LeagueOauthProviderConfig {
+        Auth0LeagueOauthProviderConfig::class => static function (): Auth0LeagueOauthProviderConfig {
             return new Auth0LeagueOauthProviderConfig(
                 clientId: 'REPLACE_WITH_CLIENT_ID',
                 clientSecret: 'REPLACE_WITH_CLIENT_SECRET',

@@ -70,7 +70,7 @@ use function DI\autowire;
 $di = (new ContainerBuilder())
     ->useAutowiring(true)
     ->addDefinitions([
-        Auth0Config::class => static fn (): Auth0Config {
+        Auth0Config::class => static function (): Auth0Config {
             return new Auth0Config(
                 userInfoUrl: 'https://some-sub-domain.us.auth0.com/userinfo',
                 wellKnownUrl: 'https://some-sub-domain.us.auth0.com/.well-known/openid-configuration',

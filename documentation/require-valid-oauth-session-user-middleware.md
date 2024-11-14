@@ -20,9 +20,41 @@ This is great for use with browser PHP application access.
 > [!NOTE]
 > `RequireValidOauthSessionUserMiddleware` requires an implementation of `League\OAuth2\Client\Provider\AbstractProvider`. You can learn how to implement that configuration [here](configuring-league-client.md).
 
-## [Slim 4](https://www.slimframework.com) example
+> [!NOTE]
+> `RequireValidOauthSessionUserMiddleware` requires an implementation of `Psr\Clock\ClockInterface` to be provided. [lcobucci/clock](https://github.com/lcobucci/clock) is a good one.
+
+> [!NOTE]
+> `RequireValidOauthSessionUserMiddleware` requires the PSR-11 container to be able to provide an implementation of `Ramsey\Uuid\UuidFactoryInterface`. You can simply configure your container to serve the default implementation `\Ramsey\Uuid\UuidFactory`
+
+## Configuring
+
+`\RxAnte\OAuth\TokenRepository\TokenRepositoryConfig` must be set up and provided through your [PSR-11](https://www.php-fig.org/psr/psr-11/) container.
+
+[PHP-DI](https://php-di.org) example
+
+```php
+use DI\ContainerBuilder;
+use RxAnte\OAuth\TokenRepository\TokenRepositoryConfig
+
+use function DI\get as resolveFromContainer;
+
+$di = (new ContainerBuilder())
+    ->useAutowiring(true)
+    ->addDefinitions([
+        TokenRepositoryConfig::class => static function (): TokenRepositoryConfig {
+            return new TokenRepositoryConfig(
+                expireInSeconds: 4800,
+                cacheKeyPrefix: 'SOME_KEY_PREFIX-', // not required, default is session_id_user_token-
+            );
+        },
+    ])
+```
+
+## Routing
 
 To use this middleware, add it to any route that needs to be protected.
+
+[Slim 4](https://www.slimframework.com) example
 
 ```php
 use RxAnte\OAuth\RequireValidOauthSessionUserMiddleware;
