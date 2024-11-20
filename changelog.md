@@ -1,4 +1,4 @@
-# RxAntes OAuth Changelog
+# RxAnte OAuth Changelog
 
 All notable changes to this project will be documented in this file.
 

@@ -1,4 +1,4 @@
-# RxAntes OAuth
+# RxAnte OAuth
 
 ## Documentation
 
