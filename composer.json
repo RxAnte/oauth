@@ -10,6 +10,7 @@
     ],
     "require": {
         "php": "^8.2",
+        "ext-curl": "*",
         "ext-mbstring": "*",
         "dflydev/fig-cookies": "^3.1",
         "guzzlehttp/guzzle": "^7.0",
