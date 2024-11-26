@@ -74,9 +74,14 @@ $di = (new ContainerBuilder())
             return new Auth0Config(
                 userInfoUrl: 'https://some-sub-domain.us.auth0.com/userinfo',
                 wellKnownUrl: 'https://some-sub-domain.us.auth0.com/.well-known/openid-configuration',
-                // Optional items
+                // Load up your IdP's signing cert here. This is used to ensure
+                // the validity of access tokens
+                signingCertificate: getSigningCert(),
+                // Optional items //
+                signingCertificateAlgorithm: 'RS256',
                 wellKnownCacheKey: 'some-custom-cache-key',
                 wellKnownCacheExpiresAfter: new DateInterval('PT12H'), // default is PT24H
+                m2mAuthorizedSubjects: ['SUB1', 'SUB2', 'ETC.'],
             );
         }
     ])

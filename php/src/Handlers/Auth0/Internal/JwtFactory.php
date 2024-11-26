@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace RxAnte\OAuth\Handlers\Auth0\Internal;
 
+use Firebase\JWT\Key;
+use RxAnte\OAuth\Handlers\Auth0\Auth0Config;
 use RxAnte\OAuth\UserInfo\Jwt;
+use Throwable;
 
 use function base64_decode;
 use function explode;
@@ -16,8 +19,26 @@ use function str_replace;
 
 readonly class JwtFactory
 {
+    public function __construct(private Auth0Config $config)
+    {
+    }
+
     public function fromBearerToken(string $token): Jwt
     {
+        $tokenString = explode(' ', $token)[1] ?? '';
+
+        try {
+            \Firebase\JWT\JWT::decode(
+                $tokenString,
+                new Key(
+                    $this->config->signingCertificate,
+                    $this->config->signingCertificateAlgorithm,
+                ),
+            );
+        } catch (Throwable) {
+            return new Jwt();
+        }
+
         /** @var array<array-key, string|int|array<array-key, string>> $properties */
         $properties = json_decode(
             (string) base64_decode(

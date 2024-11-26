@@ -23,14 +23,14 @@ readonly class Jwt
      * @param string[] $scopes
      */
     public function __construct(
-        public string $rawToken,
-        public string $aud,
-        public string $jti,
-        public int $iat,
-        public int $nbf,
-        public int $exp,
-        public string $sub,
-        public array $scopes,
+        public string $rawToken = '',
+        public string $aud = '',
+        public string $jti = '',
+        public int $iat = 0,
+        public int $nbf = 0,
+        public int $exp = 0,
+        public string $sub = '',
+        public array $scopes = [],
     ) {
         $this->cacheKey = 'user_info_token_' . md5($rawToken);
     }
