@@ -5,3 +5,4 @@
 /.idea/vcs.xml
 /vendor
 /node_modules
+javascript/dist/tsconfig.tsbuildinfo
