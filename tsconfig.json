@@ -1,0 +1,17 @@
+{
+    "extends": "./node_modules/eslint-config-rxante-coding-standards/tsconfig.json",
+    "compilerOptions": {
+        "noEmit": false,
+        "module": "commonjs",
+        "declaration": true,
+        "esModuleInterop": true,
+        "outDir": "javascript/dist"
+    },
+    "include": [
+        "javascript/src/**/*.ts",
+        "javascript/src/**/*.tsx"
+    ],
+    "exclude": [
+        "node_modules"
+    ]
+}

@@ -1,0 +1,3 @@
+<component name="DependencyValidationManager">
+  <scope name="Project Typescript Files" pattern="file[oauth]:javascript/src//*.ts||file[oauth]:javascript/src//*.tsx" />
+</component>
