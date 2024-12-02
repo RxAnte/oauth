@@ -4,13 +4,18 @@
 
 ### PHP
 
-- [RequireOauthTokenHeaderMiddleware](documentation/require-oauth-token-header-middleware.md)
-- [RequireOauthSessionLoginRedirectMiddleware](documentation/require-oauth-session-login-redirect-middleware.md)
-- [RequireOauthSessionAccessDeniedMiddleware](documentation/require-oauth-session-access-denied-middleware.md)
-- [Custom Authentication Hook](documentation/custom-auth-hook.md)
-- [OauthUserInfoRepositoryInterface](documentation/oauth-user-info-repository-interface.md)
-- [Using and Configuring the Auth0 Implementation](documentation/using-configuring-auth0-implementation.md)
-- [Configuring the League Client](documentation/configuring-league-client.md)
+- [RequireOauthTokenHeaderMiddleware](documentation/php/require-oauth-token-header-middleware.md)
+- [RequireOauthSessionLoginRedirectMiddleware](documentation/php/require-oauth-session-login-redirect-middleware.md)
+- [RequireOauthSessionAccessDeniedMiddleware](documentation/php/require-oauth-session-access-denied-middleware.md)
+- [Custom Authentication Hook](documentation/php/custom-auth-hook.md)
+- [OauthUserInfoRepositoryInterface](documentation/php/oauth-user-info-repository-interface.md)
+- [Using and Configuring the Auth0 Implementation](documentation/php/using-configuring-auth0-implementation.md)
+- [Configuring the League Client](documentation/php/configuring-league-client.md)
+
+## Javascript
+
+- [NextAuthOptionsConfigFactory](documentation/javascript/next-auth-options-config-factory.md)
+- [NextAuthAuth0ProviderFactory](documentation/javascript/next-auth-auth0-provider-factory.md)
 
 ## License
 
