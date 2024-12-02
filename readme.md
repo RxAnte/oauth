@@ -16,6 +16,7 @@
 
 - [NextAuthOptionsConfigFactory](documentation/javascript/next-auth-options-config-factory.md)
 - [NextAuthAuth0ProviderFactory](documentation/javascript/next-auth-auth0-provider-factory.md)
+- [SignInPage](documentation/javascript/sign-in-page.md)
 
 ## License
 

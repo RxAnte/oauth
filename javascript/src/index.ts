@@ -5,3 +5,6 @@ export { Auth0ProviderFactory as NextAuthAuth0ProviderFactory } from './NextAuth
 // TokenRepository
 export type { TokenRepository } from './TokenRepository/TokenRepository';
 export { TokenRepositoryForIoRedisFactory } from './TokenRepository/TokenRepositoryForIoRedisFactory';
+
+// SignIn
+export { default as SignInPage } from './SignIn/SignInPage';
