@@ -9,19 +9,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.TokenRepositoryForIoRedisFactory = TokenRepositoryForIoRedisFactory;
-const crypto_1 = require("crypto");
-function TokenRepositoryForIoRedisFactory({ redis, redisTokenExpireTimeInSeconds, }) {
-    return {
-        createSessionIdWithAccessToken: (token, user) => __awaiter(this, void 0, void 0, function* () {
-            const id = (0, crypto_1.randomUUID)();
-            yield redis.set(`user_token:${id}`, JSON.stringify({
-                accessToken: token.access_token,
-                accessTokenExpires: token.expires_at,
-                refreshToken: token.refresh_token,
-                user,
-            }), 'EX', redisTokenExpireTimeInSeconds);
-            return id;
-        }),
-    };
+exports.FindTokenFromCookies = FindTokenFromCookies;
+const FindTokenBySessionId_1 = require("./FindTokenBySessionId");
+const GetIdFromCookies_1 = require("./GetIdFromCookies");
+function FindTokenFromCookies(redis, secret) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const sessionId = yield (0, GetIdFromCookies_1.GetIdFromCookies)(secret);
+        if (!sessionId) {
+            return null;
+        }
+        return (0, FindTokenBySessionId_1.FindTokenBySessionId)(sessionId, redis);
+    });
 }

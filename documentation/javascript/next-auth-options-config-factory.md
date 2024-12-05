@@ -1,5 +1,7 @@
 ## NextAuthOptionsConfigFactory
 
+[TokenRepository]: token-repository.md
+
 The `NextAuthOptionsConfigFactory` takes a configuration object argument with a few items and builds a [NextAuth](https://next-auth.js.org) `AuthOptions` object with the needed parameters to make the RxAnte OAuth process work.
 
 To use it, create a [Next](https://nextjs.org) route file at the following location:
@@ -43,6 +45,7 @@ const handler = NextAuth(NextAuthOptionsConfigFactory({
     ),
     tokenRepository: TokenRepositoryForIoRedisFactory({
         redis: getRedisClient(),
+        secret: getConfigStringServerSide(ConfigOptions.NEXTAUTH_SECRET),
         redisTokenExpireTimeInSeconds: 4800,
     }),
 }));
@@ -60,9 +63,9 @@ A secret key that NextAuth wil use.
 
 An array of NextAuth `Provider`s.
 
-### `tokenRepository`: `TokenRepository`
+### `tokenRepository`: [`TokenRepository`][TokenRepository]
 
-Provide an implementation of `TokenRepository`
+Provide an implementation of [`TokenRepository`][TokenRepository]
 
 ### `debug`: `boolean`
 

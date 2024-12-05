@@ -18,12 +18,15 @@ export default function Page () {
         <SignInPage
             // Whatever the ID of the provider you set up is
             providerId="auth0"
+
             // Optional: use your own loading page. If this is used,
             // reactLoadingType, and reactLoadingColor will be ignored
             CustomLoadingPage={MyCustomComponent}
-            // Set the type of the react-loading loader
+
+            // Optional Set the type of the react-loading loader
             reactLoadingType="bubbles"
-            // Set the color of the react-loading loader
+
+            // Optional Set the color of the react-loading loader
             reactLoadingColor="#4CA8CB"
         />
     );

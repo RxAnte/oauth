@@ -22,10 +22,10 @@ The Auth0 client secret to use for this provider.
 
 Specify the api/audience to use for this provider.
 
-### `id`: `string` : optional
+### `id`: `string` (optional)
 
 The ID of this provider.
 
-### `name`: `string` : optional
+### `name`: `string` (optional)
 
 The Name of this provider

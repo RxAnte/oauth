@@ -5,11 +5,11 @@
         "module": "commonjs",
         "declaration": true,
         "esModuleInterop": true,
-        "outDir": "javascript/dist"
+        "outDir": "dist"
     },
     "include": [
-        "javascript/src/**/*.ts",
-        "javascript/src/**/*.tsx"
+        "src/**/*.ts",
+        "src/**/*.tsx"
     ],
     "exclude": [
         "node_modules"

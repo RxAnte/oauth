@@ -2,25 +2,24 @@
     "name": "rxante-oauth",
     "version": "0.0.1",
     "description": "A collection of OAuth related things for the RxAnte Web Services team",
-    "main": "javascript/dist/index.js",
-    "types": "javascript/dist/index.d.ts",
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts",
     "scripts": {
-        "build": "rm -rf javascript/dist && pnpm tsc && ./copy-to-mosaic.sh"
+        "build": "rm -rf dist && pnpm tsc && ./copy-to-mosaic.sh"
     },
     "author": "RxAnte Web Services",
     "license": "Apache-2.0",
-    "files": [
-        "javascript/dist"
-    ],
     "repository": {
         "type": "git",
         "url": "git+https://github.com/RxAnte/oauth"
     },
     "dependencies": {
+        "next": "^14.2.4",
         "next-auth": "^4.24.10",
         "react": "^18.3.1",
         "react-dom": "^18.3.1",
         "react-loading": "^2.0.3",
+        "sleep-promise": "^9.1.0",
         "zod": "^3.23.8"
     },
     "devDependencies": {

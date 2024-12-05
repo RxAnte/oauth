@@ -37,7 +37,7 @@ export function OptionsConfigFactory (
             ) => {
                 // Initial sign in
                 if (account && user) {
-                    const sessionId = await tokenRepository.createSessionIdWithAccessToken(
+                    const sessionId = await tokenRepository.createSessionIdWithToken(
                         account,
                         user,
                     );

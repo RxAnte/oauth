@@ -21,7 +21,7 @@ function OptionsConfigFactory({ secret, providers, tokenRepository, debug = fals
             jwt: (_a) => __awaiter(this, [_a], void 0, function* ({ token, user, account, }) {
                 // Initial sign in
                 if (account && user) {
-                    const sessionId = yield tokenRepository.createSessionIdWithAccessToken(account, user);
+                    const sessionId = yield tokenRepository.createSessionIdWithToken(account, user);
                     return { sessionId };
                 }
                 return token;
