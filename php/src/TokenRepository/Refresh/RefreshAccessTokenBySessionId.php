@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace RxAnte\OAuth\TokenRepository\Refresh;
 
-use RxAnte\OAuth\Handlers\Auth0\TokenRefresh\GetRefreshedAccessTokenFromAuth0;
 use RxAnte\OAuth\TokenRepository\GetAccessTokenBySessionId;
 use RxAnte\OAuth\TokenRepository\Refresh\Lock\RefreshLock;
 use RxAnte\OAuth\TokenRepository\SetAccessTokenFromSessionId;
@@ -15,7 +14,7 @@ readonly class RefreshAccessTokenBySessionId
         private RefreshLock $refreshLock,
         private GetAccessTokenBySessionId $getToken,
         private SetAccessTokenFromSessionId $setToken,
-        private GetRefreshedAccessTokenFromAuth0 $getRefreshedAccessToken,
+        private GetRefreshedAccessToken $getRefreshedAccessToken,
     ) {
     }
 
