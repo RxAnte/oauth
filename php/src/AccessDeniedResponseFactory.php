@@ -15,7 +15,7 @@ readonly class AccessDeniedResponseFactory
     ) {
     }
 
-    public function create(string $thing): ResponseInterface
+    public function create(): ResponseInterface
     {
         return match ($this->customResponseFactory) {
             null => $this->createResponse(),
