@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "81ca04923cc259a9877461d209495751",
+    "content-hash": "0e68e171105a86c76cdb23d8a99ffd3b",
     "packages": [
         {
             "name": "brick/math",
@@ -1469,6 +1469,63 @@
     ],
     "packages-dev": [
         {
+            "name": "bnf/phpstan-psr-container",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/bnf/phpstan-psr-container.git",
+                "reference": "2e2fd1973576bdc755ea814b2142fcdbc673fd1c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/bnf/phpstan-psr-container/zipball/2e2fd1973576bdc755ea814b2142fcdbc673fd1c",
+                "reference": "2e2fd1973576bdc755ea814b2142fcdbc673fd1c",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.0|^8.0",
+                "phpstan/phpstan": "^1.0|^2.0",
+                "psr/container": "^1.0|^2.0"
+            },
+            "type": "phpstan-extension",
+            "extra": {
+                "phpstan": {
+                    "includes": [
+                        "extension.neon"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Bnf\\PhpstanPsrContainer\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Benjamin Franzke",
+                    "email": "benjaminfranzke@gmail.com",
+                    "homepage": "https://bnfr.net",
+                    "role": "Developer"
+                }
+            ],
+            "description": "PHPStan dynamic return type extension for PSR-11 ContainerInterface",
+            "keywords": [
+                "PHPStan",
+                "PSR-11",
+                "service-provider",
+                "static"
+            ],
+            "support": {
+                "issues": "https://github.com/bnf/phpstan-psr-container/issues",
+                "source": "https://github.com/bnf/phpstan-psr-container/tree/1.1.0"
+            },
+            "time": "2024-11-19T16:16:59+00:00"
+        },
+        {
             "name": "dealerdirect/phpcodesniffer-composer-installer",
             "version": "v1.0.0",
             "source": {
@@ -1897,19 +1954,20 @@
         },
         {
             "name": "rxante/coding-standards",
-            "version": "1.0.0",
+            "version": "1.1.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/RxAnte/coding-standards.git",
-                "reference": "71ad107855ba301e79d095b08ec63a68747ff850"
+                "reference": "1f271d4421a23a31ad4aa6a182113cee8d92083d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/RxAnte/coding-standards/zipball/71ad107855ba301e79d095b08ec63a68747ff850",
-                "reference": "71ad107855ba301e79d095b08ec63a68747ff850",
+                "url": "https://api.github.com/repos/RxAnte/coding-standards/zipball/1f271d4421a23a31ad4aa6a182113cee8d92083d",
+                "reference": "1f271d4421a23a31ad4aa6a182113cee8d92083d",
                 "shasum": ""
             },
             "require": {
+                "bnf/phpstan-psr-container": "^1.1",
                 "dealerdirect/phpcodesniffer-composer-installer": "*",
                 "doctrine/coding-standard": "^12.0",
                 "jetbrains/phpstorm-attributes": "^1.2",
@@ -1933,9 +1991,9 @@
             "description": "RxAnte Coding Standards",
             "support": {
                 "issues": "https://github.com/RxAnte/coding-standards/issues",
-                "source": "https://github.com/RxAnte/coding-standards/tree/1.0.0"
+                "source": "https://github.com/RxAnte/coding-standards/tree/1.1.2"
             },
-            "time": "2024-11-28T03:06:19+00:00"
+            "time": "2024-12-12T20:13:41+00:00"
         },
         {
             "name": "slevomat/coding-standard",

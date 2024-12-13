@@ -6,6 +6,8 @@ namespace RxAnte\OAuth\UserInfo;
 
 use Psr\Http\Message\ServerRequestInterface;
 
+// phpcs:disable SlevomatCodingStandard.Classes.SuperfluousInterfaceNaming.SuperfluousSuffix
+
 interface OauthUserInfoRepositoryInterface
 {
     public function getUserInfoFromRequestToken(

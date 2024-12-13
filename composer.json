@@ -27,7 +27,7 @@
         "ramsey/uuid": "^4.7"
     },
     "require-dev": {
-        "rxante/coding-standards": "^1.0"
+        "rxante/coding-standards": "^1.1.2"
     },
     "autoload": {
         "psr-4": {

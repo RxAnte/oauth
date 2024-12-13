@@ -56,6 +56,7 @@
       <path value="$PROJECT_DIR$/vendor/phpstan/phpstan-mockery" />
       <path value="$PROJECT_DIR$/vendor/jetbrains/phpstorm-attributes" />
       <path value="$PROJECT_DIR$/vendor/rxante/coding-standards" />
+      <path value="$PROJECT_DIR$/vendor/bnf/phpstan-psr-container" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.2" />

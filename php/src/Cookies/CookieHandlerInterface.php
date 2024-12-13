@@ -9,6 +9,8 @@ use Dflydev\FigCookies\Cookie;
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
 
+// phpcs:disable SlevomatCodingStandard.Classes.SuperfluousInterfaceNaming.SuperfluousSuffix
+
 interface CookieHandlerInterface
 {
     public function getCookieName(): string;
