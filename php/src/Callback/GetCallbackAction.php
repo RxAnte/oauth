@@ -11,11 +11,11 @@ use RxAnte\OAuth\Routes\Route;
 
 readonly class GetCallbackAction
 {
-    public static function createRoute(): Route
+    public static function createRoute(string $pattern = '/auth/callback'): Route
     {
         return new Route(
             RequestMethod::GET,
-            '/auth/callback/auth0',
+            $pattern,
             self::class,
         );
     }

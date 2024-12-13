@@ -8,10 +8,14 @@ use RxAnte\OAuth\Callback\GetCallbackAction;
 
 readonly class RoutesFactory
 {
+    public function __construct(private string $pattern = '/auth/callback')
+    {
+    }
+
     public function create(): RouteCollection
     {
         return new RouteCollection([
-            GetCallbackAction::createRoute(),
+            GetCallbackAction::createRoute($this->pattern),
         ]);
     }
 }
