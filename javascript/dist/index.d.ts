@@ -1,5 +1,6 @@
 export { OptionsConfigFactory as NextAuthOptionsConfigFactory } from './NextAuth/OptionsConfigFactory';
 export { Auth0ProviderFactory as NextAuthAuth0ProviderFactory } from './NextAuth/Auth0ProviderFactory';
+export { FusionAuthProviderFactory as NextAuthFusionAuthProviderFactory } from './NextAuth/FusionAuthProviderFactory';
 export type { TokenRepository } from './TokenRepository/TokenRepository';
 export { IoRedisTokenRepositoryFactory as TokenRepositoryForIoRedisFactory } from './TokenRepository/IoRedis/IoRedisTokenRepositoryFactory';
 export { default as SignInPage } from './SignIn/SignInPage';

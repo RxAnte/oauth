@@ -1,6 +1,7 @@
 // NextAuth
 export { OptionsConfigFactory as NextAuthOptionsConfigFactory } from './NextAuth/OptionsConfigFactory';
 export { Auth0ProviderFactory as NextAuthAuth0ProviderFactory } from './NextAuth/Auth0ProviderFactory';
+export { FusionAuthProviderFactory as NextAuthFusionAuthProviderFactory } from './NextAuth/FusionAuthProviderFactory';
 
 // TokenRepository
 export type { TokenRepository } from './TokenRepository/TokenRepository';
