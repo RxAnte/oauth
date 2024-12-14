@@ -2,7 +2,7 @@
 
 When using `\RxAnte\OAuth\RequireOauthSessionLoginRedirectMiddleware` or `\RxAnte\OAuth\RequireOauthSessionAccessDeniedMiddleware`, the League client will need to be configured. If using the provided `Auth0` implementation, use and configure `\RxAnte\OAuth\Handlers\Auth0\Auth0LeagueOauthProvider`. Otherwise, use and configure whatever implementation of `League\OAuth2\Client\Provider\AbstractProvider` you need.
 
-[PHP-DI](https://php-di.org) example:
+## Auth0 [PHP-DI](https://php-di.org) example:
 
 ```php
 use DI\ContainerBuilder;
@@ -31,6 +31,32 @@ $di = (new ContainerBuilder())
         }
         AbstractProvider::class => static function (ContainerInterface $di) {
             return $di->get(Auth0LeagueOauthProviderFactory::class)->create();
+        }
+    ])
+    ->build();
+```
+
+## FusionAuth [PHP-DI](https://php-di.org) example:
+
+```php
+use DI\ContainerBuilder;
+use League\OAuth2\Client\Provider\AbstractProvider;
+use Psr\Container\ContainerInterface;
+use RxAnte\OAuth\Handlers\FusionAuth\FusionAuthLeagueOauthProviderFactory;
+use RxAnte\OAuth\Handlers\FusionAuth\FusionAuthLeagueOauthProviderConfig;
+
+$di = (new ContainerBuilder())
+    ->useAutowiring(true)
+    ->addDefinitions([
+        FusionAuthLeagueOauthProviderConfig::class => static function (): FusionAuthLeagueOauthProviderConfig {
+            return new FusionAuthLeagueOauthProviderConfig(
+                clientId: 'REPLACE_WITH_CLIENT_ID',
+                clientSecret: 'REPLACE_WITH_CLIENT_SECRET',
+                callbackDomain: 'https://REPLACE_WITH_APP_DOMAIN.com',
+            );
+        }
+        AbstractProvider::class => static function (ContainerInterface $di) {
+            return $di->get(FusionAuthLeagueOauthProviderFactory::class)->create();
         }
     ])
     ->build();

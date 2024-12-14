@@ -1,6 +1,6 @@
-# Using and Configuring the Auth0 Implementation
+# Using and Configuring the FusionAuth Implementation
 
-In order to use the Auth0 Implementation, you'll need to wire up and configure some things.
+In order to use the FusionAuth Implementation, you'll need to wire up and configure some things.
 
 ## CacheItemPoolInterface
 
@@ -42,27 +42,27 @@ $di = (new ContainerBuilder())
 
 You'll need to have an implementation of `RxAnte\OAuth\TokenRepository\Refresh\Lock\RefreshLock` available through your [PSR-11](https://www.php-fig.org/psr/psr-11/) container. The implementation provided with this package relies on PHP's `\Redis`. See [Redis Refresh Lock Documentation](redis-refresh-lock.md)
 
-## Auth0Config
+## FusionAuthConfig
 
-`RxAnte\OAuth\Handlers\Auth0\Auth0Config` must be wired up with the appropriate values through your [PSR-11](https://www.php-fig.org/psr/psr-11/) container.
+`RxAnte\OAuth\Handlers\FusionAuth\FusionAuthConfig` must be wired up with the appropriate values through your [PSR-11](https://www.php-fig.org/psr/psr-11/) container.
 
 [PHP-DI](https://php-di.org) example:
 
 ```php
 use DI\ContainerBuilder;
-use RxAnte\OAuth\Handlers\Auth0\Auth0Config;
+use RxAnte\OAuth\Handlers\FusionAuth\FusionAuthConfig;
 use function DI\autowire;
 
 $di = (new ContainerBuilder())
     ->useAutowiring(true)
     ->addDefinitions([
-        Auth0Config::class => static function (): Auth0Config {
-            return new Auth0Config(
-                userInfoUrl: 'https://some-sub-domain.us.auth0.com/userinfo',
+        FusionAuthConfig::class => static function (): FusionAuthConfig {
+            return new FusionAuthConfig(
                 wellKnownUrl: 'https://some-sub-domain.us.auth0.com/.well-known/openid-configuration',
                 // Load up your IdP's signing cert here. This is used to ensure
                 // the validity of access tokens
                 signingCertificate: getSigningCert(),
+                sslVerify: true, // May need to be false in local dev with self-signed certificates
                 // Optional items //
                 signingCertificateAlgorithm: 'RS256',
                 wellKnownCacheKey: 'some-custom-cache-key',

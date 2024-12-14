@@ -9,13 +9,13 @@ This middleware can be used to require a valid token to be present in a user's s
 This is great for use with browser PHP application access.
 
 > [!NOTE]
-> `RequireOauthSessionLoginRedirectMiddleware` requires an implementation of [OauthUserInfoRepositoryInterface](oauth-user-info-repository-interface.md). This package provides an Auth0 implementation.
+> `RequireOauthSessionLoginRedirectMiddleware` requires an implementation of [OauthUserInfoRepositoryInterface](oauth-user-info-repository-interface.md). This package provides an Auth0 implementation or a FusionAuth implementation.
 
 > [!NOTE]
-> `RequireOauthSessionLoginRedirectMiddleware` requires an implementation of `RxAnte\OAuth\TokenRepository\Refresh\GetRefreshedAccessToken`. This package provides an Auth0 implementation. See [Using and Configuring the Auth0 Implementation](using-configuring-auth0-implementation.md).
+> `RequireOauthSessionLoginRedirectMiddleware` requires an implementation of `RxAnte\OAuth\TokenRepository\Refresh\GetRefreshedAccessToken`. This package provides an Auth0 implementation or a FusionAuth implementation. See [Using and Configuring the Auth0 Implementation](using-configuring-auth0-implementation.md) and [Using and Configuring the FusionAuth Implementation](using-configuring-fusion-auth-implementation.md).
 
 > [!NOTE]
-> `RequireOauthSessionLoginRedirectMiddleware` requires an implementation of `RxAnte\OAuth\TokenRepository\Refresh\Lock\RefreshLock`. This package provides a Redis implementation. See [Using and Configuring the Auth0 Implementation](using-configuring-auth0-implementation.md).
+> `RequireOauthSessionLoginRedirectMiddleware` requires an implementation of `RxAnte\OAuth\TokenRepository\Refresh\Lock\RefreshLock`. This package provides a Redis implementation. See [Redis Refresh Lock](redis-refresh-lock.md).
 
 > [!NOTE]
 > `RequireOauthSessionLoginRedirectMiddleware` requires an implementation of `League\OAuth2\Client\Provider\AbstractProvider`. You can learn how to implement that configuration [here](configuring-league-client.md).

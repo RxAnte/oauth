@@ -9,13 +9,13 @@ This middleware can be used to require a valid token to be present in a user's s
 This is great for use with browser PHP application access.
 
 > [!NOTE]
-> `RequireOauthSessionAccessDeniedMiddleware` requires an implementation of [OauthUserInfoRepositoryInterface](oauth-user-info-repository-interface.md). This package provides an Auth0 implementation.
+> `RequireOauthSessionAccessDeniedMiddleware` requires an implementation of [OauthUserInfoRepositoryInterface](oauth-user-info-repository-interface.md). This package provides an Auth0 implementation or a FusionAuth implementation.
 
 > [!NOTE]
-> `RequireOauthSessionAccessDeniedMiddleware` requires an implementation of `RxAnte\OAuth\TokenRepository\Refresh\GetRefreshedAccessToken`. This package provides an Auth0 implementation. See [Using and Configuring the Auth0 Implementation](using-configuring-auth0-implementation.md).
+> `RequireOauthSessionAccessDeniedMiddleware` requires an implementation of `RxAnte\OAuth\TokenRepository\Refresh\GetRefreshedAccessToken`. This package provides an Auth0 implementation or a FusionAuth implementation. See [Using and Configuring the Auth0 Implementation](using-configuring-auth0-implementation.md) and [Using and Configuring the FusionAuth Implementation](using-configuring-fusion-auth-implementation.md).
 
 > [!NOTE]
-> `RequireOauthSessionAccessDeniedMiddleware` requires an implementation of `RxAnte\OAuth\TokenRepository\Refresh\Lock\RefreshLock`. This package provides a Redis implementation. See [Using and Configuring the Auth0 Implementation](using-configuring-auth0-implementation.md).
+> `RequireOauthSessionAccessDeniedMiddleware` requires an implementation of `RxAnte\OAuth\TokenRepository\Refresh\Lock\RefreshLock`. This package provides a Redis implementation. See [Redis Refresh Lock](redis-refresh-lock.md).
 
 With this middleware, the user will never be prompted to go through the oauth flow, you'll be responsible for that elsewhere. You can use `\RxAnte\OAuth\SendToLoginResponseFactory` to create a response. Note that when the oauth login flow is completed, the user will be sent back to the same URL that that is on the requests `\Psr\Http\Message\UriInterface`.
 

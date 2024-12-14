@@ -9,7 +9,7 @@ This middleware can be used to validate a bearer token header and add the result
 Great for use with APIs that need to be authenticated.
 
 > [!NOTE]
-> `RequireOauthTokenHeaderMiddleware` requires an implementation of [OauthUserInfoRepositoryInterface](oauth-user-info-repository-interface.md). This package provides an Auth0 implementation. To use it, you'll need to configure it.
+> `RequireOauthTokenHeaderMiddleware` requires an implementation of [OauthUserInfoRepositoryInterface](oauth-user-info-repository-interface.md). This package provides an Auth0 implementation and a FusionAuth implementation, either of which will need to be configured in order to use.
 
 ## [Slim 4](https://www.slimframework.com) example
 

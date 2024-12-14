@@ -10,12 +10,14 @@
 - [Custom Authentication Hook](documentation/php/custom-auth-hook.md)
 - [OauthUserInfoRepositoryInterface](documentation/php/oauth-user-info-repository-interface.md)
 - [Using and Configuring the Auth0 Implementation](documentation/php/using-configuring-auth0-implementation.md)
+- [Using and Configuring the FusionAuth Implementation](documentation/php/using-configuring-fusion-auth-implementation.md)
 - [Configuring the League Client](documentation/php/configuring-league-client.md)
 
 ## Javascript
 
 - [NextAuthOptionsConfigFactory](documentation/javascript/next-auth-options-config-factory.md)
 - [NextAuthAuth0ProviderFactory](documentation/javascript/next-auth-auth0-provider-factory.md)
+- [NextAuthFusionAuthProviderFactory](documentation/javascript/next-auth-fusion-auth-provider-factory.md)
 - [SignInPage](documentation/javascript/sign-in-page.md)
 - [TokenRepository](documentation/javascript/token-repository.md)
 - [RequestFactory](documentation/javascript/request-factory.md)
