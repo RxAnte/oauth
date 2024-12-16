@@ -43,6 +43,12 @@ readonly class FetchUserInfoFromAuth0 implements FetchUserInfo
 
         $sub = (string) ($userInfo['sub'] ?? '');
 
+        $roles = $userInfo['roles'] ?? [];
+
+        if (! is_array($roles)) {
+            $roles = [];
+        }
+
         return new OauthUserInfo(
             $sub !== '',
             $sub,
@@ -51,6 +57,7 @@ readonly class FetchUserInfoFromAuth0 implements FetchUserInfo
             $userInfo['given_name'] ?? '',
             $userInfo['family_name'] ?? '',
             $userInfo['picture'] ?? '',
+            $roles,
         );
     }
 }

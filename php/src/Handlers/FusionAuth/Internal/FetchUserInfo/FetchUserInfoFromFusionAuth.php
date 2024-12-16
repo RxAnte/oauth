@@ -54,6 +54,12 @@ readonly class FetchUserInfoFromFusionAuth implements FetchUserInfo
             $name = trim($givenName . ' ' . $familyName);
         }
 
+        $roles = $userInfo['roles'] ?? [];
+
+        if (! is_array($roles)) {
+            $roles = [];
+        }
+
         return new OauthUserInfo(
             $sub !== '',
             $sub,
@@ -62,6 +68,7 @@ readonly class FetchUserInfoFromFusionAuth implements FetchUserInfo
             $givenName,
             $familyName,
             $userInfo['picture'] ?? '',
+            $roles,
         );
     }
 }

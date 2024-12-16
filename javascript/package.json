@@ -1,6 +1,6 @@
 {
     "name": "rxante-oauth",
-    "version": "1.4.0",
+    "version": "1.4.1",
     "description": "A collection of OAuth related things for the RxAnte Web Services team",
     "main": "./dist/index.js",
     "types": "./dist/index.d.ts",
