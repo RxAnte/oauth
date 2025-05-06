@@ -7,9 +7,6 @@ export { FusionAuthProviderFactory as NextAuthFusionAuthProviderFactory } from '
 export type { TokenRepository } from './TokenRepository/TokenRepository';
 export { IoRedisTokenRepositoryFactory as TokenRepositoryForIoRedisFactory } from './TokenRepository/IoRedis/IoRedisTokenRepositoryFactory';
 
-// SignIn
-export { default as SignInPage } from './SignIn/SignInPage';
-
 // Request
 export { RequestFactory } from './Request/RequestFactory';
 

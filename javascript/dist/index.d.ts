@@ -3,7 +3,6 @@ export { Auth0ProviderFactory as NextAuthAuth0ProviderFactory } from './NextAuth
 export { FusionAuthProviderFactory as NextAuthFusionAuthProviderFactory } from './NextAuth/FusionAuthProviderFactory';
 export type { TokenRepository } from './TokenRepository/TokenRepository';
 export { IoRedisTokenRepositoryFactory as TokenRepositoryForIoRedisFactory } from './TokenRepository/IoRedis/IoRedisTokenRepositoryFactory';
-export { default as SignInPage } from './SignIn/SignInPage';
 export { RequestFactory } from './Request/RequestFactory';
 export type { RefreshAccessToken } from './Request/RefreshAccessToken/RefreshAccessToken';
 export { RefreshAccessTokenWithAuth0Factory } from './Request/RefreshAccessToken/RefreshAccessTokenWithAuth0Factory';
