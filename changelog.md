@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 1.5.0 — 2025-05-06
+### Removed
+- Removed the SignInPage export since it is not used and doesn't work and causes some problems
+### Fixed
+- Fixed an issue with Next15 `cookies()` needing to be `await`ed.
+### Added
+- Added the ability for making API requests to handle `conent-disposition` other than `inline`
+
 ## 1.4.1 - 2024-12-16
 ### Added
 - Added support to OauthUserInfo for roles

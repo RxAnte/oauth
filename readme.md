@@ -18,7 +18,6 @@
 - [NextAuthOptionsConfigFactory](documentation/javascript/next-auth-options-config-factory.md)
 - [NextAuthAuth0ProviderFactory](documentation/javascript/next-auth-auth0-provider-factory.md)
 - [NextAuthFusionAuthProviderFactory](documentation/javascript/next-auth-fusion-auth-provider-factory.md)
-- [SignInPage](documentation/javascript/sign-in-page.md)
 - [TokenRepository](documentation/javascript/token-repository.md)
 - [RequestFactory](documentation/javascript/request-factory.md)
 - [RefreshAccessToken](documentation/javascript/refresh-access-token.md)
