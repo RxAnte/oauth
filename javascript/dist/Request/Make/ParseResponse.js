@@ -20,6 +20,16 @@ function ParseResponse(runRequest) {
         try {
             const response = yield runRequest();
             const responseBody = response.body;
+            const contentDisposition = response.headers.get('content-disposition') || 'inline';
+            if (contentDisposition !== 'inline') {
+                return {
+                    headers: response.headers,
+                    ok: response.ok,
+                    status: response.status,
+                    body: responseBody,
+                    json: {},
+                };
+            }
             /**
              * `.text()` can only be used once, second time will throw exception, so
              * we set it to a variable to be used in more places
