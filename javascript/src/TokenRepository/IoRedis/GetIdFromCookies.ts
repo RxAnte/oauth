@@ -2,7 +2,10 @@ import { cookies } from 'next/headers';
 import { decode } from 'next-auth/jwt';
 
 export async function GetIdFromCookies (secret: string): Promise<string | null> {
-    const cookie = cookies().get('__Secure-next-auth.session-token');
+    // In Next15, `cookies()` must be awaited
+    const cookieStore = await cookies();
+
+    const cookie = cookieStore.get('__Secure-next-auth.session-token');
 
     if (!cookie) {
         return null;

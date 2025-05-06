@@ -14,7 +14,9 @@ const headers_1 = require("next/headers");
 const jwt_1 = require("next-auth/jwt");
 function GetIdFromCookies(secret) {
     return __awaiter(this, void 0, void 0, function* () {
-        const cookie = (0, headers_1.cookies)().get('__Secure-next-auth.session-token');
+        // In Next15, `cookies()` must be awaited
+        const cookieStore = yield (0, headers_1.cookies)();
+        const cookie = cookieStore.get('__Secure-next-auth.session-token');
         if (!cookie) {
             return null;
         }
