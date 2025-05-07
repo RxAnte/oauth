@@ -26,11 +26,13 @@ export async function MakeWithSignInRedirect (
         return response;
     }
 
-    const uri = headers().get('middleware-pathname') || '/';
+    const headersCollection = await headers();
+
+    const uri = headersCollection.get('middleware-pathname') || '/';
 
     let authReturn = appUrl + uri;
 
-    const authReturnQueryString = headers().get('middleware-search-params') || '';
+    const authReturnQueryString = headersCollection.get('middleware-search-params') || '';
 
     if (authReturnQueryString) {
         authReturn += `?${authReturnQueryString}`;

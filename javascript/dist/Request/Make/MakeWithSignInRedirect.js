@@ -19,9 +19,10 @@ function MakeWithSignInRedirect(props, appUrl, requestBaseUrl, nextAuthProviderI
         if (response.status !== 401) {
             return response;
         }
-        const uri = (0, headers_1.headers)().get('middleware-pathname') || '/';
+        const headersCollection = yield (0, headers_1.headers)();
+        const uri = headersCollection.get('middleware-pathname') || '/';
         let authReturn = appUrl + uri;
-        const authReturnQueryString = (0, headers_1.headers)().get('middleware-search-params') || '';
+        const authReturnQueryString = headersCollection.get('middleware-search-params') || '';
         if (authReturnQueryString) {
             authReturn += `?${authReturnQueryString}`;
         }
