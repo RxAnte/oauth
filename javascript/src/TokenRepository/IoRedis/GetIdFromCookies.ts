@@ -5,14 +5,24 @@ export async function GetIdFromCookies (secret: string): Promise<string | null> 
     // In Next15, `cookies()` must be awaited
     const cookieStore = await cookies();
 
-    const cookie = cookieStore.get('__Secure-next-auth.session-token');
+    let cookie = '';
+
+    const sessionTokenCookies = cookieStore.getAll().filter(
+        (cookieObj) => cookieObj.name.startsWith(
+            '__Secure-next-auth.session-token',
+        ),
+    );
+
+    sessionTokenCookies.forEach((cookieObj) => {
+        cookie += cookieObj.value;
+    });
 
     if (!cookie) {
         return null;
     }
 
     const cookieDecoded = await decode({
-        token: cookie.value,
+        token: cookie,
         secret,
     });
 

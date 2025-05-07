@@ -1,4 +1,4 @@
-import { Account, AuthOptions } from 'next-auth';
+import { Account, AuthOptions, Session } from 'next-auth';
 import { Provider } from 'next-auth/providers';
 import { JWT } from 'next-auth/jwt';
 import { User } from './User';
@@ -42,10 +42,26 @@ export function OptionsConfigFactory (
                         user,
                     );
 
-                    return { sessionId };
+                    return {
+                        sessionId,
+                        user,
+                    };
                 }
 
                 return token;
+            },
+            session: async ({ session, token }: { session: Session; token: JWT }) => {
+                if (token.user) {
+                    session.user = token.user;
+                }
+
+                // @ts-expect-error TS2339
+                session.accessToken = token.accessToken;
+
+                // @ts-expect-error TS2339
+                session.error = token.error;
+
+                return session;
             },
         },
     };

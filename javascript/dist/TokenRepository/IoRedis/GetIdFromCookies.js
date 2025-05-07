@@ -16,12 +16,16 @@ function GetIdFromCookies(secret) {
     return __awaiter(this, void 0, void 0, function* () {
         // In Next15, `cookies()` must be awaited
         const cookieStore = yield (0, headers_1.cookies)();
-        const cookie = cookieStore.get('__Secure-next-auth.session-token');
+        let cookie = '';
+        const sessionTokenCookies = cookieStore.getAll().filter((cookieObj) => cookieObj.name.startsWith('__Secure-next-auth.session-token'));
+        sessionTokenCookies.forEach((cookieObj) => {
+            cookie += cookieObj.value;
+        });
         if (!cookie) {
             return null;
         }
         const cookieDecoded = yield (0, jwt_1.decode)({
-            token: cookie.value,
+            token: cookie,
             secret,
         });
         return cookieDecoded === null || cookieDecoded === void 0 ? void 0 : cookieDecoded.sessionId;

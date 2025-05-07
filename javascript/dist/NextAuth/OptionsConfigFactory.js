@@ -22,9 +22,22 @@ function OptionsConfigFactory({ secret, providers, tokenRepository, debug = fals
                 // Initial sign in
                 if (account && user) {
                     const sessionId = yield tokenRepository.createSessionIdWithToken(account, user);
-                    return { sessionId };
+                    return {
+                        sessionId,
+                        user,
+                    };
                 }
                 return token;
+            }),
+            session: (_a) => __awaiter(this, [_a], void 0, function* ({ session, token }) {
+                if (token.user) {
+                    session.user = token.user;
+                }
+                // @ts-expect-error TS2339
+                session.accessToken = token.accessToken;
+                // @ts-expect-error TS2339
+                session.error = token.error;
+                return session;
             }),
         },
     };
