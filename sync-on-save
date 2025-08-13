@@ -1,0 +1,41 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+$phpSyncOnSaveEnvFilePath = __DIR__ . '/php-sync-on-save-env.php';
+
+if (!file_exists($phpSyncOnSaveEnvFilePath)) {
+    file_put_contents(
+        $phpSyncOnSaveEnvFilePath,
+        implode(PHP_EOL, [
+            '<?php',
+            '',
+            'declare(strict_types=1);',
+            '',
+            '// An array of paths to copy the `php` directory to any time a file is saved',
+            'return [];',
+            '',
+        ]),
+    );
+}
+
+/** @param string[] $phpPaths */
+$phpPaths = require $phpSyncOnSaveEnvFilePath;
+assert(is_array($phpPaths));
+
+array_walk(
+    $phpPaths,
+    /** @phpstan-ignore-next-line */
+    function (string $path): void {
+        $path = rtrim($path, '/');
+
+        if (file_exists($path)) {
+            shell_exec('sudo rm -rf ' . $path . '/php');
+        }
+
+        shell_exec('sudo cp -rf ' . __DIR__ . '/php ' . $path . '/');
+
+        shell_exec('sudo chmod -R 0777 ' . $path);
+    },
+);
