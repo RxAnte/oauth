@@ -57,6 +57,14 @@
       <path value="$PROJECT_DIR$/vendor/jetbrains/phpstorm-attributes" />
       <path value="$PROJECT_DIR$/vendor/rxante/coding-standards" />
       <path value="$PROJECT_DIR$/vendor/bnf/phpstan-psr-container" />
+      <path value="$PROJECT_DIR$/vendor/lcobucci/jwt" />
+      <path value="$PROJECT_DIR$/vendor/psr/event-dispatcher" />
+      <path value="$PROJECT_DIR$/vendor/lcobucci/clock" />
+      <path value="$PROJECT_DIR$/vendor/league/event" />
+      <path value="$PROJECT_DIR$/vendor/league/uri" />
+      <path value="$PROJECT_DIR$/vendor/league/uri-interfaces" />
+      <path value="$PROJECT_DIR$/vendor/league/oauth2-server" />
+      <path value="$PROJECT_DIR$/vendor/defuse/php-encryption" />
     </include_path>
   </component>
   <component name="PhpProjectSharedConfiguration" php_language_level="8.2" />

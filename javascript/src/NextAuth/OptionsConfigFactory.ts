@@ -63,6 +63,7 @@ export function OptionsConfigFactory (
 
                 return session;
             },
+            signIn: () => {},
         },
     };
 }

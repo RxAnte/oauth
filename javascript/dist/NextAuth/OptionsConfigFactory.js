@@ -39,6 +39,7 @@ function OptionsConfigFactory({ secret, providers, tokenRepository, debug = fals
                 session.error = token.error;
                 return session;
             }),
+            signIn: () => { },
         },
     };
 }

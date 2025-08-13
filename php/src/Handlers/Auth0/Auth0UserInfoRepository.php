@@ -50,7 +50,7 @@ readonly class Auth0UserInfoRepository implements OauthUserInfoRepositoryInterfa
 
         $userInfo = $this->getUserinfoFromSessionId->get($sessionId);
 
-        if (! $userInfo->isValid) {
+        if ($userInfo->isValid) {
             return $userInfo;
         }
 

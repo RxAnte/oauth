@@ -50,7 +50,7 @@ readonly class FusionAuthUserInfoRepository implements OauthUserInfoRepositoryIn
 
         $userInfo = $this->getUserinfoFromSessionId->get($sessionId);
 
-        if (! $userInfo->isValid) {
+        if ($userInfo->isValid) {
             return $userInfo;
         }
 
