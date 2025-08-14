@@ -6,16 +6,21 @@ namespace RxAnte\OAuth\Handlers\RxAnte;
 
 use Psr\Http\Message\ServerRequestInterface;
 use RxAnte\OAuth\Cookies\OauthSessionTokenCookieHandler;
+use RxAnte\OAuth\Handlers\RxAnte\Internal\FetchUserInfo\FetchUserInfoFactory;
 use RxAnte\OAuth\Handlers\RxAnte\Internal\FetchUserInfo\GetResponse\GetUserInfoFromSessionId;
+use RxAnte\OAuth\Handlers\RxAnte\Internal\JwtFactory;
 use RxAnte\OAuth\TokenRepository\Refresh\RefreshAccessTokenBySessionId;
 use RxAnte\OAuth\UserInfo\OauthUserInfo;
 use RxAnte\OAuth\UserInfo\OauthUserInfoRepositoryInterface;
 
-use function var_dump;
+use function preg_replace;
+use function trim;
 
 readonly class RxAnteUserInfoRepository implements OauthUserInfoRepositoryInterface
 {
     public function __construct(
+        private JwtFactory $jwtFactory,
+        private FetchUserInfoFactory $fetchUserInfoFactory,
         private RefreshAccessTokenBySessionId $refreshAccessToken,
         private GetUserInfoFromSessionId $getUserInfoFromSessionId,
         private OauthSessionTokenCookieHandler $sessionTokenCookieHandler,
@@ -25,9 +30,21 @@ readonly class RxAnteUserInfoRepository implements OauthUserInfoRepositoryInterf
     public function getUserInfoFromRequestToken(
         ServerRequestInterface $request,
     ): OauthUserInfo {
-        // TODO: Implement getUserInfoFromRequestToken() method.
-        var_dump('TODO: Implement getUserInfoFromRequestToken() method.');
-        die;
+        if (! $request->hasHeader('authorization')) {
+            return new OauthUserInfo();
+        }
+
+        $header = $request->getHeader('authorization');
+
+        $jwtString = trim((string) preg_replace(
+            '/^\s*Bearer\s/',
+            '',
+            $header[0],
+        ));
+
+        $jwt = $this->jwtFactory->createFromToken($jwtString);
+
+        return $this->fetchUserInfoFactory->create($jwt)->fetch($jwt);
     }
 
     public function getUserInfoFromRequestSession(
