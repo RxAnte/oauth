@@ -8,3 +8,4 @@
 /javascript/node_modules
 javascript/dist/tsconfig.tsbuildinfo
 php-sync-on-save-env.php
+js-sync-on-save-env.php

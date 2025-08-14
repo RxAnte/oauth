@@ -5,7 +5,7 @@
     "main": "./dist/index.js",
     "types": "./dist/index.d.ts",
     "scripts": {
-        "build": "rm -rf dist && pnpm tsc && ./copy-to-mosaic.sh && ./copy-to-rxeffect.sh"
+        "build": "rm -rf dist && pnpm tsc"
     },
     "author": "RxAnte Web Services",
     "license": "Apache-2.0",

@@ -1,0 +1,47 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+shell_exec('cd ' . __DIR__ . '/javascript && pnpm build');
+
+$jsSyncOnSaveEnvFilePath = __DIR__ . '/js-build-and-sync.php';
+
+if (!file_exists($jsSyncOnSaveEnvFilePath)) {
+    file_put_contents(
+        $jsSyncOnSaveEnvFilePath,
+        implode(PHP_EOL, [
+            '<?php',
+            '',
+            'declare(strict_types=1);',
+            '',
+            '// An array of paths to copy the `javascript` directory to any time a typescript build has completed',
+            'return [];',
+            '',
+        ]),
+    );
+}
+
+/** @param string[] $jsPaths */
+$jsPaths = require $jsSyncOnSaveEnvFilePath;
+assert(is_array($jsPaths));
+
+array_walk(
+    $jsPaths,
+    /** @phpstan-ignore-next-line */
+    function (string $path): void {
+        $path = rtrim($path, '/');
+
+        if (file_exists($path)) {
+            shell_exec('sudo rm -rf ' . $path . '/*');
+        }
+
+        shell_exec('sudo cp -rf ' . __DIR__ . '/javascript/dist ' . $path . '/dist');
+        shell_exec('sudo cp -rf ' . __DIR__ . '/javascript/src ' . $path . '/src');
+        shell_exec('sudo cp -rf ' . __DIR__ . '/javascript/package.json ' . $path . '/package.json');
+        shell_exec('sudo cp -rf ' . __DIR__ . '/javascript/pnpm-lock.yaml ' . $path . '/pnpm-lock.yaml');
+        shell_exec('sudo cp -rf ' . __DIR__ . '/javascript/tsconfig.json ' . $path . '/tsconfig.json');
+
+        shell_exec('sudo chmod -R 0777 ' . $path . '/*');
+    },
+);
