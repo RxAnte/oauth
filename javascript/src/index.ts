@@ -12,9 +12,14 @@ export { RequestFactory } from './Request/RequestFactory';
 
 // Refresh
 export type { RefreshAccessToken } from './Request/RefreshAccessToken/RefreshAccessToken';
+export { RefreshAccessTokenFactory } from './Request/RefreshAccessToken/RefreshAccessTokenFactory';
 export { RefreshAccessTokenWithAuth0Factory } from './Request/RefreshAccessToken/RefreshAccessTokenWithAuth0Factory';
 export type { RefreshLock } from './Request/RefreshAccessToken/Lock/RefreshLock';
 export { IoRedisRefreshLockFactory } from './Request/RefreshAccessToken/Lock/IoRedisRefreshLockFactory';
 
 // Middleware
 export { NextMiddlewareHeadersFactory } from './NextMiddlewareHeadersFactory';
+
+// Sign-in
+export type { AuthCodeGrantApi } from './SignIn/AuthCodeGrantApi';
+export { AuthCodeGrantApiFactory } from './SignIn/AuthCodeGrantApiFactory';

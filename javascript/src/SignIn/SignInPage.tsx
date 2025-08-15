@@ -4,6 +4,9 @@ import React, { ReactElement, useEffect } from 'react';
 import { signIn } from 'next-auth/react';
 import ReactLoading, { LoadingType } from 'react-loading';
 
+/**
+ * @deprecated
+ */
 export default function SignInPage (
     {
         providerId,

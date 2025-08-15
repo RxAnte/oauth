@@ -41,6 +41,9 @@ exports.default = SignInPage;
 const react_1 = __importStar(require("react"));
 const react_2 = require("next-auth/react");
 const react_loading_1 = __importDefault(require("react-loading"));
+/**
+ * @deprecated
+ */
 function SignInPage({ providerId, CustomLoadingPage, reactLoadingType = 'spin', reactLoadingColor = '#000', }) {
     (0, react_1.useEffect)(() => {
         var _a;
