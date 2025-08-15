@@ -26,20 +26,18 @@ async function requestRefreshedToken (
 
     const { refreshToken } = token;
 
-    const refreshConfig = {
-        headers: { 'Content-Type': 'application/json' },
-        method: 'POST',
-        body: JSON.stringify({
-            grant_type: 'refresh_token',
-            refresh_token: refreshToken,
-            client_id: clientId,
-            client_secret: clientSecret,
-        }),
-    };
-
     return fetch(
         tokenUrl,
-        refreshConfig,
+        {
+            headers: { 'Content-Type': 'application/json' },
+            method: 'POST',
+            body: JSON.stringify({
+                grant_type: 'refresh_token',
+                refresh_token: refreshToken,
+                client_id: clientId,
+                client_secret: clientSecret,
+            }),
+        },
     );
 }
 

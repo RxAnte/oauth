@@ -16,6 +16,13 @@ function GetIdFromCookies(secret) {
     return __awaiter(this, void 0, void 0, function* () {
         // In Next15, `cookies()` must be awaited
         const cookieStore = yield (0, headers_1.cookies)();
+        const sessionId = cookieStore.get('oauthSessionId');
+        if (sessionId) {
+            return sessionId.value;
+        }
+        /**
+         * Old NextAuth cookies
+         */
         let cookie = '';
         const sessionTokenCookies = cookieStore.getAll().filter((cookieObj) => cookieObj.name.startsWith('__Secure-next-auth.session-token'));
         sessionTokenCookies.forEach((cookieObj) => {

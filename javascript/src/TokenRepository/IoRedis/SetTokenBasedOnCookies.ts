@@ -2,6 +2,7 @@
 import Redis from 'ioredis';
 import { NextAuthJwt } from '../../NextAuth/NextAuthJwt';
 import { GetIdFromCookies } from './GetIdFromCookies';
+import { SetTokenFromSessionId } from './SetTokenFromSessionId';
 
 export async function SetTokenBasedOnCookies (
     token: NextAuthJwt,
@@ -15,10 +16,10 @@ export async function SetTokenBasedOnCookies (
         return;
     }
 
-    await redis.set(
-        `user_token:${sessionId}`,
-        JSON.stringify(token),
-        'EX',
+    await SetTokenFromSessionId(
+        token,
+        sessionId,
+        redis,
         redisTokenExpireTimeInSeconds,
     );
 }

@@ -15,6 +15,7 @@ const FindTokenBySessionId_1 = require("./FindTokenBySessionId");
 const FindTokenFromCookies_1 = require("./FindTokenFromCookies");
 const GetTokenFromCookies_1 = require("./GetTokenFromCookies");
 const SetTokenBasedOnCookies_1 = require("./SetTokenBasedOnCookies");
+const SetTokenFromSessionId_1 = require("./SetTokenFromSessionId");
 function IoRedisTokenRepositoryFactory({ redis, secret, redisTokenExpireTimeInSeconds, }) {
     return {
         createSessionIdWithToken: (token, user) => __awaiter(this, void 0, void 0, function* () {
@@ -28,6 +29,9 @@ function IoRedisTokenRepositoryFactory({ redis, secret, redisTokenExpireTimeInSe
         }),
         getTokenFromCookies: () => __awaiter(this, void 0, void 0, function* () {
             return (0, GetTokenFromCookies_1.GetTokenFromCookies)(redis, secret);
+        }),
+        setTokenFromSessionId: (token, sessionId) => __awaiter(this, void 0, void 0, function* () {
+            return (0, SetTokenFromSessionId_1.SetTokenFromSessionId)(token, sessionId, redis, redisTokenExpireTimeInSeconds);
         }),
         setTokenBasedOnCookies: (token) => __awaiter(this, void 0, void 0, function* () {
             return (0, SetTokenBasedOnCookies_1.SetTokenBasedOnCookies)(token, redis, secret, redisTokenExpireTimeInSeconds);

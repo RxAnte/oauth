@@ -12,9 +12,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = CreateSignInRouteResponse;
 const headers_1 = require("next/headers");
 const crypto_1 = require("crypto");
+// TODO: Refactor this to be less procedural
 function CreateSignInRouteResponse(request_1, appUrl_1, authorizeUrl_1, clientId_1) {
     return __awaiter(this, arguments, void 0, function* (request, appUrl, authorizeUrl, clientId, callbackUri = '/api/auth/callback') {
         const { searchParams } = new URL(request.url);
+        // TODO: Validate that this URL domain matches the appUrl
         const authReturn = searchParams.get('authReturn') || appUrl;
         const cookieStore = yield (0, headers_1.cookies)();
         const authorizeState = (0, crypto_1.randomBytes)(32).toString('hex');

@@ -9,6 +9,7 @@ import { FindTokenFromCookies } from './FindTokenFromCookies';
 import { GetTokenFromCookies } from './GetTokenFromCookies';
 import { NextAuthJwt } from '../../NextAuth/NextAuthJwt';
 import { SetTokenBasedOnCookies } from './SetTokenBasedOnCookies';
+import { SetTokenFromSessionId } from './SetTokenFromSessionId';
 
 export function IoRedisTokenRepositoryFactory (
     {
@@ -44,6 +45,15 @@ export function IoRedisTokenRepositoryFactory (
         getTokenFromCookies: async () => GetTokenFromCookies(
             redis,
             secret,
+        ),
+        setTokenFromSessionId: async (
+            token: NextAuthJwt,
+            sessionId: string,
+        ) => SetTokenFromSessionId(
+            token,
+            sessionId,
+            redis,
+            redisTokenExpireTimeInSeconds,
         ),
         setTokenBasedOnCookies: async (
             token: NextAuthJwt,

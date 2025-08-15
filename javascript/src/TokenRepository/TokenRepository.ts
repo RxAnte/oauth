@@ -7,5 +7,6 @@ export type TokenRepository = {
     findTokenBySessionId: (sessionId: string) => Promise<NextAuthJwt | null>;
     findTokenFromCookies: () => Promise<NextAuthJwt | null>;
     getTokenFromCookies: () => Promise<NextAuthJwt>;
+    setTokenFromSessionId: (token: NextAuthJwt, id: string) => Promise<void>;
     setTokenBasedOnCookies: (token: NextAuthJwt) => Promise<void>;
 };

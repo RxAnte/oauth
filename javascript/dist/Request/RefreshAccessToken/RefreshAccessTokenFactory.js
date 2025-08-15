@@ -21,7 +21,7 @@ function requestRefreshedToken(token, wellKnownUrl, clientId, clientSecret) {
         const wellKnownJson = yield wellKnownResp.json();
         const tokenUrl = wellKnownJson.token_endpoint;
         const { refreshToken } = token;
-        const refreshConfig = {
+        return fetch(tokenUrl, {
             headers: { 'Content-Type': 'application/json' },
             method: 'POST',
             body: JSON.stringify({
@@ -30,8 +30,7 @@ function requestRefreshedToken(token, wellKnownUrl, clientId, clientSecret) {
                 client_id: clientId,
                 client_secret: clientSecret,
             }),
-        };
-        return fetch(tokenUrl, refreshConfig);
+        });
     });
 }
 function getRefreshedAccessToken(token, wellKnownUrl, clientId, clientSecret) {

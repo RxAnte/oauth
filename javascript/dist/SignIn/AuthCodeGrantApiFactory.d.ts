@@ -1,7 +1,12 @@
 import { AuthCodeGrantApi } from './AuthCodeGrantApi';
-export declare function AuthCodeGrantApiFactory({ appUrl, authorizeUrl, clientId, callbackUri, }: {
+import { TokenRepository } from '../TokenRepository/TokenRepository';
+export declare function AuthCodeGrantApiFactory({ tokenRepository, appUrl, authorizeUrl, tokenUrl, userInfoUrl, clientId, clientSecret, callbackUri, }: {
+    tokenRepository: TokenRepository;
     appUrl: string;
     authorizeUrl: string;
+    tokenUrl: string;
+    userInfoUrl: string;
     clientId: string;
+    clientSecret: string;
     callbackUri?: string;
 }): AuthCodeGrantApi;

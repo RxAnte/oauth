@@ -1,6 +1,7 @@
 import { cookies } from 'next/headers';
 import { randomBytes } from 'crypto';
 
+// TODO: Refactor this to be less procedural
 export default async function CreateSignInRouteResponse (
     request: Request,
     appUrl: string,
@@ -10,6 +11,7 @@ export default async function CreateSignInRouteResponse (
 ): Promise<Response> {
     const { searchParams } = new URL(request.url);
 
+    // TODO: Validate that this URL domain matches the appUrl
     const authReturn = searchParams.get('authReturn') || appUrl;
 
     const cookieStore = await cookies();

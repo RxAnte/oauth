@@ -9,15 +9,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.SetTokenBasedOnCookies = SetTokenBasedOnCookies;
-const GetIdFromCookies_1 = require("./GetIdFromCookies");
-const SetTokenFromSessionId_1 = require("./SetTokenFromSessionId");
-function SetTokenBasedOnCookies(token, redis, secret, redisTokenExpireTimeInSeconds) {
+exports.SetTokenFromSessionId = SetTokenFromSessionId;
+function SetTokenFromSessionId(token, sessionId, redis, redisTokenExpireTimeInSeconds) {
     return __awaiter(this, void 0, void 0, function* () {
-        const sessionId = yield (0, GetIdFromCookies_1.GetIdFromCookies)(secret);
-        if (!sessionId) {
-            return;
-        }
-        yield (0, SetTokenFromSessionId_1.SetTokenFromSessionId)(token, sessionId, redis, redisTokenExpireTimeInSeconds);
+        yield redis.set(`user_token:${sessionId}`, JSON.stringify(token), 'EX', redisTokenExpireTimeInSeconds);
     });
 }
