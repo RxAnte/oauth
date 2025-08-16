@@ -1,15 +1,14 @@
 import { z } from 'zod';
-import { JWT } from 'next-auth/jwt';
 import { User, UserSchema } from './User';
 
-export const NextAuthJwtSchema = z.object({
+export const TokenDataSchemaSchema = z.object({
     accessToken: z.string(),
     accessTokenExpires: z.number(),
     refreshToken: z.string(),
     user: UserSchema,
 });
 
-export interface NextAuthJwt extends JWT {
+export interface TokenData {
     accessToken: string;
     accessTokenExpires: number;
     refreshToken: string;

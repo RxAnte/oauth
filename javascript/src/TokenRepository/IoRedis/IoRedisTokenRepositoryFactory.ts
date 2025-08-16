@@ -2,27 +2,30 @@
 import Redis from 'ioredis';
 import { Account } from 'next-auth';
 import { TokenRepository } from '../TokenRepository';
-import { User } from '../../NextAuth/User';
+import { User } from '../../User';
 import { CreateSessionIdWithToken } from './CreateSessionIdWithToken';
 import { FindTokenBySessionId } from './FindTokenBySessionId';
 import { FindTokenFromCookies } from './FindTokenFromCookies';
 import { GetTokenFromCookies } from './GetTokenFromCookies';
-import { NextAuthJwt } from '../../NextAuth/NextAuthJwt';
+import { TokenData } from '../../TokenData';
 import { SetTokenBasedOnCookies } from './SetTokenBasedOnCookies';
 import { SetTokenFromSessionId } from './SetTokenFromSessionId';
 
 export function IoRedisTokenRepositoryFactory (
     {
         redis,
+        /** @deprecated secret is no longer require unless still using next-auth */
         secret,
         redisTokenExpireTimeInSeconds,
     }: {
         redis: Redis;
-        secret: string;
+        /** @deprecated secret is no longer require unless still using next-auth */
+        secret?: string;
         redisTokenExpireTimeInSeconds: number;
     },
 ): TokenRepository {
     return {
+        /** @deprecated This was used to support next-auth and is no longer used */
         createSessionIdWithToken: async (
             token: Account,
             user: User,
@@ -47,7 +50,7 @@ export function IoRedisTokenRepositoryFactory (
             secret,
         ),
         setTokenFromSessionId: async (
-            token: NextAuthJwt,
+            token: TokenData,
             sessionId: string,
         ) => SetTokenFromSessionId(
             token,
@@ -56,12 +59,12 @@ export function IoRedisTokenRepositoryFactory (
             redisTokenExpireTimeInSeconds,
         ),
         setTokenBasedOnCookies: async (
-            token: NextAuthJwt,
+            token: TokenData,
         ) => SetTokenBasedOnCookies(
             token,
             redis,
-            secret,
             redisTokenExpireTimeInSeconds,
+            secret,
         ),
     };
 }

@@ -10,6 +10,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.FusionAuthProviderFactory = FusionAuthProviderFactory;
+/**
+ * @deprecated RxAnte Oauth is moving away from next-auth. Use the AuthCodeGrantApi instead
+ */
 function FusionAuthProviderFactory({ wellKnownUrl, clientId, clientSecret, id = 'fusion-auth', name = 'FusionAuth', }) {
     return {
         wellKnown: wellKnownUrl,

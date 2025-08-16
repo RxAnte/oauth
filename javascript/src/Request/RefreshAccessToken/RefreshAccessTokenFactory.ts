@@ -1,10 +1,10 @@
 import { TokenRepository } from '../../TokenRepository/TokenRepository';
 import { RefreshLock } from './Lock/RefreshLock';
 import { RefreshAccessToken } from './RefreshAccessToken';
-import { NextAuthJwt } from '../../NextAuth/NextAuthJwt';
+import { TokenData } from '../../TokenData';
 
 async function requestRefreshedToken (
-    token: NextAuthJwt,
+    token: TokenData,
     wellKnownUrl: string,
     clientId: string,
     clientSecret: string,
@@ -42,7 +42,7 @@ async function requestRefreshedToken (
 }
 
 async function getRefreshedAccessToken (
-    token: NextAuthJwt,
+    token: TokenData,
     wellKnownUrl: string,
     clientId: string,
     clientSecret: string,

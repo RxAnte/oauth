@@ -1,7 +1,10 @@
 import Redis from 'ioredis';
 import { TokenRepository } from '../TokenRepository';
-export declare function IoRedisTokenRepositoryFactory({ redis, secret, redisTokenExpireTimeInSeconds, }: {
+export declare function IoRedisTokenRepositoryFactory({ redis, 
+/** @deprecated secret is no longer require unless still using next-auth */
+secret, redisTokenExpireTimeInSeconds, }: {
     redis: Redis;
-    secret: string;
+    /** @deprecated secret is no longer require unless still using next-auth */
+    secret?: string;
     redisTokenExpireTimeInSeconds: number;
 }): TokenRepository;

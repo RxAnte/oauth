@@ -1,5 +1,8 @@
 import { Provider } from 'next-auth/providers';
 
+/**
+ * @deprecated RxAnte Oauth is moving away from next-auth. Use the AuthCodeGrantApi instead
+ */
 export function Auth0ProviderFactory (
     {
         wellKnownUrl,

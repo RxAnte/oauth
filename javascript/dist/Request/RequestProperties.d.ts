@@ -1,5 +1,5 @@
 import RequestMethods from './RequestMethods';
-import { NextAuthJwt } from '../NextAuth/NextAuthJwt';
+import { TokenData } from '../TokenData';
 export type RequestProperties = {
     uri: string;
     method: RequestMethods;
@@ -17,5 +17,5 @@ export type RequestPropertiesOptional = {
     cacheSeconds?: number | false;
 };
 export type RequestPropertiesWithToken = RequestProperties & {
-    token: NextAuthJwt;
+    token: TokenData;
 };

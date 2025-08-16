@@ -12,7 +12,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.SetTokenBasedOnCookies = SetTokenBasedOnCookies;
 const GetIdFromCookies_1 = require("./GetIdFromCookies");
 const SetTokenFromSessionId_1 = require("./SetTokenFromSessionId");
-function SetTokenBasedOnCookies(token, redis, secret, redisTokenExpireTimeInSeconds) {
+function SetTokenBasedOnCookies(token, redis, redisTokenExpireTimeInSeconds, 
+/** @deprecated secret is no longer require unless still using next-auth */
+secret) {
     return __awaiter(this, void 0, void 0, function* () {
         const sessionId = yield (0, GetIdFromCookies_1.GetIdFromCookies)(secret);
         if (!sessionId) {

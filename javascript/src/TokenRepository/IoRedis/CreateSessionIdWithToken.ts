@@ -2,8 +2,9 @@ import { Account } from 'next-auth';
 import { randomUUID } from 'crypto';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import Redis from 'ioredis';
-import { User } from '../../NextAuth/User';
+import { User } from '../../User';
 
+/** @deprecated This was used to support next-auth and is no longer used */
 export async function CreateSessionIdWithToken (
     token: Account,
     user: User,

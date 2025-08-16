@@ -10,6 +10,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Auth0ProviderFactory = Auth0ProviderFactory;
+/**
+ * @deprecated RxAnte Oauth is moving away from next-auth. Use the AuthCodeGrantApi instead
+ */
 function Auth0ProviderFactory({ wellKnownUrl, clientId, clientSecret, audience, id = 'auth0', name = 'Auth0', }) {
     return {
         wellKnown: wellKnownUrl,

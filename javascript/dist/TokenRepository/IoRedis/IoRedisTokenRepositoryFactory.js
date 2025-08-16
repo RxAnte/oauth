@@ -16,8 +16,11 @@ const FindTokenFromCookies_1 = require("./FindTokenFromCookies");
 const GetTokenFromCookies_1 = require("./GetTokenFromCookies");
 const SetTokenBasedOnCookies_1 = require("./SetTokenBasedOnCookies");
 const SetTokenFromSessionId_1 = require("./SetTokenFromSessionId");
-function IoRedisTokenRepositoryFactory({ redis, secret, redisTokenExpireTimeInSeconds, }) {
+function IoRedisTokenRepositoryFactory({ redis, 
+/** @deprecated secret is no longer require unless still using next-auth */
+secret, redisTokenExpireTimeInSeconds, }) {
     return {
+        /** @deprecated This was used to support next-auth and is no longer used */
         createSessionIdWithToken: (token, user) => __awaiter(this, void 0, void 0, function* () {
             return (0, CreateSessionIdWithToken_1.CreateSessionIdWithToken)(token, user, redis, redisTokenExpireTimeInSeconds);
         }),
@@ -34,7 +37,7 @@ function IoRedisTokenRepositoryFactory({ redis, secret, redisTokenExpireTimeInSe
             return (0, SetTokenFromSessionId_1.SetTokenFromSessionId)(token, sessionId, redis, redisTokenExpireTimeInSeconds);
         }),
         setTokenBasedOnCookies: (token) => __awaiter(this, void 0, void 0, function* () {
-            return (0, SetTokenBasedOnCookies_1.SetTokenBasedOnCookies)(token, redis, secret, redisTokenExpireTimeInSeconds);
+            return (0, SetTokenBasedOnCookies_1.SetTokenBasedOnCookies)(token, redis, redisTokenExpireTimeInSeconds, secret);
         }),
     };
 }

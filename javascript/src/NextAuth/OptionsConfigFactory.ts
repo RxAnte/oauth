@@ -1,9 +1,12 @@
 import { Account, AuthOptions, Session } from 'next-auth';
 import { Provider } from 'next-auth/providers';
 import { JWT } from 'next-auth/jwt';
-import { User } from './User';
+import { User } from '../User';
 import { TokenRepository } from '../TokenRepository/TokenRepository';
 
+/**
+ * @deprecated RxAnte Oauth is moving away from next-auth. Use the AuthCodeGrantApi instead
+ */
 export function OptionsConfigFactory (
     {
         secret,
@@ -63,7 +66,6 @@ export function OptionsConfigFactory (
 
                 return session;
             },
-            signIn: () => {},
         },
     };
 }

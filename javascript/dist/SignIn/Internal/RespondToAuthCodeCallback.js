@@ -73,7 +73,7 @@ function RespondToAuthCodeCallback(tokenRepository_1, request_1, appUrl_1, token
                 },
             });
             const userInfoJson = yield userInfoRequest.json();
-            const jwt = {
+            const token = {
                 accessToken: tokenJson.access_token,
                 accessTokenExpires: (new Date().getTime()) + tokenJson.expires_in,
                 refreshToken: tokenJson.refresh_token,
@@ -85,7 +85,7 @@ function RespondToAuthCodeCallback(tokenRepository_1, request_1, appUrl_1, token
                 },
             };
             const sessionId = (0, crypto_1.randomBytes)(32).toString('hex');
-            yield tokenRepository.setTokenFromSessionId(jwt, sessionId);
+            yield tokenRepository.setTokenFromSessionId(token, sessionId);
             cookieStore.set('oauthSessionId', sessionId, {
                 httpOnly: true,
                 path: '/',

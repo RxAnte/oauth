@@ -5,7 +5,7 @@ import { signIn } from 'next-auth/react';
 import ReactLoading, { LoadingType } from 'react-loading';
 
 /**
- * @deprecated
+ * @deprecated RxAnte Oauth is moving away from next-auth. Use the AuthCodeGrantApi instead
  */
 export default function SignInPage (
     {

@@ -1,3 +1,5 @@
 import Redis from 'ioredis';
-import { NextAuthJwt } from '../../NextAuth/NextAuthJwt';
-export declare function GetTokenFromCookies(redis: Redis, secret: string): Promise<NextAuthJwt>;
+import { TokenData } from '../../TokenData';
+export declare function GetTokenFromCookies(redis: Redis, 
+/** @deprecated secret is no longer require unless still using next-auth */
+secret?: string): Promise<TokenData>;

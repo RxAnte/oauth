@@ -11,6 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.CreateSessionIdWithToken = CreateSessionIdWithToken;
 const crypto_1 = require("crypto");
+/** @deprecated This was used to support next-auth and is no longer used */
 function CreateSessionIdWithToken(token, user, redis, redisTokenExpireTimeInSeconds) {
     return __awaiter(this, void 0, void 0, function* () {
         const id = (0, crypto_1.randomUUID)();

@@ -1,7 +1,7 @@
 import { cookies } from 'next/headers';
 import { randomBytes } from 'crypto';
 import { TokenRepository } from '../../TokenRepository/TokenRepository';
-import { NextAuthJwt } from '../../NextAuth/NextAuthJwt';
+import { TokenData } from '../../TokenData';
 
 type ErrorJson = {
     error?: string;
@@ -123,7 +123,7 @@ export default async function RespondToAuthCodeCallback (
 
         const userInfoJson = await userInfoRequest.json() as UserInfoJson;
 
-        const jwt: NextAuthJwt = {
+        const token: TokenData = {
             accessToken: tokenJson.access_token,
             accessTokenExpires: (new Date().getTime()) + tokenJson.expires_in,
             refreshToken: tokenJson.refresh_token,
@@ -138,7 +138,7 @@ export default async function RespondToAuthCodeCallback (
         const sessionId = randomBytes(32).toString('hex');
 
         await tokenRepository.setTokenFromSessionId(
-            jwt,
+            token,
             sessionId,
         );
 

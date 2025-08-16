@@ -1,9 +1,9 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import Redis from 'ioredis';
-import { NextAuthJwt } from '../../NextAuth/NextAuthJwt';
+import { TokenData } from '../../TokenData';
 
 export async function SetTokenFromSessionId (
-    token: NextAuthJwt,
+    token: TokenData,
     sessionId: string,
     redis: Redis,
     redisTokenExpireTimeInSeconds: number,

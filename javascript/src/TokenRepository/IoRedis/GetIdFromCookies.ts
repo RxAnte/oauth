@@ -1,7 +1,10 @@
 import { cookies } from 'next/headers';
 import { decode } from 'next-auth/jwt';
 
-export async function GetIdFromCookies (secret: string): Promise<string | null> {
+export async function GetIdFromCookies (
+    /** @deprecated secret is no longer require unless still using next-auth */
+    secret?: string,
+): Promise<string | null> {
     // In Next15, `cookies()` must be awaited
     const cookieStore = await cookies();
 
@@ -9,6 +12,10 @@ export async function GetIdFromCookies (secret: string): Promise<string | null> 
 
     if (sessionId) {
         return sessionId.value;
+    }
+
+    if (!secret) {
+        return null;
     }
 
     /**

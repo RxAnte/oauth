@@ -42,7 +42,7 @@ const react_1 = __importStar(require("react"));
 const react_2 = require("next-auth/react");
 const react_loading_1 = __importDefault(require("react-loading"));
 /**
- * @deprecated
+ * @deprecated RxAnte Oauth is moving away from next-auth. Use the AuthCodeGrantApi instead
  */
 function SignInPage({ providerId, CustomLoadingPage, reactLoadingType = 'spin', reactLoadingColor = '#000', }) {
     (0, react_1.useEffect)(() => {

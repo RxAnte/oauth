@@ -10,7 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.FindTokenBySessionId = FindTokenBySessionId;
-const NextAuthJwt_1 = require("../../NextAuth/NextAuthJwt");
+const TokenData_1 = require("../../TokenData");
 function FindTokenBySessionId(sessionId, redis) {
     return __awaiter(this, void 0, void 0, function* () {
         const tokenString = yield redis.get(`user_token:${sessionId}`);
@@ -19,7 +19,7 @@ function FindTokenBySessionId(sessionId, redis) {
         }
         try {
             const token = JSON.parse(tokenString);
-            NextAuthJwt_1.NextAuthJwtSchema.parse(token);
+            TokenData_1.TokenDataSchemaSchema.parse(token);
             return token;
         }
         catch (error) {

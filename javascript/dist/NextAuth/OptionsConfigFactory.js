@@ -10,6 +10,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.OptionsConfigFactory = OptionsConfigFactory;
+/**
+ * @deprecated RxAnte Oauth is moving away from next-auth. Use the AuthCodeGrantApi instead
+ */
 function OptionsConfigFactory({ secret, providers, tokenRepository, debug = false, }) {
     return {
         secret,
@@ -39,7 +42,6 @@ function OptionsConfigFactory({ secret, providers, tokenRepository, debug = fals
                 session.error = token.error;
                 return session;
             }),
-            signIn: () => { },
         },
     };
 }

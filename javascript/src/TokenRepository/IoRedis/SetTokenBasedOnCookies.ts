@@ -1,14 +1,15 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import Redis from 'ioredis';
-import { NextAuthJwt } from '../../NextAuth/NextAuthJwt';
+import { TokenData } from '../../TokenData';
 import { GetIdFromCookies } from './GetIdFromCookies';
 import { SetTokenFromSessionId } from './SetTokenFromSessionId';
 
 export async function SetTokenBasedOnCookies (
-    token: NextAuthJwt,
+    token: TokenData,
     redis: Redis,
-    secret: string,
     redisTokenExpireTimeInSeconds: number,
+    /** @deprecated secret is no longer require unless still using next-auth */
+    secret?: string,
 ): Promise<void> {
     const sessionId = await GetIdFromCookies(secret);
 

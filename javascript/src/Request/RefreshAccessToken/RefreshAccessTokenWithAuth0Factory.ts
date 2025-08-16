@@ -3,6 +3,7 @@ import { RefreshLock } from './Lock/RefreshLock';
 import { RefreshAccessToken } from './RefreshAccessToken';
 import { RefreshAccessTokenFactory } from './RefreshAccessTokenFactory';
 
+/** @deprecated */
 export function RefreshAccessTokenWithAuth0Factory (
     {
         tokenRepository,

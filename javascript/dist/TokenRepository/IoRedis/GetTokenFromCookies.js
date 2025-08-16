@@ -11,7 +11,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.GetTokenFromCookies = GetTokenFromCookies;
 const FindTokenFromCookies_1 = require("./FindTokenFromCookies");
-function GetTokenFromCookies(redis, secret) {
+function GetTokenFromCookies(redis, 
+/** @deprecated secret is no longer require unless still using next-auth */
+secret) {
     return __awaiter(this, void 0, void 0, function* () {
         const token = yield (0, FindTokenFromCookies_1.FindTokenFromCookies)(redis, secret);
         if (!token) {

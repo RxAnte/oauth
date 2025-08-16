@@ -12,7 +12,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.FindTokenFromCookies = FindTokenFromCookies;
 const FindTokenBySessionId_1 = require("./FindTokenBySessionId");
 const GetIdFromCookies_1 = require("./GetIdFromCookies");
-function FindTokenFromCookies(redis, secret) {
+function FindTokenFromCookies(redis, 
+/** @deprecated secret is no longer require unless still using next-auth */
+secret) {
     return __awaiter(this, void 0, void 0, function* () {
         const sessionId = yield (0, GetIdFromCookies_1.GetIdFromCookies)(secret);
         if (!sessionId) {

@@ -2,12 +2,12 @@
 /* eslint-disable react/destructuring-assignment */
 // eslint-disable-next-line import/no-extraneous-dependencies
 import Redis from 'ioredis';
-import { NextAuthJwt, NextAuthJwtSchema } from '../../NextAuth/NextAuthJwt';
+import { TokenData, TokenDataSchemaSchema } from '../../TokenData';
 
 export async function FindTokenBySessionId (
     sessionId: string,
     redis: Redis,
-): Promise<NextAuthJwt | null> {
+): Promise<TokenData | null> {
     const tokenString = await redis.get(`user_token:${sessionId}`);
 
     if (!tokenString) {
@@ -15,9 +15,9 @@ export async function FindTokenBySessionId (
     }
 
     try {
-        const token = JSON.parse(tokenString) as NextAuthJwt;
+        const token = JSON.parse(tokenString) as TokenData;
 
-        NextAuthJwtSchema.parse(token);
+        TokenDataSchemaSchema.parse(token);
 
         return token;
     } catch (error) {
