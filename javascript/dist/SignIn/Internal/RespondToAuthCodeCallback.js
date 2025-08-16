@@ -12,16 +12,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = RespondToAuthCodeCallback;
 const headers_1 = require("next/headers");
 const crypto_1 = require("crypto");
-// TODO: Refactor this to be less procedural
 function RespondToAuthCodeCallback(tokenRepository_1, request_1, appUrl_1, tokenUrl_1, userInfoUrl_1, clientId_1, clientSecret_1) {
     return __awaiter(this, arguments, void 0, function* (tokenRepository, request, appUrl, tokenUrl, userInfoUrl, clientId, clientSecret, callbackUri = '/api/auth/callback') {
         var _a, _b;
+        const appUrlUrl = new URL(appUrl);
         const cookieStore = yield (0, headers_1.cookies)();
-        // TODO: Validate that this URL domain matches the appUrl
         const authReturnCookie = cookieStore.get('authReturn');
-        const authReturn = authReturnCookie
+        let authReturn = authReturnCookie
             ? authReturnCookie.value
             : appUrl;
+        const authReturnUrl = new URL(authReturn);
+        if (authReturnUrl.host !== appUrlUrl.host) {
+            authReturn = appUrl;
+        }
         const localState = cookieStore.get('authorizeState');
         if (!localState) {
             return new Response('Incorrect state', { status: 400 });

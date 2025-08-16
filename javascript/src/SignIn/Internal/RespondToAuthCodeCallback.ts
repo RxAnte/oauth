@@ -23,7 +23,6 @@ type UserInfoJson = {
     family_name: string;
 };
 
-// TODO: Refactor this to be less procedural
 export default async function RespondToAuthCodeCallback (
     tokenRepository: TokenRepository,
     request: Request,
@@ -34,14 +33,21 @@ export default async function RespondToAuthCodeCallback (
     clientSecret: string,
     callbackUri: string = '/api/auth/callback',
 ): Promise<Response> {
+    const appUrlUrl = new URL(appUrl);
+
     const cookieStore = await cookies();
 
-    // TODO: Validate that this URL domain matches the appUrl
     const authReturnCookie = cookieStore.get('authReturn');
 
-    const authReturn = authReturnCookie
+    let authReturn = authReturnCookie
         ? authReturnCookie.value
         : appUrl;
+
+    const authReturnUrl = new URL(authReturn);
+
+    if (authReturnUrl.host !== appUrlUrl.host) {
+        authReturn = appUrl;
+    }
 
     const localState = cookieStore.get('authorizeState');
 
