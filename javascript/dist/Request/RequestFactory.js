@@ -17,7 +17,7 @@ const MakeWithoutToken_1 = require("./Make/MakeWithoutToken");
 const RequestMethods_1 = __importDefault(require("./RequestMethods"));
 const MakeWithToken_1 = require("./Make/MakeWithToken");
 const MakeWithSignInRedirect_1 = require("./Make/MakeWithSignInRedirect");
-function RequestFactory({ appUrl, requestBaseUrl, tokenRepository, nextAuthProviderId, refreshAccessToken, }) {
+function RequestFactory({ appUrl, requestBaseUrl, tokenRepository, nextAuthProviderId, refreshAccessToken, signInUri = '/api/auth/sign-in', }) {
     return {
         makeWithoutToken: (_a) => __awaiter(this, [_a], void 0, function* ({ uri = '', method = RequestMethods_1.default.GET, queryParams = new URLSearchParams(), payload = {}, cacheTags = [], cacheSeconds = 300, }) {
             return (0, MakeWithoutToken_1.MakeWithoutToken)({
@@ -47,7 +47,7 @@ function RequestFactory({ appUrl, requestBaseUrl, tokenRepository, nextAuthProvi
                 payload,
                 cacheTags,
                 cacheSeconds,
-            }, appUrl, requestBaseUrl, nextAuthProviderId, tokenRepository, refreshAccessToken);
+            }, appUrl, requestBaseUrl, nextAuthProviderId, tokenRepository, refreshAccessToken, signInUri);
         }),
     };
 }

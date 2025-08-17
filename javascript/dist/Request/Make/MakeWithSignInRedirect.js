@@ -13,8 +13,8 @@ exports.MakeWithSignInRedirect = MakeWithSignInRedirect;
 const navigation_1 = require("next/navigation");
 const headers_1 = require("next/headers");
 const MakeWithToken_1 = require("./MakeWithToken");
-function MakeWithSignInRedirect(props, appUrl, requestBaseUrl, nextAuthProviderId, tokenRepository, refreshAccessToken) {
-    return __awaiter(this, void 0, void 0, function* () {
+function MakeWithSignInRedirect(props_1, appUrl_1, requestBaseUrl_1, nextAuthProviderId_1, tokenRepository_1, refreshAccessToken_1) {
+    return __awaiter(this, arguments, void 0, function* (props, appUrl, requestBaseUrl, nextAuthProviderId, tokenRepository, refreshAccessToken, signInUri = '/api/auth/sign-in') {
         const response = yield (0, MakeWithToken_1.MakeWithToken)(props, requestBaseUrl, nextAuthProviderId, tokenRepository, refreshAccessToken);
         if (response.status !== 401) {
             return response;
@@ -29,6 +29,6 @@ function MakeWithSignInRedirect(props, appUrl, requestBaseUrl, nextAuthProviderI
         const queryString = new URLSearchParams({
             authReturn: encodeURI(authReturn),
         });
-        (0, navigation_1.redirect)(`${appUrl}/api/auth/sign-in?${queryString.toString()}`);
+        (0, navigation_1.redirect)(`${appUrl}${signInUri}?${queryString.toString()}`);
     });
 }

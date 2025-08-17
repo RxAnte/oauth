@@ -13,6 +13,7 @@ export async function MakeWithSignInRedirect (
     nextAuthProviderId: string,
     tokenRepository: TokenRepository,
     refreshAccessToken: RefreshAccessToken,
+    signInUri: string = '/api/auth/sign-in',
 ): Promise<RequestResponse> {
     const response = await MakeWithToken(
         props,
@@ -42,5 +43,5 @@ export async function MakeWithSignInRedirect (
         authReturn: encodeURI(authReturn),
     });
 
-    redirect(`${appUrl}/api/auth/sign-in?${queryString.toString()}`);
+    redirect(`${appUrl}${signInUri}?${queryString.toString()}`);
 }

@@ -14,12 +14,14 @@ export function RequestFactory (
         tokenRepository,
         nextAuthProviderId,
         refreshAccessToken,
+        signInUri = '/api/auth/sign-in',
     }: {
         appUrl: string;
         requestBaseUrl: string;
         tokenRepository: TokenRepository;
         nextAuthProviderId: string;
         refreshAccessToken: RefreshAccessToken;
+        signInUri?: string;
     },
 ): Request {
     return {
@@ -89,6 +91,7 @@ export function RequestFactory (
             nextAuthProviderId,
             tokenRepository,
             refreshAccessToken,
+            signInUri,
         ),
     };
 }
