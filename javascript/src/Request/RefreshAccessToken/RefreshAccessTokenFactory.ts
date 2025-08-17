@@ -2,6 +2,7 @@ import { TokenRepository } from '../../TokenRepository/TokenRepository';
 import { RefreshLock } from './Lock/RefreshLock';
 import { RefreshAccessToken } from './RefreshAccessToken';
 import { TokenData } from '../../TokenData';
+import { GetWellKnown } from '../../WellKnown';
 
 async function requestRefreshedToken (
     token: TokenData,
@@ -9,25 +10,12 @@ async function requestRefreshedToken (
     clientId: string,
     clientSecret: string,
 ) {
-    const wellKnownConfig = {
-        headers: new Headers({
-            'Content-Type': 'application/json',
-        }),
-    };
-
-    const wellKnownResp = await fetch(
-        wellKnownUrl,
-        wellKnownConfig,
-    );
-
-    const wellKnownJson = await wellKnownResp.json();
-
-    const tokenUrl = wellKnownJson.token_endpoint;
+    const wellKnown = await GetWellKnown(wellKnownUrl);
 
     const { refreshToken } = token;
 
     return fetch(
-        tokenUrl,
+        wellKnown.tokenEndpoint,
         {
             headers: { 'Content-Type': 'application/json' },
             method: 'POST',

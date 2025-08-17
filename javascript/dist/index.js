@@ -3,7 +3,7 @@
  * NextAuth
  */
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AuthCodeGrantApiFactory = exports.NextMiddlewareHeadersFactory = exports.IoRedisRefreshLockFactory = exports.RefreshAccessTokenWithAuth0Factory = exports.RefreshAccessTokenFactory = exports.RequestFactory = exports.TokenRepositoryForIoRedisFactory = exports.NextAuthFusionAuthProviderFactory = exports.NextAuthAuth0ProviderFactory = exports.NextAuthOptionsConfigFactory = void 0;
+exports.WellKnownAuthCodeGrantApiFactory = exports.AuthCodeGrantApiFactory = exports.NextMiddlewareHeadersFactory = exports.IoRedisRefreshLockFactory = exports.RefreshAccessTokenWithAuth0Factory = exports.RefreshAccessTokenFactory = exports.RequestFactory = exports.TokenRepositoryForIoRedisFactory = exports.NextAuthFusionAuthProviderFactory = exports.NextAuthAuth0ProviderFactory = exports.NextAuthOptionsConfigFactory = void 0;
 /**
  * @deprecated RxAnte Oauth is moving away from next-auth. Use the AuthCodeGrantApi instead
  */
@@ -40,3 +40,5 @@ var NextMiddlewareHeadersFactory_1 = require("./NextMiddlewareHeadersFactory");
 Object.defineProperty(exports, "NextMiddlewareHeadersFactory", { enumerable: true, get: function () { return NextMiddlewareHeadersFactory_1.NextMiddlewareHeadersFactory; } });
 var AuthCodeGrantApiFactory_1 = require("./SignIn/AuthCodeGrantApiFactory");
 Object.defineProperty(exports, "AuthCodeGrantApiFactory", { enumerable: true, get: function () { return AuthCodeGrantApiFactory_1.AuthCodeGrantApiFactory; } });
+var WellKnownAuthCodeGrantApiFactory_1 = require("./SignIn/WellKnownAuthCodeGrantApiFactory");
+Object.defineProperty(exports, "WellKnownAuthCodeGrantApiFactory", { enumerable: true, get: function () { return WellKnownAuthCodeGrantApiFactory_1.WellKnownAuthCodeGrantApiFactory; } });

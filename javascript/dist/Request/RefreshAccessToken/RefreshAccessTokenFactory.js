@@ -10,18 +10,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RefreshAccessTokenFactory = RefreshAccessTokenFactory;
+const WellKnown_1 = require("../../WellKnown");
 function requestRefreshedToken(token, wellKnownUrl, clientId, clientSecret) {
     return __awaiter(this, void 0, void 0, function* () {
-        const wellKnownConfig = {
-            headers: new Headers({
-                'Content-Type': 'application/json',
-            }),
-        };
-        const wellKnownResp = yield fetch(wellKnownUrl, wellKnownConfig);
-        const wellKnownJson = yield wellKnownResp.json();
-        const tokenUrl = wellKnownJson.token_endpoint;
+        const wellKnown = yield (0, WellKnown_1.GetWellKnown)(wellKnownUrl);
         const { refreshToken } = token;
-        return fetch(tokenUrl, {
+        return fetch(wellKnown.tokenEndpoint, {
             headers: { 'Content-Type': 'application/json' },
             method: 'POST',
             body: JSON.stringify({

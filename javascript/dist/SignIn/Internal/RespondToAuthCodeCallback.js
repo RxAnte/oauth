@@ -78,10 +78,10 @@ function RespondToAuthCodeCallback(tokenRepository_1, request_1, appUrl_1, token
                 accessTokenExpires: (new Date().getTime()) + tokenJson.expires_in,
                 refreshToken: tokenJson.refresh_token,
                 user: {
-                    id: userInfoJson.sub,
-                    sub: userInfoJson.sub,
-                    email: userInfoJson.email,
-                    name: userInfoJson.name,
+                    id: userInfoJson.sub || '',
+                    sub: userInfoJson.sub || '',
+                    email: userInfoJson.email || '',
+                    name: userInfoJson.name || '',
                 },
             };
             const sessionId = (0, crypto_1.randomBytes)(32).toString('hex');

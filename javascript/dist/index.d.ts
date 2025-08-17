@@ -40,3 +40,4 @@ export { NextMiddlewareHeadersFactory } from './NextMiddlewareHeadersFactory';
  */
 export type { AuthCodeGrantApi } from './SignIn/AuthCodeGrantApi';
 export { AuthCodeGrantApiFactory } from './SignIn/AuthCodeGrantApiFactory';
+export { WellKnownAuthCodeGrantApiFactory } from './SignIn/WellKnownAuthCodeGrantApiFactory';

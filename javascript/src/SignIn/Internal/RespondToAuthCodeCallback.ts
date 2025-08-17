@@ -128,10 +128,10 @@ export default async function RespondToAuthCodeCallback (
             accessTokenExpires: (new Date().getTime()) + tokenJson.expires_in,
             refreshToken: tokenJson.refresh_token,
             user: {
-                id: userInfoJson.sub,
-                sub: userInfoJson.sub,
-                email: userInfoJson.email,
-                name: userInfoJson.name,
+                id: userInfoJson.sub || '',
+                sub: userInfoJson.sub || '',
+                email: userInfoJson.email || '',
+                name: userInfoJson.name || '',
             },
         };
 
