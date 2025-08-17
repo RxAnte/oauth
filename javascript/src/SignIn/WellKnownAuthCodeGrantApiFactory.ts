@@ -1,3 +1,5 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
+import Redis from 'ioredis';
 import { AuthCodeGrantApi } from './AuthCodeGrantApi';
 import { TokenRepository } from '../TokenRepository/TokenRepository';
 import { GetWellKnown } from '../WellKnown';
@@ -11,6 +13,9 @@ export async function WellKnownAuthCodeGrantApiFactory (
         clientId,
         clientSecret,
         callbackUri = '/api/auth/callback',
+        redis,
+        wellKnownCacheKey = 'rxante_oauth_well_known',
+        wellKnownCacheExpiresInSeconds = 86400, // cache for 1 day by default
     }: {
         tokenRepository: TokenRepository;
         appUrl: string;
@@ -18,9 +23,17 @@ export async function WellKnownAuthCodeGrantApiFactory (
         clientId: string;
         clientSecret: string;
         callbackUri?: string;
+        redis?: Redis;
+        wellKnownCacheKey?: string;
+        wellKnownCacheExpiresInSeconds?: number;
     },
 ): Promise<AuthCodeGrantApi> {
-    const wellKnown = await GetWellKnown(wellKnownUrl);
+    const wellKnown = await GetWellKnown(
+        wellKnownUrl,
+        redis,
+        wellKnownCacheKey,
+        wellKnownCacheExpiresInSeconds,
+    );
 
     return AuthCodeGrantApiFactory({
         tokenRepository,

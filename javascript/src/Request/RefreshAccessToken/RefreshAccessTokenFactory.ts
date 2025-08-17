@@ -1,3 +1,5 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
+import Redis from 'ioredis';
 import { TokenRepository } from '../../TokenRepository/TokenRepository';
 import { RefreshLock } from './Lock/RefreshLock';
 import { RefreshAccessToken } from './RefreshAccessToken';
@@ -9,8 +11,16 @@ async function requestRefreshedToken (
     wellKnownUrl: string,
     clientId: string,
     clientSecret: string,
+    redis?: Redis,
+    wellKnownCacheKey: string = 'rxante_oauth_well_known',
+    wellKnownCacheExpiresInSeconds: number = 86400, // cache for 1 day by default
 ) {
-    const wellKnown = await GetWellKnown(wellKnownUrl);
+    const wellKnown = await GetWellKnown(
+        wellKnownUrl,
+        redis,
+        wellKnownCacheKey,
+        wellKnownCacheExpiresInSeconds,
+    );
 
     const { refreshToken } = token;
 
@@ -34,6 +44,9 @@ async function getRefreshedAccessToken (
     wellKnownUrl: string,
     clientId: string,
     clientSecret: string,
+    redis?: Redis,
+    wellKnownCacheKey: string = 'rxante_oauth_well_known',
+    wellKnownCacheExpiresInSeconds: number = 86400, // cache for 1 day by default
 ) {
     try {
         const refreshResponse = await requestRefreshedToken(
@@ -41,6 +54,9 @@ async function getRefreshedAccessToken (
             wellKnownUrl,
             clientId,
             clientSecret,
+            redis,
+            wellKnownCacheKey,
+            wellKnownCacheExpiresInSeconds,
         );
 
         if (!refreshResponse.ok) {
@@ -67,12 +83,18 @@ export function RefreshAccessTokenFactory (
         wellKnownUrl,
         clientId,
         clientSecret,
+        redis,
+        wellKnownCacheKey = 'rxante_oauth_well_known',
+        wellKnownCacheExpiresInSeconds = 86400, // cache for 1 day by default
     }: {
         tokenRepository: TokenRepository;
         refreshLock: RefreshLock;
         wellKnownUrl: string;
         clientId: string;
         clientSecret: string;
+        redis?: Redis;
+        wellKnownCacheKey?: string;
+        wellKnownCacheExpiresInSeconds?: number;
     },
 ): RefreshAccessToken {
     return async () => {
@@ -99,6 +121,9 @@ export function RefreshAccessTokenFactory (
             wellKnownUrl,
             clientId,
             clientSecret,
+            redis,
+            wellKnownCacheKey,
+            wellKnownCacheExpiresInSeconds,
         );
 
         // If there is no token, the refresh was unsuccessful, and so we won't save

@@ -13,8 +13,9 @@ exports.WellKnownAuthCodeGrantApiFactory = WellKnownAuthCodeGrantApiFactory;
 const WellKnown_1 = require("../WellKnown");
 const AuthCodeGrantApiFactory_1 = require("./AuthCodeGrantApiFactory");
 function WellKnownAuthCodeGrantApiFactory(_a) {
-    return __awaiter(this, arguments, void 0, function* ({ tokenRepository, appUrl, wellKnownUrl, clientId, clientSecret, callbackUri = '/api/auth/callback', }) {
-        const wellKnown = yield (0, WellKnown_1.GetWellKnown)(wellKnownUrl);
+    return __awaiter(this, arguments, void 0, function* ({ tokenRepository, appUrl, wellKnownUrl, clientId, clientSecret, callbackUri = '/api/auth/callback', redis, wellKnownCacheKey = 'rxante_oauth_well_known', wellKnownCacheExpiresInSeconds = 86400, // cache for 1 day by default
+     }) {
+        const wellKnown = yield (0, WellKnown_1.GetWellKnown)(wellKnownUrl, redis, wellKnownCacheKey, wellKnownCacheExpiresInSeconds);
         return (0, AuthCodeGrantApiFactory_1.AuthCodeGrantApiFactory)({
             tokenRepository,
             appUrl,

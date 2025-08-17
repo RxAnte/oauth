@@ -16,18 +16,24 @@ const WellKnownSchema = zod_1.z.object({
     token_endpoint: zod_1.z.string(),
     userinfo_endpoint: zod_1.z.string(),
 });
-function GetWellKnown(wellKnownUrl) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const response = yield fetch(wellKnownUrl, {
-            cache: 'force-cache',
-            // @ts-expect-error TS2769
-            cacheSeconds: 86400, // cache for 1 day
-        });
+function GetWellKnown(wellKnownUrl_1, redis_1) {
+    return __awaiter(this, arguments, void 0, function* (wellKnownUrl, redis, wellKnownCacheKey = 'rxante_oauth_well_known', wellKnownCacheExpiresInSeconds = 86400) {
+        if (redis) {
+            const redisStore = yield redis.get(wellKnownCacheKey);
+            if (redisStore) {
+                return JSON.parse(redisStore);
+            }
+        }
+        const response = yield fetch(wellKnownUrl);
         const wellKnownJson = WellKnownSchema.parse(yield response.json());
-        return {
+        const wellKnown = {
             authorizationEndpoint: wellKnownJson.authorization_endpoint,
             tokenEndpoint: wellKnownJson.token_endpoint,
             userinfoEndpoint: wellKnownJson.userinfo_endpoint,
         };
+        if (redis) {
+            yield redis.set(wellKnownCacheKey, JSON.stringify(wellKnown), 'EX', wellKnownCacheExpiresInSeconds);
+        }
+        return wellKnown;
     });
 }

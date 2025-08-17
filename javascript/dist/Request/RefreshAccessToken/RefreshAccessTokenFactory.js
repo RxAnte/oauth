@@ -11,9 +11,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RefreshAccessTokenFactory = RefreshAccessTokenFactory;
 const WellKnown_1 = require("../../WellKnown");
-function requestRefreshedToken(token, wellKnownUrl, clientId, clientSecret) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const wellKnown = yield (0, WellKnown_1.GetWellKnown)(wellKnownUrl);
+function requestRefreshedToken(token_1, wellKnownUrl_1, clientId_1, clientSecret_1, redis_1) {
+    return __awaiter(this, arguments, void 0, function* (token, wellKnownUrl, clientId, clientSecret, redis, wellKnownCacheKey = 'rxante_oauth_well_known', wellKnownCacheExpiresInSeconds = 86400) {
+        const wellKnown = yield (0, WellKnown_1.GetWellKnown)(wellKnownUrl, redis, wellKnownCacheKey, wellKnownCacheExpiresInSeconds);
         const { refreshToken } = token;
         return fetch(wellKnown.tokenEndpoint, {
             headers: { 'Content-Type': 'application/json' },
@@ -27,10 +27,10 @@ function requestRefreshedToken(token, wellKnownUrl, clientId, clientSecret) {
         });
     });
 }
-function getRefreshedAccessToken(token, wellKnownUrl, clientId, clientSecret) {
-    return __awaiter(this, void 0, void 0, function* () {
+function getRefreshedAccessToken(token_1, wellKnownUrl_1, clientId_1, clientSecret_1, redis_1) {
+    return __awaiter(this, arguments, void 0, function* (token, wellKnownUrl, clientId, clientSecret, redis, wellKnownCacheKey = 'rxante_oauth_well_known', wellKnownCacheExpiresInSeconds = 86400) {
         try {
-            const refreshResponse = yield requestRefreshedToken(token, wellKnownUrl, clientId, clientSecret);
+            const refreshResponse = yield requestRefreshedToken(token, wellKnownUrl, clientId, clientSecret, redis, wellKnownCacheKey, wellKnownCacheExpiresInSeconds);
             if (!refreshResponse.ok) {
                 return null;
             }
@@ -42,7 +42,8 @@ function getRefreshedAccessToken(token, wellKnownUrl, clientId, clientSecret) {
         }
     });
 }
-function RefreshAccessTokenFactory({ tokenRepository, refreshLock, wellKnownUrl, clientId, clientSecret, }) {
+function RefreshAccessTokenFactory({ tokenRepository, refreshLock, wellKnownUrl, clientId, clientSecret, redis, wellKnownCacheKey = 'rxante_oauth_well_known', wellKnownCacheExpiresInSeconds = 86400, // cache for 1 day by default
+ }) {
     return () => __awaiter(this, void 0, void 0, function* () {
         const token = yield tokenRepository.getTokenFromCookies();
         // To ensure that only one request is refreshing the token we await a lock
@@ -57,7 +58,7 @@ function RefreshAccessTokenFactory({ tokenRepository, refreshLock, wellKnownUrl,
             yield refreshLock.release(token.accessToken);
             return;
         }
-        const newToken = yield getRefreshedAccessToken(token, wellKnownUrl, clientId, clientSecret);
+        const newToken = yield getRefreshedAccessToken(token, wellKnownUrl, clientId, clientSecret, redis, wellKnownCacheKey, wellKnownCacheExpiresInSeconds);
         // If there is no token, the refresh was unsuccessful, and so we won't save
         if (!newToken) {
             yield refreshLock.release(token.accessToken);
