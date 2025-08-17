@@ -9,6 +9,7 @@ use RxAnte\OAuth\TokenRepository\EmptyAccessToken;
 use RxAnte\OAuth\TokenRepository\TokenRepository;
 use RxAnte\OAuth\UserInfo\OauthUserInfo;
 
+/** @deprecated We're moving to the more generic handler in the RxAnte namespace */
 readonly class GetUserinfoFromSessionId
 {
     public function __construct(

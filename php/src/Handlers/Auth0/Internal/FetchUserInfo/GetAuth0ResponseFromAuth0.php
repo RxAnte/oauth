@@ -9,6 +9,7 @@ use Hyperf\Guzzle\ClientFactory;
 use RxAnte\OAuth\Handlers\Auth0\Auth0Config;
 use RxAnte\OAuth\UserInfo\Jwt;
 
+/** @deprecated We're moving to the more generic handler in the RxAnte namespace */
 readonly class GetAuth0ResponseFromAuth0 implements GetAuth0Response
 {
     public function __construct(

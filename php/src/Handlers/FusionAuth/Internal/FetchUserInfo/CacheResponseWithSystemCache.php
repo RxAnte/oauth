@@ -8,6 +8,7 @@ use Psr\Cache\CacheItemPoolInterface;
 use Psr\Clock\ClockInterface;
 use RxAnte\OAuth\UserInfo\Jwt;
 
+/** @deprecated We're moving to the more generic handler in the RxAnte namespace */
 readonly class CacheResponseWithSystemCache implements CacheResponse
 {
     public function __construct(

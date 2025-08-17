@@ -11,6 +11,7 @@ use Throwable;
 
 use function assert;
 
+/** @deprecated We're moving to the more generic handler in the RxAnte namespace */
 readonly class GetAuth0ResponseFromSystemCache implements GetAuth0Response
 {
     public function __construct(

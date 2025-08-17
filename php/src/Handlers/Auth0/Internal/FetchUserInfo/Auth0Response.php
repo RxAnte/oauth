@@ -6,6 +6,7 @@ namespace RxAnte\OAuth\Handlers\Auth0\Internal\FetchUserInfo;
 
 use function mb_strtolower;
 
+/** @deprecated We're moving to the more generic handler in the RxAnte namespace */
 readonly class Auth0Response
 {
     public function __construct(

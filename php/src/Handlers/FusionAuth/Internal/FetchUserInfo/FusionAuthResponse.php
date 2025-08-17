@@ -6,6 +6,7 @@ namespace RxAnte\OAuth\Handlers\FusionAuth\Internal\FetchUserInfo;
 
 use function mb_strtolower;
 
+/** @deprecated We're moving to the more generic handler in the RxAnte namespace */
 readonly class FusionAuthResponse
 {
     public function __construct(

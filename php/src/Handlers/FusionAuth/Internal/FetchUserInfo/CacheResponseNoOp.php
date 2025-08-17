@@ -6,6 +6,7 @@ namespace RxAnte\OAuth\Handlers\FusionAuth\Internal\FetchUserInfo;
 
 use RxAnte\OAuth\UserInfo\Jwt;
 
+/** @deprecated We're moving to the more generic handler in the RxAnte namespace */
 readonly class CacheResponseNoOp implements CacheResponse
 {
     public function cache(Jwt $jwt, FusionAuthResponse $response): void

@@ -8,6 +8,7 @@ use function implode;
 use function ltrim;
 use function rtrim;
 
+/** @deprecated We're moving to the more generic handler in the RxAnte namespace */
 readonly class FusionAuthLeagueOauthProviderConfig
 {
     /** @param string[] $scopes */

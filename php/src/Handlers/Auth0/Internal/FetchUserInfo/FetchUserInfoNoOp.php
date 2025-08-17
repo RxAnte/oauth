@@ -7,6 +7,7 @@ namespace RxAnte\OAuth\Handlers\Auth0\Internal\FetchUserInfo;
 use RxAnte\OAuth\UserInfo\Jwt;
 use RxAnte\OAuth\UserInfo\OauthUserInfo;
 
+/** @deprecated We're moving to the more generic handler in the RxAnte namespace */
 readonly class FetchUserInfoNoOp implements FetchUserInfo
 {
     public function fetch(Jwt $jwt): OauthUserInfo

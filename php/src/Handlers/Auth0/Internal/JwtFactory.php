@@ -17,6 +17,7 @@ use function is_string;
 use function json_decode;
 use function str_replace;
 
+/** @deprecated We're moving to the more generic handler in the RxAnte namespace */
 readonly class JwtFactory
 {
     public function __construct(private Auth0Config $config)

@@ -6,6 +6,7 @@ namespace RxAnte\OAuth\Handlers\Auth0\Internal\FetchUserInfo;
 
 use RxAnte\OAuth\UserInfo\Jwt;
 
+/** @deprecated We're moving to the more generic handler in the RxAnte namespace */
 interface CacheResponse
 {
     public function cache(Jwt $jwt, Auth0Response $response): void;

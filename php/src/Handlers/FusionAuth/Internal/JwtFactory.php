@@ -14,6 +14,7 @@ use function implode;
 use function is_array;
 use function is_string;
 
+/** @deprecated We're moving to the more generic handler in the RxAnte namespace */
 readonly class JwtFactory
 {
     public function __construct(private FusionAuthConfig $config)

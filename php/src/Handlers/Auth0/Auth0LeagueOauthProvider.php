@@ -6,6 +6,7 @@ namespace RxAnte\OAuth\Handlers\Auth0;
 
 use League\OAuth2\Client\Provider\GenericProvider;
 
+/** @deprecated We're moving to the more generic handler in the RxAnte namespace */
 class Auth0LeagueOauthProvider extends GenericProvider
 {
     protected string $audience;

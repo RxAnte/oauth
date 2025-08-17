@@ -11,6 +11,7 @@ use function is_array;
 use function json_decode;
 use function trim;
 
+/** @deprecated We're moving to the more generic handler in the RxAnte namespace */
 readonly class FetchUserInfoFromFusionAuth implements FetchUserInfo
 {
     public function __construct(

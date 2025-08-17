@@ -13,6 +13,7 @@ use OpenSSLCertificate;
 use function explode;
 use function in_array;
 
+/** @deprecated We're moving to the more generic handler in the RxAnte namespace */
 readonly class Auth0Config
 {
     public DateInterval $wellKnownCacheExpiresAfter;

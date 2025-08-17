@@ -17,6 +17,7 @@ use RxAnte\OAuth\UserInfo\OauthUserInfoRepositoryInterface;
 use function assert;
 use function is_string;
 
+/** @deprecated We're moving to the more generic handler in the RxAnte namespace */
 readonly class Auth0UserInfoRepository implements OauthUserInfoRepositoryInterface
 {
     public function __construct(

@@ -11,6 +11,7 @@ use League\OAuth2\Client\Provider\GenericProvider;
 use RxAnte\OAuth\Callback\GetCallbackAction;
 use RxAnte\OAuth\Routes\RoutesFactory;
 
+/** @deprecated We're moving to the more generic handler in the RxAnte namespace */
 readonly class FusionAuthLeagueOauthProviderFactory
 {
     public function __construct(

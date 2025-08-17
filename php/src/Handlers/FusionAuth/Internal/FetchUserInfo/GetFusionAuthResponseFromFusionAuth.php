@@ -10,6 +10,7 @@ use RxAnte\OAuth\Handlers\FusionAuth\FusionAuthConfig;
 use RxAnte\OAuth\Handlers\FusionAuth\WellKnownRepository;
 use RxAnte\OAuth\UserInfo\Jwt;
 
+/** @deprecated We're moving to the more generic handler in the RxAnte namespace */
 readonly class GetFusionAuthResponseFromFusionAuth implements GetFusionAuthResponse
 {
     public function __construct(

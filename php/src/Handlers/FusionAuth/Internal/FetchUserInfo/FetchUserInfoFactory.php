@@ -7,6 +7,7 @@ namespace RxAnte\OAuth\Handlers\FusionAuth\Internal\FetchUserInfo;
 use RxAnte\OAuth\Handlers\FusionAuth\FusionAuthConfig;
 use RxAnte\OAuth\UserInfo\Jwt;
 
+/** @deprecated We're moving to the more generic handler in the RxAnte namespace */
 readonly class FetchUserInfoFactory
 {
     public function __construct(

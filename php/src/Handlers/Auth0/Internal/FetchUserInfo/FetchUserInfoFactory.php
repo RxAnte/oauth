@@ -7,6 +7,7 @@ namespace RxAnte\OAuth\Handlers\Auth0\Internal\FetchUserInfo;
 use RxAnte\OAuth\Handlers\Auth0\Auth0Config;
 use RxAnte\OAuth\UserInfo\Jwt;
 
+/** @deprecated We're moving to the more generic handler in the RxAnte namespace */
 readonly class FetchUserInfoFactory
 {
     public function __construct(

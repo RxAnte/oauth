@@ -14,6 +14,7 @@ use function assert;
 use function json_decode;
 use function json_validate;
 
+/** @deprecated We're moving to the more generic handler in the RxAnte namespace */
 readonly class WellKnownRepository
 {
     public function __construct(

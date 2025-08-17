@@ -17,6 +17,7 @@ use Throwable;
 
 use function json_decode;
 
+/** @deprecated We're moving to the more generic handler in the RxAnte namespace */
 readonly class GetRefreshedAccessTokenFromFusionAuth implements GetRefreshedAccessToken
 {
     public function __construct(

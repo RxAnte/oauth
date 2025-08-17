@@ -7,6 +7,7 @@ namespace RxAnte\OAuth\Handlers\FusionAuth\Internal\FetchUserInfo;
 use Psr\Cache\CacheItemPoolInterface;
 use RxAnte\OAuth\UserInfo\Jwt;
 
+/** @deprecated We're moving to the more generic handler in the RxAnte namespace */
 readonly class GetFusionAuthResponseFactory
 {
     public function __construct(

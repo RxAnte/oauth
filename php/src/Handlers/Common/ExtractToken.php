@@ -10,6 +10,7 @@ use function array_change_key_case;
 
 use const CASE_LOWER;
 
+/** @deprecated We're moving to the more generic andler in the RxAnte namespace and this class is not needed there */
 readonly class ExtractToken
 {
     public function fromAuthHeader(ServerRequestInterface $request): string

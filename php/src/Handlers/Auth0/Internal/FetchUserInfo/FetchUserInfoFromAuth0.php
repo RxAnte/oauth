@@ -10,6 +10,7 @@ use RxAnte\OAuth\UserInfo\OauthUserInfo;
 use function is_array;
 use function json_decode;
 
+/** @deprecated We're moving to the more generic handler in the RxAnte namespace */
 readonly class FetchUserInfoFromAuth0 implements FetchUserInfo
 {
     public function __construct(
