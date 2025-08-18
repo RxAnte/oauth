@@ -10,7 +10,8 @@ export async function MakeWithSignInRedirect (
     props: RequestProperties,
     appUrl: string,
     requestBaseUrl: string,
-    nextAuthProviderId: string,
+    /** @deprecated RxAnte Oauth is moving away from next-auth. */
+    nextAuthProviderId: string | undefined,
     tokenRepository: TokenRepository,
     refreshAccessToken: RefreshAccessToken,
     signInUri: string = '/api/auth/sign-in',

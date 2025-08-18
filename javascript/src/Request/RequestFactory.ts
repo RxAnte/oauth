@@ -19,7 +19,8 @@ export function RequestFactory (
         appUrl: string;
         requestBaseUrl: string;
         tokenRepository: TokenRepository;
-        nextAuthProviderId: string;
+        /** @deprecated RxAnte Oauth is moving away from next-auth. */
+        nextAuthProviderId?: string;
         refreshAccessToken: RefreshAccessToken;
         signInUri?: string;
     },

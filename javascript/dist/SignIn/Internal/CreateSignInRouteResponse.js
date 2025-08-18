@@ -13,7 +13,7 @@ exports.default = CreateSignInRouteResponse;
 const headers_1 = require("next/headers");
 const crypto_1 = require("crypto");
 function CreateSignInRouteResponse(request_1, appUrl_1, authorizeUrl_1, clientId_1) {
-    return __awaiter(this, arguments, void 0, function* (request, appUrl, authorizeUrl, clientId, callbackUri = '/api/auth/callback') {
+    return __awaiter(this, arguments, void 0, function* (request, appUrl, authorizeUrl, clientId, callbackUri = '/api/auth/callback', audience = undefined) {
         const appUrlUrl = new URL(appUrl);
         const { searchParams } = new URL(request.url);
         let authReturn = searchParams.get('authReturn') || appUrl;
@@ -45,6 +45,9 @@ function CreateSignInRouteResponse(request_1, appUrl_1, authorizeUrl_1, clientId
         authorizeUri.searchParams.append('redirect_uri', callbackUrl);
         authorizeUri.searchParams.append('scope', 'openid profile email offline_access');
         authorizeUri.searchParams.append('state', authorizeState);
+        if (audience) {
+            authorizeUri.searchParams.append('audience', audience);
+        }
         return Response.redirect(authorizeUri.toString(), 302);
     });
 }

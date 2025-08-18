@@ -16,25 +16,29 @@ exports.MakeWithToken = MakeWithToken;
 const RequestAuthenticationError_1 = __importDefault(require("../RequestAuthenticationError"));
 const AccessDeniedResponse_1 = require("./AccessDeniedResponse");
 const ParseResponse_1 = require("./ParseResponse");
-function sendRequest(_a, requestBaseUrl_1, nextAuthProviderId_1) {
-    return __awaiter(this, arguments, void 0, function* ({ uri, method, queryParams, payload, cacheTags, cacheSeconds, token, }, requestBaseUrl, nextAuthProviderId) {
+function sendRequest(_a, requestBaseUrl_1) {
+    return __awaiter(this, arguments, void 0, function* ({ uri, method, queryParams, payload, cacheTags, cacheSeconds, token, }, requestBaseUrl, 
+    /** @deprecated RxAnte Oauth is moving away from next-auth. */
+    nextAuthProviderId = undefined) {
         const { accessToken } = token;
         if (accessToken === null) {
             throw new RequestAuthenticationError_1.default('Could not get access token');
         }
         const url = new URL(`${requestBaseUrl}${uri}?${queryParams.toString()}`);
-        const headers = new Headers({
+        const headers = {
             Authorization: `Bearer ${accessToken}`,
             RequestType: 'api',
             Accept: 'application/json',
             'Content-Type': 'application/json',
-            Provider: nextAuthProviderId,
-        });
+        };
+        if (nextAuthProviderId) {
+            headers.Provider = nextAuthProviderId;
+        }
         const body = JSON.stringify(payload);
         const options = {
             redirect: 'manual',
             method,
-            headers,
+            headers: new Headers(headers),
             next: {
                 tags: cacheTags,
                 revalidate: cacheSeconds,
@@ -46,7 +50,9 @@ function sendRequest(_a, requestBaseUrl_1, nextAuthProviderId_1) {
         return fetch(url, options);
     });
 }
-function MakeWithToken(props, requestBaseUrl, nextAuthProviderId, tokenRepository, refreshAccessToken) {
+function MakeWithToken(props, requestBaseUrl, 
+/** @deprecated RxAnte Oauth is moving away from next-auth. */
+nextAuthProviderId, tokenRepository, refreshAccessToken) {
     return __awaiter(this, void 0, void 0, function* () {
         // First check that a token exists, if not, we should bail out
         const token = yield tokenRepository.findTokenFromCookies();

@@ -7,6 +7,7 @@ export default async function CreateSignInRouteResponse (
     authorizeUrl: string,
     clientId: string,
     callbackUri: string = '/api/auth/callback',
+    audience: string | undefined = undefined,
 ): Promise<Response> {
     const appUrlUrl = new URL(appUrl);
 
@@ -58,6 +59,10 @@ export default async function CreateSignInRouteResponse (
     );
 
     authorizeUri.searchParams.append('state', authorizeState);
+
+    if (audience) {
+        authorizeUri.searchParams.append('audience', audience);
+    }
 
     return Response.redirect(authorizeUri.toString(), 302);
 }

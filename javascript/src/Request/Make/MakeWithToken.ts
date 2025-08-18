@@ -17,7 +17,8 @@ async function sendRequest (
         token,
     }: RequestPropertiesWithToken,
     requestBaseUrl: string,
-    nextAuthProviderId: string,
+    /** @deprecated RxAnte Oauth is moving away from next-auth. */
+    nextAuthProviderId: string | undefined = undefined,
 ) {
     const { accessToken } = token;
 
@@ -29,20 +30,23 @@ async function sendRequest (
 
     const url = new URL(`${requestBaseUrl}${uri}?${queryParams.toString()}`);
 
-    const headers = new Headers({
+    const headers: HeadersInit = {
         Authorization: `Bearer ${accessToken}`,
         RequestType: 'api',
         Accept: 'application/json',
         'Content-Type': 'application/json',
-        Provider: nextAuthProviderId,
-    });
+    };
+
+    if (nextAuthProviderId) {
+        headers.Provider = nextAuthProviderId;
+    }
 
     const body = JSON.stringify(payload);
 
     const options = {
         redirect: 'manual',
         method,
-        headers,
+        headers: new Headers(headers),
         next: {
             tags: cacheTags,
             revalidate: cacheSeconds,
@@ -59,7 +63,8 @@ async function sendRequest (
 export async function MakeWithToken (
     props: RequestProperties,
     requestBaseUrl: string,
-    nextAuthProviderId: string,
+    /** @deprecated RxAnte Oauth is moving away from next-auth. */
+    nextAuthProviderId: string | undefined,
     tokenRepository: TokenRepository,
     refreshAccessToken: RefreshAccessToken,
 ): Promise<RequestResponse> {

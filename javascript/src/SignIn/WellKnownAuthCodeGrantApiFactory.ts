@@ -16,6 +16,7 @@ export async function WellKnownAuthCodeGrantApiFactory (
         redis,
         wellKnownCacheKey = 'rxante_oauth_well_known',
         wellKnownCacheExpiresInSeconds = 86400, // cache for 1 day by default
+        audience,
     }: {
         tokenRepository: TokenRepository;
         appUrl: string;
@@ -26,6 +27,7 @@ export async function WellKnownAuthCodeGrantApiFactory (
         redis?: Redis;
         wellKnownCacheKey?: string;
         wellKnownCacheExpiresInSeconds?: number;
+        audience?: string;
     },
 ): Promise<AuthCodeGrantApi> {
     const wellKnown = await GetWellKnown(
@@ -44,5 +46,6 @@ export async function WellKnownAuthCodeGrantApiFactory (
         clientId,
         clientSecret,
         callbackUri,
+        audience,
     });
 }

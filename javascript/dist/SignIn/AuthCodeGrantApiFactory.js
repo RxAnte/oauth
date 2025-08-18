@@ -15,10 +15,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthCodeGrantApiFactory = AuthCodeGrantApiFactory;
 const CreateSignInRouteResponse_1 = __importDefault(require("./Internal/CreateSignInRouteResponse"));
 const RespondToAuthCodeCallback_1 = __importDefault(require("./Internal/RespondToAuthCodeCallback"));
-function AuthCodeGrantApiFactory({ tokenRepository, appUrl, authorizeUrl, tokenUrl, userInfoUrl, clientId, clientSecret, callbackUri = '/api/auth/callback', }) {
+function AuthCodeGrantApiFactory({ tokenRepository, appUrl, authorizeUrl, tokenUrl, userInfoUrl, clientId, clientSecret, callbackUri = '/api/auth/callback', audience, }) {
     return {
         createSignInRouteResponse: (request) => __awaiter(this, void 0, void 0, function* () {
-            return (0, CreateSignInRouteResponse_1.default)(request, appUrl, authorizeUrl, clientId, callbackUri);
+            return (0, CreateSignInRouteResponse_1.default)(request, appUrl, authorizeUrl, clientId, callbackUri, audience);
         }),
         respondToAuthCodeCallback: (request) => __awaiter(this, void 0, void 0, function* () {
             return (0, RespondToAuthCodeCallback_1.default)(tokenRepository, request, appUrl, tokenUrl, userInfoUrl, clientId, clientSecret, callbackUri);

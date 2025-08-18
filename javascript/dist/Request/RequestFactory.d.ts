@@ -5,7 +5,8 @@ export declare function RequestFactory({ appUrl, requestBaseUrl, tokenRepository
     appUrl: string;
     requestBaseUrl: string;
     tokenRepository: TokenRepository;
-    nextAuthProviderId: string;
+    /** @deprecated RxAnte Oauth is moving away from next-auth. */
+    nextAuthProviderId?: string;
     refreshAccessToken: RefreshAccessToken;
     signInUri?: string;
 }): Request;

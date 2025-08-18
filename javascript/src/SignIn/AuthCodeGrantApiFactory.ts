@@ -13,6 +13,7 @@ export function AuthCodeGrantApiFactory (
         clientId,
         clientSecret,
         callbackUri = '/api/auth/callback',
+        audience,
     }: {
         tokenRepository: TokenRepository;
         appUrl: string;
@@ -22,6 +23,7 @@ export function AuthCodeGrantApiFactory (
         clientId: string;
         clientSecret: string;
         callbackUri?: string;
+        audience?: string;
     },
 ): AuthCodeGrantApi {
     return {
@@ -33,6 +35,7 @@ export function AuthCodeGrantApiFactory (
             authorizeUrl,
             clientId,
             callbackUri,
+            audience,
         ),
         respondToAuthCodeCallback: async (
             request: Request,
