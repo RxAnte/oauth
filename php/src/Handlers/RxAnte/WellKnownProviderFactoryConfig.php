@@ -23,6 +23,7 @@ readonly class WellKnownProviderFactoryConfig
             'email',
             'offline_access',
         ],
+        public string|null $audience = null,
     ) {
         $this->scopes = array_values(array_map(
             static fn (string $scope) => $scope,
