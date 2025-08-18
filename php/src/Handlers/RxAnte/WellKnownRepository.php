@@ -12,6 +12,7 @@ use RuntimeException;
 use function assert;
 use function json_decode;
 use function json_validate;
+use function md5;
 
 readonly class WellKnownRepository
 {
@@ -27,7 +28,7 @@ readonly class WellKnownRepository
         $url = $this->config->wellKnownUrl;
 
         $cache = $this->cachePool->getItem(
-            $this->config->wellKnownCacheKey,
+            $this->config->wellKnownCacheKey . '_' . md5($url),
         );
 
         if ($cache->isHit()) {

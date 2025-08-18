@@ -1,6 +1,7 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import Redis from 'ioredis';
 import { z } from 'zod';
+import MD5 from './MD5';
 
 const WellKnownSchema = z.object({
     authorization_endpoint: z.string(),
@@ -20,8 +21,10 @@ export async function GetWellKnown (
     wellKnownCacheKey: string = 'rxante_oauth_well_known',
     wellKnownCacheExpiresInSeconds: number = 86400, // cache for 1 day by default
 ): Promise<WellKnown> {
+    const cacheKey = `${wellKnownCacheKey}_${MD5(wellKnownUrl)}`;
+
     if (redis) {
-        const redisStore = await redis.get(wellKnownCacheKey);
+        const redisStore = await redis.get(cacheKey);
 
         if (redisStore) {
             return JSON.parse(redisStore) as WellKnown;
@@ -40,7 +43,7 @@ export async function GetWellKnown (
 
     if (redis) {
         await redis.set(
-            wellKnownCacheKey,
+            cacheKey,
             JSON.stringify(wellKnown),
             'EX',
             wellKnownCacheExpiresInSeconds,
