@@ -17,8 +17,8 @@ const CreateSignInRouteResponse_1 = __importDefault(require("./Internal/CreateSi
 const RespondToAuthCodeCallback_1 = __importDefault(require("./Internal/RespondToAuthCodeCallback"));
 function AuthCodeGrantApiFactory({ tokenRepository, appUrl, authorizeUrl, tokenUrl, userInfoUrl, clientId, clientSecret, callbackUri = '/api/auth/callback', audience, }) {
     return {
-        createSignInRouteResponse: (request) => __awaiter(this, void 0, void 0, function* () {
-            return (0, CreateSignInRouteResponse_1.default)(request, appUrl, authorizeUrl, clientId, callbackUri, audience);
+        createSignInRouteResponse: (request_1, ...args_1) => __awaiter(this, [request_1, ...args_1], void 0, function* (request, modifyAuthorizeUrl = () => { }) {
+            return (0, CreateSignInRouteResponse_1.default)(request, appUrl, authorizeUrl, clientId, callbackUri, audience, modifyAuthorizeUrl);
         }),
         respondToAuthCodeCallback: (request) => __awaiter(this, void 0, void 0, function* () {
             return (0, RespondToAuthCodeCallback_1.default)(tokenRepository, request, appUrl, tokenUrl, userInfoUrl, clientId, clientSecret, callbackUri);

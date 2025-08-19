@@ -29,6 +29,7 @@ export function AuthCodeGrantApiFactory (
     return {
         createSignInRouteResponse: async (
             request: Request,
+            modifyAuthorizeUrl = () => {},
         ) => CreateSignInRouteResponse(
             request,
             appUrl,
@@ -36,6 +37,7 @@ export function AuthCodeGrantApiFactory (
             clientId,
             callbackUri,
             audience,
+            modifyAuthorizeUrl,
         ),
         respondToAuthCodeCallback: async (
             request: Request,

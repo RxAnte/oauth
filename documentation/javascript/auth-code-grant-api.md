@@ -79,6 +79,30 @@ export async function GET (request: Request) {
 }
 ```
 
+If your application needs to modify the oauth grant code authorization URL, you can add a second argument to `createSignInRouteResponse`, which accepts a method. The first argument will be the `URL` argument.
+
+```typescript
+import { cookies } from 'next/headers';
+import { AuthCodeGrantApiFactory } from './AuthCodeGrantApiFactory';
+
+export async function GET (request: Request) {
+    const cookieStore = await cookies();
+
+    return (await AuthCodeGrantApiFactory()).createSignInRouteResponse(
+        request,
+        (url) => {
+            const iss = cookieStore.get('iss');
+
+            if (!iss) {
+                return;
+            }
+
+            url.searchParams.append('iss', iss.value);
+        },
+    );
+}
+```
+
 ### Callback Route
 
 If you are creating a route at `/auth/callback` you would create a file called `app/auth/callback/route.ts` as follows:
