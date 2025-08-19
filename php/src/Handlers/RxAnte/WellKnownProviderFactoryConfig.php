@@ -12,7 +12,10 @@ readonly class WellKnownProviderFactoryConfig
     /** @var string[] */
     public array $scopes;
 
-    /** @param string[] $scopes */
+    /**
+     * @param string[]    $scopes
+     * @param string|null $audience Deprecated
+     */
     public function __construct(
         public string $appBaseUrl,
         public string $clientId,
@@ -23,6 +26,7 @@ readonly class WellKnownProviderFactoryConfig
             'email',
             'offline_access',
         ],
+        /** @deprecated */
         public string|null $audience = null,
     ) {
         $this->scopes = array_values(array_map(

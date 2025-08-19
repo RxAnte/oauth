@@ -35,7 +35,9 @@ readonly class WellKnownProviderFactory
             'scopeSeparator' => ' ',
         ];
 
+        /** @phpstan-ignore-next-line */
         if ($this->config->audience !== null) {
+            /** @phpstan-ignore-next-line */
             $options['audience'] = $this->config->audience;
         }
 
