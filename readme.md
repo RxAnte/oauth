@@ -2,22 +2,25 @@
 
 ## Documentation
 
-### PHP
+### The Big Picture
+
+- [Client Side Usage](documentation/client-side-usage.md)
+- [Resource Server Usage](documentation/resource-server-usage.md)
+
+### More Details on individual components
+
+#### PHP
 
 - [RequireOauthTokenHeaderMiddleware](documentation/php/require-oauth-token-header-middleware.md)
 - [RequireOauthSessionLoginRedirectMiddleware](documentation/php/require-oauth-session-login-redirect-middleware.md)
 - [RequireOauthSessionAccessDeniedMiddleware](documentation/php/require-oauth-session-access-denied-middleware.md)
 - [Custom Authentication Hook](documentation/php/custom-auth-hook.md)
 - [OauthUserInfoRepositoryInterface](documentation/php/oauth-user-info-repository-interface.md)
-- [Using and Configuring the Auth0 Implementation](documentation/php/using-configuring-auth0-implementation.md)
-- [Using and Configuring the FusionAuth Implementation](documentation/php/using-configuring-fusion-auth-implementation.md)
 - [Configuring the League Client](documentation/php/configuring-league-client.md)
 
-## Javascript
+#### Javascript
 
-- [NextAuthOptionsConfigFactory](documentation/javascript/next-auth-options-config-factory.md)
-- [NextAuthAuth0ProviderFactory](documentation/javascript/next-auth-auth0-provider-factory.md)
-- [NextAuthFusionAuthProviderFactory](documentation/javascript/next-auth-fusion-auth-provider-factory.md)
+- [AuthCodeGrantApi](documentation/javascript/auth-code-grant-api.md)
 - [TokenRepository](documentation/javascript/token-repository.md)
 - [RequestFactory](documentation/javascript/request-factory.md)
 - [RefreshAccessToken](documentation/javascript/refresh-access-token.md)
@@ -26,7 +29,7 @@
 
 ## License
 
-Copyright 2024 RxAnte, Inc
+Copyright 2025 RxAnte, Inc
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this project except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0.
 

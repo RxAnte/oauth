@@ -1,63 +1,31 @@
 # Configuring the League Client
 
-When using `\RxAnte\OAuth\RequireOauthSessionLoginRedirectMiddleware` or `\RxAnte\OAuth\RequireOauthSessionAccessDeniedMiddleware`, the League client will need to be configured. If using the provided `Auth0` implementation, use and configure `\RxAnte\OAuth\Handlers\Auth0\Auth0LeagueOauthProvider`. Otherwise, use and configure whatever implementation of `League\OAuth2\Client\Provider\AbstractProvider` you need.
+When using `\RxAnte\OAuth\RequireOauthSessionLoginRedirectMiddleware` or `\RxAnte\OAuth\RequireOauthSessionAccessDeniedMiddleware`, the League client will need to be configured. The recommended way is to use the factory: `\RxAnte\OAuth\Handlers\RxAnte\WellKnownProviderFactory`.
 
-## Auth0 [PHP-DI](https://php-di.org) example:
-
-```php
-use DI\ContainerBuilder;
-use League\OAuth2\Client\Provider\AbstractProvider;
-use Psr\Container\ContainerInterface;
-use RxAnte\OAuth\Handlers\Auth0\Auth0LeagueOauthProviderConfig;
-use RxAnte\OAuth\Handlers\Auth0\Auth0LeagueOauthProviderFactory;
-
-$di = (new ContainerBuilder())
-    ->useAutowiring(true)
-    ->addDefinitions([
-        Auth0LeagueOauthProviderConfig::class => static function (): Auth0LeagueOauthProviderConfig {
-            return new Auth0LeagueOauthProviderConfig(
-                clientId: 'REPLACE_WITH_CLIENT_ID',
-                clientSecret: 'REPLACE_WITH_CLIENT_SECRET',
-                callbackDomain: 'https://REPLACE_WITH_APP_DOMAIN.com',
-                audience: 'some-audience-identifier',
-                // Optional, default is example below
-                scopes: [
-                    'openid',
-                    'profile',
-                    'email',
-                    'offline_access',
-                ],
-            );
-        }
-        AbstractProvider::class => static function (ContainerInterface $di) {
-            return $di->get(Auth0LeagueOauthProviderFactory::class)->create();
-        }
-    ])
-    ->build();
-```
-
-## FusionAuth [PHP-DI](https://php-di.org) example:
+## DI config for `\RxAnte\OAuth\Handlers\RxAnte\WellKnownProviderFactory`
 
 ```php
 use DI\ContainerBuilder;
 use League\OAuth2\Client\Provider\AbstractProvider;
 use Psr\Container\ContainerInterface;
-use RxAnte\OAuth\Handlers\FusionAuth\FusionAuthLeagueOauthProviderFactory;
-use RxAnte\OAuth\Handlers\FusionAuth\FusionAuthLeagueOauthProviderConfig;
+use RxAnte\OAuth\Handlers\RxAnte\RxAnteConfig;
+use RxAnte\OAuth\Handlers\RxAnte\WellKnownProviderFactory;
+use RxAnte\OAuth\Handlers\RxAnte\WellKnownProviderFactoryConfig;
 
 $di = (new ContainerBuilder())
     ->useAutowiring(true)
     ->addDefinitions([
-        FusionAuthLeagueOauthProviderConfig::class => static function (): FusionAuthLeagueOauthProviderConfig {
-            return new FusionAuthLeagueOauthProviderConfig(
-                clientId: 'REPLACE_WITH_CLIENT_ID',
-                clientSecret: 'REPLACE_WITH_CLIENT_SECRET',
-                callbackDomain: 'https://REPLACE_WITH_APP_DOMAIN.com',
-            );
-        }
-        AbstractProvider::class => static function (ContainerInterface $di) {
-            return $di->get(FusionAuthLeagueOauthProviderFactory::class)->create();
-        }
+        RxAnteConfig::class => static fn () => new RxAnteConfig(
+            wellKnownUrl: 'https://AUTH_SERVER_URL_HERE/.well-known/openid-configuration',
+        ),
+        WellKnownProviderFactoryConfig::class => static fn () => new WellKnownProviderFactoryConfig(
+            appBaseUrl: 'https://APP_URL_HERE.tld',
+            clientId: 'CLIENT_ID_HERE',
+            clientSecret: 'CLIENT_SECRET_HERE',
+        ),
+        AbstractProvider::class => static fn (ContainerInterface $di) => $di->get(
+            WellKnownProviderFactory::class,
+        )->create(),
     ])
     ->build();
 ```

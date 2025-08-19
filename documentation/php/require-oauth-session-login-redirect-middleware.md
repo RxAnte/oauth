@@ -4,15 +4,15 @@
 
 A [PSR-15](https://github.com/php-fig/http-server-middleware) server middleware implementation.
 
-This middleware can be used to require a valid token to be present in a user's session. If the token stored in the session is valid, a `\RxAnte\OAuth\UserInfo\OauthUserInfo` instance will be added to the request attributes with the name `oauthUserInfo`. If there is no valid session, the user will be sent through the OAuth process to acquire a token to store on the session.
+This middleware ensures a valid token is present in a user's session. If the token stored in the session is valid, a `\RxAnte\OAuth\UserInfo\OauthUserInfo` instance will be added to the request attributes with the name `oauthUserInfo`. If there is no valid session, the user will be sent through the OAuth process to acquire a token to store on the session.
 
-This is great for use with browser PHP application access.
-
-> [!NOTE]
-> `RequireOauthSessionLoginRedirectMiddleware` requires an implementation of [OauthUserInfoRepositoryInterface](oauth-user-info-repository-interface.md). This package provides an Auth0 implementation or a FusionAuth implementation.
+You can also implement an instance of `\RxAnte\OAuth\CustomAuthenticationHook` to do any custom authentication your application needs, and/or create a custom `\Psr\Http\Message\ResponseInterface` to respond with. See the [Custom Authentication Hook documentation](custom-auth-hook.md) for more details.
 
 > [!NOTE]
-> `RequireOauthSessionLoginRedirectMiddleware` requires an implementation of `RxAnte\OAuth\TokenRepository\Refresh\GetRefreshedAccessToken`. This package provides an Auth0 implementation or a FusionAuth implementation. See [Using and Configuring the Auth0 Implementation](using-configuring-auth0-implementation.md) and [Using and Configuring the FusionAuth Implementation](using-configuring-fusion-auth-implementation.md).
+> `RequireOauthSessionLoginRedirectMiddleware` requires an implementation of [OauthUserInfoRepositoryInterface](oauth-user-info-repository-interface.md). This package provides an implementation which will need to be configured in order to use `\RxAnte\OAuth\Handlers\RxAnte\RxAnteUserInfoRepository`.
+
+> [!NOTE]
+> `RequireOauthSessionLoginRedirectMiddleware` requires an implementation of `RxAnte\OAuth\TokenRepository\Refresh\GetRefreshedAccessToken`. This package provides an implementation which must be configured: `\RxAnte\OAuth\Handlers\RxAnte\TokenRefresh\RxAnteGetRefreshedAccessToken`.
 
 > [!NOTE]
 > `RequireOauthSessionLoginRedirectMiddleware` requires an implementation of `RxAnte\OAuth\TokenRepository\Refresh\Lock\RefreshLock`. This package provides a Redis implementation. See [Redis Refresh Lock](redis-refresh-lock.md).
@@ -21,10 +21,10 @@ This is great for use with browser PHP application access.
 > `RequireOauthSessionLoginRedirectMiddleware` requires an implementation of `League\OAuth2\Client\Provider\AbstractProvider`. You can learn how to implement that configuration [here](configuring-league-client.md).
 
 > [!NOTE]
-> `RequireOauthSessionLoginRedirectMiddleware` requires an implementation of `Psr\Clock\ClockInterface` to be provided. [lcobucci/clock](https://github.com/lcobucci/clock) is a good one.
+> `RequireOauthSessionLoginRedirectMiddleware` requires the PSR-11 container to be able to provide an implementation of `Psr\Clock\ClockInterface`. [lcobucci/clock](https://github.com/lcobucci/clock) is a good one.
 
 > [!NOTE]
-> `RequireOauthSessionLoginRedirectMiddleware` requires the PSR-11 container to be able to provide an implementation of `Ramsey\Uuid\UuidFactoryInterface`. You can simply configure your container to serve the default implementation `\Ramsey\Uuid\UuidFactory`
+> `RequireOauthSessionLoginRedirectMiddleware` requires the PSR-11 container to be able to provide an implementation of `Ramsey\Uuid\UuidFactoryInterface`. You can configure your container to serve the default implementation `\Ramsey\Uuid\UuidFactory`
 
 ## Configuring
 
@@ -57,7 +57,10 @@ To use this middleware, add it to any route that needs to be protected.
 [Slim 4](https://www.slimframework.com) example
 
 ```php
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
 use RxAnte\OAuth\RequireOauthSessionLoginRedirectMiddleware;
+use RxAnte\OAuth\UserInfo\OauthUserInfo;
 use Slim\Factory\AppFactory;
 
 // ...you'll need to set up your dependency injection, this example does
@@ -65,23 +68,15 @@ use Slim\Factory\AppFactory;
 
 $app = AppFactory::create();
 
-$app->get('/some/route', SomeRoutable::class)->add(
-    RequireOauthSessionLoginRedirectMiddleware::class,
-);
-```
+$app->get('/some/route', static function (
+    ServerRequestInterface $request,
+    ResponseInterface $response,
+): ResponseInterface {
+    $userInfo = $request->getAttribute('oauthUserInfo');
+    assert($userInfo instanceof OauthUserInfo);
 
-```php
-use Psr\Http\Message\ServerRequestInterface;
-use RxAnte\OAuth\UserInfo\OauthUserInfo;
+    $response->getBody()->write('You are authenticated as ' . $userInfo->name);
 
-class SomeRoutable
-{
-    public function __invoke(ServerRequestInterface $request)
-    {
-        $userInfo = $request->getAttribute('oauthUserInfo');
-        assert($userInfo instanceof OauthUserInfo);
-
-        var_dump($userInfo->email);
-    }
-}
+    return $response;
+})->add(RequireOauthSessionLoginRedirectMiddleware::class);
 ```

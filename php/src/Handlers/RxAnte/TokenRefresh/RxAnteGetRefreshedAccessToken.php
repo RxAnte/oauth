@@ -16,7 +16,7 @@ use Throwable;
 
 use function json_decode;
 
-readonly class GetRefreshedAccessTokenFromRxAnte implements GetRefreshedAccessToken
+readonly class RxAnteGetRefreshedAccessToken implements GetRefreshedAccessToken
 {
     public function __construct(
         private ClientFactory $clientFactory,

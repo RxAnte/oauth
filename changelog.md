@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 2.0.0 — 2025-08-18
+### Deprecated
+- The use of the `next-auth` package has been deprecated (next-auth is bad and it should feel bad).
+- The entirety of the PHP classes and functionality in the `\RxAnte\OAuth\Handlers\Auth0` and `\RxAnte\OAuth\Handlers\FusionAuth` namespace have been deprecated. Use the new generic handler classes in the `\RxAnte\OAuth\Handlers\RxAnte` namespace
+- The class `\RxAnte\OAuth\Handlers\Common\ExtractToken` has been deprecated as it was only used in the old handler scenario
+- The following exports in JS have been deprecated: NextAuthOptionsConfigFactory, NextAuthAuth0ProviderFactory, NextAuthFusionAuthProviderFactory, RefreshAccessTokenWithAuth0Factory. Use the new `AuthCodeGrantApi` for signing in (see documentation)
+### Added
+- Added a new generic PHP auth handler setup in the namespace: `\RxAnte\OAuth\Handlers\RxAnte`
+- Added new JS `AuthCodeGrantApi` for handling OAuth sign-in without any `next-auth` involvement
+
 ## 1.6.0 — 2025-05-08
 ### Fixed
 - Fixed an issue with Next15 `headers()` needing to be `await`ed.

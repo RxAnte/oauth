@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace RxAnte\OAuth\Handlers\RxAnte;
 
+use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use RxAnte\OAuth\Cookies\OauthSessionTokenCookieHandler;
 use RxAnte\OAuth\Handlers\RxAnte\Internal\FetchUserInfo\FetchUserInfoFactory;
@@ -16,13 +17,14 @@ use RxAnte\OAuth\UserInfo\OauthUserInfoRepositoryInterface;
 use function preg_replace;
 use function trim;
 
+// phpcs:disable SlevomatCodingStandard.ControlStructures.EarlyExit.EarlyExitNotUsed
+
 readonly class RxAnteUserInfoRepository implements OauthUserInfoRepositoryInterface
 {
     public function __construct(
         private JwtFactory $jwtFactory,
+        private ContainerInterface $container,
         private FetchUserInfoFactory $fetchUserInfoFactory,
-        private RefreshAccessTokenBySessionId $refreshAccessToken,
-        private GetUserInfoFromSessionId $getUserInfoFromSessionId,
         private OauthSessionTokenCookieHandler $sessionTokenCookieHandler,
     ) {
     }
@@ -56,15 +58,30 @@ readonly class RxAnteUserInfoRepository implements OauthUserInfoRepositoryInterf
 
         $sessionId = $cookie->getValue() ?? '';
 
-        $userInfo = $this->getUserInfoFromSessionId->get($sessionId);
+        /**
+         * We're getting this on-demand so that in contexts where we don't
+         * need it, it doesn't need to be provided
+         */
+        $getUserInfoFromSessionId = $this->container->get(
+            GetUserInfoFromSessionId::class,
+        );
+
+        $userInfo = $getUserInfoFromSessionId->get($sessionId);
 
         if ($userInfo->isValid) {
             return $userInfo;
         }
 
         // Try refreshing the token
-        $this->refreshAccessToken->refresh($sessionId);
 
-        return $this->getUserInfoFromSessionId->get($sessionId);
+        /**
+         * We're getting this on-demand so that in contexts where we don't
+         * need it, it doesn't need to be provided
+         */
+        $refresh = $this->container->get(RefreshAccessTokenBySessionId::class);
+
+        $refresh->refresh($sessionId);
+
+        return $getUserInfoFromSessionId->get($sessionId);
     }
 }

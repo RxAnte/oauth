@@ -3,45 +3,35 @@
 [TokenRepository]: token-repository.md
 [RefreshAccessToken]: refresh-access-token.md
 
-The RequestFactory is used to create a `Request` type used for making `HTTP` requests.
+The RequestFactory is used to create a `Request` api instance used for making `HTTP` requests.
 
-The [Middleware](middleware.md) must be in place for `makeWithSignInRedirect` to function correctly.
+The [Next Middleware Headers Factory](next-middleware-headers-factory.md) must be in place for `makeWithSignInRedirect` to function correctly.
 
 In your own application, you would probably create your own `RequestFactory` as a wrapper around this package's request factory, something like this:
 
 ```typescript
 import {
     RequestFactory as BaseRequestFactory,
-    RefreshAccessTokenWithAuth0Factory,
+    RefreshAccessTokenFactory,
     IoRedisRefreshLockFactory,
 } from 'rxante-oauth';
-import {
-    ConfigOptions,
-    getConfigStringServerSide,
-} from '../../serverSideRunTimeConfig';
-import { TokenRepositoryFactory } from '../auth/TokenRepositoryFactory';
-import getRedisClient from '../../cache/RedisClient';
+import { TokenRepositoryFactory } from './TokenRepositoryFactory';
+import getRedisClient from './RedisClient';
 
 export function RequestFactory () {
     const tokenRepository = TokenRepositoryFactory();
 
     return BaseRequestFactory({
-        appUrl: getConfigStringServerSide(ConfigOptions.APP_URL),
-        requestBaseUrl: getConfigStringServerSide(ConfigOptions.API_BASE_URL),
+        appUrl: 'https://APP_URL_HERE.tld',
+        requestBaseUrl: 'https://RESOURCE_SERVER_URL_HERE.tld',
         tokenRepository,
-        nextAuthProviderId: 'auth0',
-        refreshAccessToken: RefreshAccessTokenWithAuth0Factory({
+        refreshAccessToken: RefreshAccessTokenFactory({
             tokenRepository,
             refreshLock: IoRedisRefreshLockFactory({redis: getRedisClient()}),
-            wellKnownUrl: getConfigStringServerSide(
-                ConfigOptions.NEXTAUTH_WELL_KNOWN,
-            ),
-            clientId: getConfigStringServerSide(
-                ConfigOptions.NEXTAUTH_CLIENT_ID,
-            ),
-            clientSecret: getConfigStringServerSide(
-                ConfigOptions.NEXTAUTH_CLIENT_SECRET,
-            ),
+            wellKnownUrl: 'https://AUTH_SERVER_URL_HERE/.well-known/openid-configuration',
+            clientId: 'CLIENT_ID_HERE',
+            clientSecret: 'CLIENT_SECRET_HERE',
+            redis: getRedisClient(), // Optional, but recommended. Used for caching and retrieving well-known open id configuration
         }),
     });
 }
@@ -61,13 +51,17 @@ The base URL for the HTTP requests.
 
 An implementation of the [`TokenRepository`][TokenRepository] is required for the token refresh process.
 
-### `nextAuthProviderId`: string
+### `nextAuthProviderId`: string (deprecated, not needed when not using next-auth)
 
-The ID of the provider you are using.
+The ID of the provider you are using. Not needed in 2.0.
 
 ### `refreshAccessToken`: [`RefreshAccessToken`][RefreshAccessToken]
 
 An implementation of [`RefreshAccessToken`][RefreshAccessToken] is required to refresh the access token when required.
+
+### `signInUri`: `string`
+
+Optional. Defaults to `/api/auth/sign-in` for historical reasons having to do with next-auth. When setting up the [`AuthCodeGrantApi`](auth-code-grant-api.md) you can change this to any route you like, which must be relfected here if you do so.
 
 ## `Request` Type
 
