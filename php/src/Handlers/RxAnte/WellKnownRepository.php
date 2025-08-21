@@ -58,7 +58,7 @@ readonly class WellKnownRepository
 
         if (! json_validate($body)) {
             throw new RuntimeException(
-                'Unable to get Auth0 Well Known from ' . $url,
+                'Unable to get Well Known from ' . $url,
             );
         }
 
