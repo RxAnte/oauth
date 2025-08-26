@@ -440,3 +440,70 @@ $app->get('/', static function (
 
 $app->run();
 ```
+
+### Making an authenticated request in a PHP client
+
+Assuming you have protected your route with one of the middlewares above, you have a token stored, and now you need to make a request with the token. Use the RequestApi (`\RxAnte\OAuth\Request\RequestApi`) to do so easily:
+
+```php
+use DI\Container;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use RxAnte\OAuth\Request\Payload;
+use RxAnte\OAuth\Request\QueryParams;
+use RxAnte\OAuth\Request\RequestApi;
+use RxAnte\OAuth\Request\RequestMethod;
+use RxAnte\OAuth\Request\RequestProperties;
+use RxAnte\OAuth\RequireOauthSessionLoginRedirectMiddleware;
+use Slim\Factory\AppFactory;
+
+require __DIR__ . '/../vendor/autoload.php';
+
+$container = new Container();
+
+/** wire dependencies */
+
+$app = AppFactory::create(container: $container);
+
+$app->get('/', function (
+    ServerRequestInterface $request,
+    ResponseInterface $response,
+) use ($container): ResponseInterface {
+    $requestApi = $container->get(RequestApi::class);
+
+    $apiResponse = $requestApi->makeWithTokenFromRequestCookies(
+        serverRequest: $request,
+        // Optional, but you'll probably always want to set a URI at least
+        properties: new RequestProperties(
+            /**
+             * If you always make API requests to the same base URL, you
+             * can set up your DI to provide \RxAnte\OAuth\Request\RequestApiConfig
+             * with the base URL and then here you only need `/some/endpoint`.
+             * Even with a base URL defined, if you put a full URL here, the
+             * full URL will be used instead of the base URL
+             */
+            uri: 'https://myapi.com/some/endpoint',
+            // Optional, defaults to RequestMethod:GET
+            method: RequestMethod::POST,
+            // Optional: supply some query params
+            queryParams: new QueryParams([
+                'foo' => 'bar',
+                'bar' => 'baz',
+            ]),
+            // Optional: You may wish to send some data to the api with request
+            payload: new Payload([
+                'emailAddress' => 'foo@bar.baz',
+                'message' => 'Lorem ipsum',
+            ]),
+        ),
+    );
+
+    $response->getBody()->write(
+        'Hello world: ' . $apiResponse->getJson()['message'],
+    );
+
+    return $response;
+})->add(RequireOauthSessionLoginRedirectMiddleware::class);
+
+$app->run();
+```

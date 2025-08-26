@@ -8,9 +8,11 @@ use DateTimeImmutable;
 
 readonly class OauthSessionTokenCookieHandler extends AbstractLoginCookieHandler
 {
+    public const COOKIE_NAME = 'oauth-session-token';
+
     public function getCookieName(): string
     {
-        return 'oauth-session-token';
+        return self::COOKIE_NAME;
     }
 
     public function getCookieExpiration(): DateTimeImmutable|null

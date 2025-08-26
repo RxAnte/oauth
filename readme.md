@@ -18,6 +18,7 @@
 - [Custom Authentication Hook](documentation/php/custom-auth-hook.md)
 - [OauthUserInfoRepositoryInterface](documentation/php/oauth-user-info-repository-interface.md)
 - [Configuring the League Client](documentation/php/configuring-league-client.md)
+- [Make An Authenticated API Request](documentation/php/make-an-authenticated-api-request.md)
 
 #### Javascript
 
