@@ -19,7 +19,7 @@ function FindTokenBySessionId(sessionId, redis) {
         }
         try {
             const token = JSON.parse(tokenString);
-            TokenData_1.TokenDataSchemaSchema.parse(token);
+            TokenData_1.TokenDataSchema.parse(token);
             return token;
         }
         catch (error) {

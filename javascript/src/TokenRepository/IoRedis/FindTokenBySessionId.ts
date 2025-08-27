@@ -2,7 +2,7 @@
 /* eslint-disable react/destructuring-assignment */
 // eslint-disable-next-line import/no-extraneous-dependencies
 import Redis from 'ioredis';
-import { TokenData, TokenDataSchemaSchema } from '../../TokenData';
+import { TokenData, TokenDataSchema } from '../../TokenData';
 
 export async function FindTokenBySessionId (
     sessionId: string,
@@ -17,7 +17,7 @@ export async function FindTokenBySessionId (
     try {
         const token = JSON.parse(tokenString) as TokenData;
 
-        TokenDataSchemaSchema.parse(token);
+        TokenDataSchema.parse(token);
 
         return token;
     } catch (error) {

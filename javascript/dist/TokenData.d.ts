@@ -1,6 +1,6 @@
 import { z } from 'zod';
 import { User } from './User';
-export declare const TokenDataSchemaSchema: z.ZodObject<{
+export declare const TokenDataSchema: z.ZodObject<{
     accessToken: z.ZodString;
     accessTokenExpires: z.ZodNumber;
     refreshToken: z.ZodString;

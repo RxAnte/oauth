@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { User, UserSchema } from './User';
 
-export const TokenDataSchemaSchema = z.object({
+export const TokenDataSchema = z.object({
     accessToken: z.string(),
     accessTokenExpires: z.number(),
     refreshToken: z.string(),
