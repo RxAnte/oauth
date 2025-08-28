@@ -1,7 +1,7 @@
 name: CI
 on: [push]
 jobs:
-  code-quality:
+  php-code-quality:
     name: Code Quality
     runs-on: ubuntu-latest
     steps:
@@ -14,9 +14,33 @@ jobs:
           tools: composer:v2
           coverage: xdebug
           extensions: oauth, pdo, redis, xdebug
-      - name: Install composer dependencies
+      - name: Install dependencies
         run: composer install
       - name: Run PHPCS
         run: php -d memory_limit=4G ./vendor/bin/phpcs --no-cache --no-colors
       - name: Run PHPStan
         run: php -d memory_limit=4G ./vendor/bin/phpstan analyse --no-interaction --no-progress
+
+  js-code-quality:
+    name: Code Quality
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+      - name: Setup PNPM
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+          run_install: false
+      - name: Install dependencies
+        run: pnpm install
+      - name: Run eslint
+        working-directory: ./javascript
+        run: npx eslint src --ext .ts,.tsx --max-warnings 0
+      - name: Run vitest
+        working-directory: ./javascript
+        run: npx vitest run --coverage
