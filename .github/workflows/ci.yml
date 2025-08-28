@@ -2,7 +2,7 @@ name: CI
 on: [push]
 jobs:
   php-code-quality:
-    name: Code Quality
+    name: PHP Code Quality
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -22,7 +22,7 @@ jobs:
         run: php -d memory_limit=4G ./vendor/bin/phpstan analyse --no-interaction --no-progress
 
   js-code-quality:
-    name: Code Quality
+    name: JS Code Quality
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -37,6 +37,7 @@ jobs:
           version: 9
           run_install: false
       - name: Install dependencies
+        working-directory: ./javascript
         run: pnpm install
       - name: Run eslint
         working-directory: ./javascript
