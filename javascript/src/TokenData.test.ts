@@ -1,4 +1,6 @@
-import { describe, it, expect, expectTypeOf } from 'vitest';
+import {
+    describe, it, expect, expectTypeOf,
+} from 'vitest';
 import { z } from 'zod';
 import { TokenDataSchema, TokenData } from './TokenData';
 import { User } from './User';
@@ -41,6 +43,7 @@ describe('TokenDataSchema', () => {
 
         expect(result.success).toBe(false);
 
+        // @ts-expect-error TS18048
         expect(result.error.issues[0].path).toContain('refreshToken');
     });
 
@@ -61,6 +64,7 @@ describe('TokenDataSchema', () => {
 
         expect(result.success).toBe(false);
 
+        // @ts-expect-error TS18048
         expect(result.error.issues[0].path).toContain('id');
     });
 });
@@ -68,14 +72,12 @@ describe('TokenDataSchema', () => {
 describe('TokenData type consistency', () => {
     it('TokenData interface should match z.infer<typeof TokenDataSchemaSchema>', () => {
         type InferredTokenData = z.infer<typeof TokenDataSchema>;
-        // @ts-expect-error TS2344
         expectTypeOf<TokenData>().toEqualTypeOf<InferredTokenData>();
     });
 
     it('TokenData.user should match User', () => {
         type InferredTokenData = z.infer<typeof TokenDataSchema>;
         expectTypeOf<TokenData['user']>().toEqualTypeOf<User>();
-        // @ts-expect-error TS2344
         expectTypeOf<InferredTokenData['user']>().toEqualTypeOf<User>();
     });
 });

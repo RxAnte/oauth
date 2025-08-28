@@ -1,4 +1,6 @@
-import { describe, it, expect, expectTypeOf } from 'vitest';
+import {
+    describe, it, expect, expectTypeOf,
+} from 'vitest';
 import { z } from 'zod';
 import { UserSchema, User } from './User';
 
@@ -30,6 +32,7 @@ describe('UserSchema', () => {
 
         expect(result.success).toBe(false);
 
+        // @ts-expect-error TS18048
         expect(result.error.issues[0].path).toContain('name');
     });
 
@@ -45,6 +48,7 @@ describe('UserSchema', () => {
 
         expect(result.success).toBe(false);
 
+        // @ts-expect-error TS18048
         expect(result.error.issues[0].path).toContain('id');
     });
 
@@ -60,6 +64,7 @@ describe('UserSchema', () => {
 
         expect(result.success).toBe(false);
 
+        // @ts-expect-error TS18048
         expect(result.error.issues[0].path).toContain('email');
     });
 });
@@ -69,7 +74,6 @@ describe('UserSchema types', () => {
         type InferredUser = z.infer<typeof UserSchema>;
 
         // Vitest provides expectTypeOf to assert TS types
-        // @ts-expect-error TS2344
         expectTypeOf<User>().toEqualTypeOf<InferredUser>();
     });
 });

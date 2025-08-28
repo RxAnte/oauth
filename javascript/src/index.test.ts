@@ -48,4 +48,3 @@ describe('package exports (index.ts)', () => {
         expect(pkg.AuthCodeGrantApi).toBeUndefined();
     });
 });
-

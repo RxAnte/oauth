@@ -1,18 +1,18 @@
 import { describe, it, expect } from 'vitest';
 import { NextMiddlewareHeadersFactory } from './NextMiddlewareHeadersFactory';
 
-function makeMockRequest(
+function makeMockRequest (
     {
-         url,
-         headers = {},
-         pathname = '/',
-         searchParams = '',
+        url,
+        headers = {},
+        pathname = '/',
+        searchParams = '',
     }: {
         url: string;
         headers?: Record<string, string>;
         pathname?: string;
         searchParams?: string;
-    }
+    },
 ) {
     return {
         url,
@@ -31,7 +31,7 @@ describe('NextMiddlewareHeadersFactory', () => {
             headers: { 'x-test': '123' },
         });
 
-        const result = NextMiddlewareHeadersFactory(req as any);
+        const result = NextMiddlewareHeadersFactory(req as never);
 
         expect(result.get('x-test')).toBe('123');
         expect(result.get('middleware-pathname')).toBeNull();
@@ -46,7 +46,7 @@ describe('NextMiddlewareHeadersFactory', () => {
             searchParams: 'foo=bar&baz=qux',
         });
 
-        const result = NextMiddlewareHeadersFactory(req as any);
+        const result = NextMiddlewareHeadersFactory(req as never);
 
         expect(result.get('x-test')).toBe('abc');
         expect(result.get('middleware-pathname')).toBe('/dashboard');
@@ -60,7 +60,7 @@ describe('NextMiddlewareHeadersFactory', () => {
             searchParams: '',
         });
 
-        const result = NextMiddlewareHeadersFactory(req as any);
+        const result = NextMiddlewareHeadersFactory(req as never);
 
         expect(result.get('middleware-pathname')).toBe('/profile');
         expect(result.get('middleware-search-params')).toBe('');
