@@ -1,4 +1,10 @@
 {
+    "repositories": [
+        {
+            "type": "vcs",
+            "url":  "https://github.com/tjdraper/bypass-readonly"
+        }
+    ],
     "name": "rxante/oauth",
     "description": "A collection of OAuth related things for the RxAnte Web Services team",
     "type": "library",
@@ -30,11 +36,16 @@
         "ramsey/uuid": "^4.7"
     },
     "require-dev": {
-        "rxante/coding-standards": "^1.1.2"
+        "mockery/mockery": "^1.6",
+        "pestphp/pest": "^3.8",
+        "rxante/coding-standards": "^1.1.2",
+        "symfony/process": "^7.3",
+        "zoltanka/bypass-readonly": "dev-bugfix"
     },
     "autoload": {
         "psr-4": {
-            "RxAnte\\OAuth\\": "php/src"
+            "RxAnte\\OAuth\\": "php/src",
+            "Tests\\": "php/tests"
         },
         "files": ["php/Polyfill/JsonValidate.php"]
     },
@@ -42,7 +53,8 @@
         "bin-compat": "full",
         "sort-packages": true,
         "allow-plugins": {
-            "dealerdirect/phpcodesniffer-composer-installer": true
+            "dealerdirect/phpcodesniffer-composer-installer": true,
+            "pestphp/pest-plugin": true
         }
     }
 }

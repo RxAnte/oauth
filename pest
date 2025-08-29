@@ -1,0 +1,168 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+use Symfony\Component\Process\Process;
+
+require_once __DIR__ . '/vendor/autoload.php';
+
+class StreamCommand
+{
+    /**
+     * @param string[]|string $command
+     * @param mixed[]|null    $env
+     */
+    public static function stream(
+        array|string $command,
+        string|null $cwd = null,
+        array|null $env = null,
+        bool $exitOnError = true,
+    ): int {
+        if ($cwd === null) {
+            $cwd = __DIR__;
+        }
+
+        if (is_string($command)) {
+            $process = Process::fromShellCommandline(
+                command: $command,
+                cwd: $cwd,
+                env: $env,
+                timeout: null,
+            );
+        } else {
+            $process = new Process(
+                command: $command,
+                cwd: $cwd,
+                env: $env,
+                timeout: null,
+            );
+        }
+
+        $existStatus = $process->setTty(Process::isTtySupported())
+            ->run(static function ($type, $buffer): void {
+                echo $buffer;
+            });
+
+        if (! $exitOnError || $existStatus === 0) {
+            return $existStatus;
+        }
+
+        exit($existStatus);
+    }
+}
+
+class Pest
+{
+    public bool $coverage = false;
+
+    public string|null $filter = null;
+
+    public array|null $group = [];
+
+    private array $remainingArgs = [];
+
+    public function __construct(array $args)
+    {
+        unset($args[0]);
+
+        $skipNext = false;
+
+        foreach ($args as $key => $arg) {
+            if ($skipNext === true) {
+                $skipNext = false;
+
+                continue;
+            }
+
+            if ($arg === '--coverage') {
+                unset($args[$key]);
+                $this->coverage = true;
+                continue;
+            }
+
+            if ($arg === '--filter') {
+                unset($args[$key]);
+                $nextKey = $key + 1;
+                $argValue = $args[$nextKey] ?? '';
+
+                if ($argValue === '' || str_starts_with($argValue, '-')) {
+                    continue;
+                }
+
+                $this->filter = $argValue;
+
+                unset($args[$nextKey]);
+
+                $skipNext = true;
+
+                continue;
+            }
+
+            if ($arg === '--group') {
+                unset($args[$key]);
+                $nextKey = $key + 1;
+                $argValue = $args[$nextKey] ?? '';
+
+                if ($argValue === '' || str_starts_with($argValue, '-')) {
+                    continue;
+                }
+
+                $this->group[] = $argValue;
+
+                unset($args[$nextKey]);
+
+                $skipNext = true;
+
+                continue;
+            }
+        }
+
+        $this->remainingArgs = array_values($args);
+    }
+
+    public function run()
+    {
+        $env = [];
+
+        $cmd = [
+            'php82',
+            '-d',
+            'memory_limit=4G',
+            './vendor/bin/pest',
+        ];
+
+        if ($this->coverage === true) {
+            $cmd[] = '--coverage';
+            $cmd[] = '--coverage-html';
+            $cmd[] = 'php/tests/code-coverage/';
+
+            $env['XDEBUG_MODE'] = 'coverage';
+        }
+
+        if ($this->filter !== null) {
+            $cmd[] = '--filter';
+            $cmd[] = $this->filter;
+        }
+
+        if ($this->group !== null) {
+            foreach ($this->group as $group) {
+                $cmd[] = '--group=' . $group;
+            }
+        }
+
+        $cmd[] = '--cache-directory';
+        $cmd[] = 'php/tests/cache/';
+
+        $cmd = array_merge($cmd, $this->remainingArgs);
+
+        StreamCommand::stream(
+            command: $cmd,
+            env: $env,
+        );
+    }
+}
+
+$pest = new Pest($argv);
+
+$pest->run();

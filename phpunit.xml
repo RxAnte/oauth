@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.1/phpunit.xsd"
+    bootstrap="php/tests/bootstrap.php"
+    colors="true"
+>
+    <testsuites>
+        <testsuite name="default">
+            <directory suffix=".test.php">./php</directory>
+        </testsuite>
+    </testsuites>
+    <source>
+        <include>
+            <directory suffix=".php">./php</directory>
+        </include>
+        <exclude>
+            <directory suffix="test.php">./php</directory>
+        </exclude>
+    </source>
+</phpunit>
