@@ -13,7 +13,9 @@ async function sendRequest (
     }: RequestProperties,
     requestBaseUrl: string,
 ) {
-    const url = new URL(`${requestBaseUrl}${uri}?${queryParams.toString()}`);
+    const url = new URL(
+        `${requestBaseUrl}${uri}?${queryParams.toString()}`,
+    );
 
     const headers = new Headers({
         RequestType: 'api',
