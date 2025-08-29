@@ -10,7 +10,8 @@ export default defineConfig({
             include: ['src'],
             exclude: [
                 '**/NextAuth/**',
-                'src/SignIn/SignInPage.tsx'
+                'src/SignIn/SignInPage.tsx',
+                'src/Request/RefreshAccessToken/RefreshAccessTokenWithAuth0Factory.ts',
             ],
         },
     },
