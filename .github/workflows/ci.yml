@@ -20,6 +20,8 @@ jobs:
         run: php -d memory_limit=4G ./vendor/bin/phpcs --no-cache --no-colors
       - name: Run PHPStan
         run: php -d memory_limit=4G ./vendor/bin/phpstan analyse --no-interaction --no-progress
+      - name: Run pest testing
+        run: XDEBUG_MODE=coverage php -d memory_limit=4G ./vendor/bin/pest --coverage
 
   js-code-quality:
     name: JS Code Quality

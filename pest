@@ -54,6 +54,8 @@ class StreamCommand
 
 class Pest
 {
+    public bool $dumpCommand = false;
+
     public bool $coverage = false;
 
     public string|null $filter = null;
@@ -72,6 +74,15 @@ class Pest
             if ($skipNext === true) {
                 $skipNext = false;
 
+                continue;
+            }
+
+            if (
+                $arg === '--dump-command' ||
+                strtolower($arg) === '--dumpcommand'
+            ) {
+                unset($args[$key]);
+                $this->dumpCommand = true;
                 continue;
             }
 
@@ -155,6 +166,17 @@ class Pest
         $cmd[] = 'php/tests/cache/';
 
         $cmd = array_merge($cmd, $this->remainingArgs);
+
+        if ($this->dumpCommand === true) {
+            foreach ($env as $envKey => $envItem) {
+                $cmd = array_merge([
+                    $envKey . '=' . $envItem,
+                ], $cmd);
+            }
+
+            echo implode(' ', $cmd);
+            exit;
+        }
 
         StreamCommand::stream(
             command: $cmd,
