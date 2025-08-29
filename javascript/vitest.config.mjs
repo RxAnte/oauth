@@ -10,6 +10,7 @@ export default defineConfig({
             include: ['src'],
             exclude: [
                 '**/NextAuth/**',
+                'src/SignIn/SignInPage.tsx'
             ],
         },
     },

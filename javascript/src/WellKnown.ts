@@ -9,7 +9,7 @@ const WellKnownSchema = z.object({
     userinfo_endpoint: z.string(),
 });
 
-interface WellKnown {
+export interface WellKnown {
     authorizationEndpoint: string;
     tokenEndpoint: string;
     userinfoEndpoint: string;
