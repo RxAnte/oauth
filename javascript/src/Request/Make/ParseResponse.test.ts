@@ -6,7 +6,6 @@ import {
 } from 'vitest';
 import { AccessDeniedUserNotLoggedInResponse } from './AccessDeniedResponse';
 import RequestAuthenticationError from '../RequestAuthenticationError';
-import { RequestResponse } from '../RequestResponse';
 import { ParseResponse } from './ParseResponse';
 
 // Mocks
