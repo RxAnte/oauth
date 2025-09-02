@@ -3,15 +3,14 @@
 declare(strict_types=1);
 
 use Mockery\MockInterface;
-use Psr\Http\Message\ResponseFactoryInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Psr\Http\Message\StreamInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use RxAnte\OAuth\CustomAuthenticationHook;
 use RxAnte\OAuth\CustomAuthenticationHookFactory;
 use RxAnte\OAuth\CustomAuthenticationResult;
-use RxAnte\OAuth\RequireOauthTokenHeaderMiddleware;
+use RxAnte\OAuth\RequireOauthSessionLoginRedirectMiddleware;
+use RxAnte\OAuth\SendToLoginResponseFactory;
 use RxAnte\OAuth\UserInfo\OauthUserInfo;
 use RxAnte\OAuth\UserInfo\OauthUserInfoRepositoryInterface;
 
@@ -19,31 +18,29 @@ use RxAnte\OAuth\UserInfo\OauthUserInfoRepositoryInterface;
 // phpcs:disable Squiz.Classes.ClassFileName.NoMatch
 // phpcs:disable SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingTraversableTypeHintSpecification
 
-describe('RequireOauthTokenHeaderMiddleware', function (): void {
-    uses()->group('RequireOauthTokenHeaderMiddleware');
+describe('RequireOauthSessionLoginRedirectMiddleware', function (): void {
+    uses()->group('RequireOauthSessionLoginRedirectMiddleware');
 
-    class RequireOauthTokenHeaderMiddlewareMockStack
+    class RequireOauthSessionLoginRedirectMiddlewareMockStack
     {
-        public readonly ResponseFactoryInterface&MockInterface $responseFactory;
-        public readonly OauthUserInfoRepositoryInterface&MockInterface $userInfoRepository;
         public readonly CustomAuthenticationHookFactory&MockInterface $authHookFactory;
+        public readonly OauthUserInfoRepositoryInterface&MockInterface $userInfoRepository;
+        public readonly SendToLoginResponseFactory&MockInterface $sendToLoginResponseFactory;
         public readonly ServerRequestInterface&MockInterface $request;
         public readonly RequestHandlerInterface&MockInterface $handler;
 
         public function __construct()
         {
-            $this->responseFactory = Mockery::mock(
-                ResponseFactoryInterface::class,
+            $this->authHookFactory = Mockery::mock(
+                CustomAuthenticationHookFactory::class,
             );
-
-            $this->setUpResponseFactory();
 
             $this->userInfoRepository = Mockery::mock(
                 OauthUserInfoRepositoryInterface::class,
             );
 
-            $this->authHookFactory = Mockery::mock(
-                CustomAuthenticationHookFactory::class,
+            $this->sendToLoginResponseFactory = Mockery::mock(
+                SendToLoginResponseFactory::class,
             );
 
             $this->request = Mockery::mock(
@@ -55,86 +52,25 @@ describe('RequireOauthTokenHeaderMiddleware', function (): void {
             );
         }
 
-        /** @phpstan-ignore-next-line */
-        private array $responseWithHeaderCalls = [];
-
-        private string $responseBody = '';
-
-        private int $responseStatus = 200;
-
-        private function setUpResponseFactory(): void
-        {
-            $body = Mockery::mock(StreamInterface::class);
-
-            $body->allows('write')
-                ->andReturnUsing(function (string $string): int {
-                    $this->responseBody .= $string;
-
-                    return strlen($string);
-                });
-
-            $body->allows('__toString')
-                ->andReturnUsing(function () {
-                    return $this->responseBody;
-                });
-
-            $response = Mockery::mock(ResponseInterface::class);
-
-            $response->allows('withHeader')
-                ->andReturnUsing(function (
-                    string $name,
-                    $value,
-                ) use (
-                    $response,
-                ): ResponseInterface {
-                    $this->responseWithHeaderCalls[] = [$name => $value];
-
-                    return $response;
-                });
-
-            $response->allows('getHeaders')
-                ->andReturnUsing(function () {
-                    return $this->responseWithHeaderCalls;
-                });
-
-            $response->allows('getBody')->andReturn($body);
-
-            $response->allows('withStatus')
-                ->andReturnUsing(function (int $code) use (
-                    $response,
-                ): ResponseInterface {
-                    $this->responseStatus = $code;
-
-                    return $response;
-                });
-
-            $response->allows('getStatusCode')
-                ->andReturnUsing(function () {
-                    return $this->responseStatus;
-                });
-
-            $this->responseFactory->allows('createResponse')
-                ->andReturnUsing(
-                    function (
-                        int $code = 200,
-                        string $reasonPhrase = '',
-                    ) use ($response): ResponseInterface {
-                        return $response;
-                    },
-                );
-        }
-
         public function expectUserInfoRepositoryCall(
             OauthUserInfo $userInfo,
         ): void {
             $this->userInfoRepository
-                ->expects('getUserInfoFromRequestToken')
+                ->expects('getUserInfoFromRequestSession')
                 ->with($this->request)
                 ->andReturn($userInfo);
         }
 
+        public function expectSendToLogin(ResponseInterface $response): void
+        {
+            $this->sendToLoginResponseFactory->expects('create')
+                ->with($this->request)
+                ->andReturn($response);
+        }
+
         public function expectAuthHookFactory(
             OauthUserInfo $withUserInfo,
+            ResponseInterface $withDefaultAccessDeniedResponse,
             ServerRequestInterface|null $customRequest = null,
             ResponseInterface|null $customResponse = null,
         ): void {
@@ -151,12 +87,12 @@ describe('RequireOauthTokenHeaderMiddleware', function (): void {
                     $withUserInfo,
                     $customRequest,
                     $customResponse,
+                    $withDefaultAccessDeniedResponse,
                 ): CustomAuthenticationResult {
                     expect($userInfo)->toBe($withUserInfo);
                     expect($request)->toBe($this->request);
-
-                    $this->expectResponseToBeDefaultAccessDenied(
-                        response: $defaultAccessDeniedResponse,
+                    expect($defaultAccessDeniedResponse)->toBe(
+                        $withDefaultAccessDeniedResponse,
                     );
 
                     return new CustomAuthenticationResult(
@@ -177,20 +113,6 @@ describe('RequireOauthTokenHeaderMiddleware', function (): void {
                 ->andReturn($this->request);
         }
 
-        public function expectResponseToBeDefaultAccessDenied(
-            ResponseInterface $response,
-        ): void {
-            expect($response->getStatusCode())->toBe(401);
-
-            expect($response->getHeaders())->toBe([
-                ['Content-type' => 'application/json'],
-            ]);
-
-            expect($response->getBody()->__toString())->toBe(
-                '{"error":"access_denied","error_description":"A valid bearer token is required to access this resource","message":"A valid bearer token is required to access this resource"}',
-            );
-        }
-
         public function expectHandlerCall(
             ServerRequestInterface $withRequest,
             ResponseInterface $returnResponse,
@@ -202,18 +124,24 @@ describe('RequireOauthTokenHeaderMiddleware', function (): void {
     }
 
     it(
-        'returns 401 if userInfo is not valid',
+        'returns send to login response if userinfo is invalid',
         function (): void {
-            $mockStack = new RequireOauthTokenHeaderMiddlewareMockStack();
-
-            $mockStack->expectUserInfoRepositoryCall(
-                userInfo: new OauthUserInfo(),
+            $sendToLoginResponse = Mockery::mock(
+                ResponseInterface::class,
             );
 
-            $middleware = new RequireOauthTokenHeaderMiddleware(
-                responseFactory: $mockStack->responseFactory,
-                userInfoRepository: $mockStack->userInfoRepository,
+            $mockStack = new RequireOauthSessionLoginRedirectMiddlewareMockStack();
+
+            $mockStack->expectUserInfoRepositoryCall(
+                new OauthUserInfo(),
+            );
+
+            $mockStack->expectSendToLogin($sendToLoginResponse);
+
+            $middleware = new RequireOauthSessionLoginRedirectMiddleware(
                 authHookFactory: $mockStack->authHookFactory,
+                userInfoRepository: $mockStack->userInfoRepository,
+                sendToLoginResponseFactory: $mockStack->sendToLoginResponseFactory,
             );
 
             $response = $middleware->process(
@@ -221,34 +149,39 @@ describe('RequireOauthTokenHeaderMiddleware', function (): void {
                 handler: $mockStack->handler,
             );
 
-            $mockStack->expectResponseToBeDefaultAccessDenied(
-                response: $response,
-            );
+            expect($response)->toBe($sendToLoginResponse);
         },
     );
 
     it(
         'returns custom auth response',
         function (): void {
+            $sendToLoginResponse = Mockery::mock(
+                ResponseInterface::class,
+            );
+
             $customResponse = Mockery::mock(ResponseInterface::class);
 
             $userInfo = new OauthUserInfo(isValid: true);
 
-            $mockStack = new RequireOauthTokenHeaderMiddlewareMockStack();
+            $mockStack = new RequireOauthSessionLoginRedirectMiddlewareMockStack();
 
             $mockStack->expectUserInfoRepositoryCall(userInfo: $userInfo);
 
+            $mockStack->expectSendToLogin($sendToLoginResponse);
+
             $mockStack->expectAuthHookFactory(
                 withUserInfo: $userInfo,
+                withDefaultAccessDeniedResponse: $sendToLoginResponse,
                 customResponse: $customResponse,
             );
 
             $mockStack->expectRequestAttributeUserInfo(userInfo: $userInfo);
 
-            $middleware = new RequireOauthTokenHeaderMiddleware(
-                responseFactory: $mockStack->responseFactory,
-                userInfoRepository: $mockStack->userInfoRepository,
+            $middleware = new RequireOauthSessionLoginRedirectMiddleware(
                 authHookFactory: $mockStack->authHookFactory,
+                userInfoRepository: $mockStack->userInfoRepository,
+                sendToLoginResponseFactory: $mockStack->sendToLoginResponseFactory,
             );
 
             $response = $middleware->process(
@@ -263,6 +196,10 @@ describe('RequireOauthTokenHeaderMiddleware', function (): void {
     it(
         'returns response from handler',
         function (): void {
+            $sendToLoginResponse = Mockery::mock(
+                ResponseInterface::class,
+            );
+
             $returnResponse = Mockery::mock(ResponseInterface::class);
 
             $customRequest = Mockery::mock(
@@ -271,26 +208,29 @@ describe('RequireOauthTokenHeaderMiddleware', function (): void {
 
             $userInfo = new OauthUserInfo(isValid: true);
 
-            $mockStack = new RequireOauthTokenHeaderMiddlewareMockStack();
+            $mockStack = new RequireOauthSessionLoginRedirectMiddlewareMockStack();
 
             $mockStack->expectUserInfoRepositoryCall(userInfo: $userInfo);
 
+            $mockStack->expectSendToLogin($sendToLoginResponse);
+
             $mockStack->expectAuthHookFactory(
                 withUserInfo: $userInfo,
+                withDefaultAccessDeniedResponse: $sendToLoginResponse,
                 customRequest: $customRequest,
             );
+
+            $mockStack->expectRequestAttributeUserInfo(userInfo: $userInfo);
 
             $mockStack->expectHandlerCall(
                 $customRequest,
                 $returnResponse,
             );
 
-            $mockStack->expectRequestAttributeUserInfo(userInfo: $userInfo);
-
-            $middleware = new RequireOauthTokenHeaderMiddleware(
-                responseFactory: $mockStack->responseFactory,
-                userInfoRepository: $mockStack->userInfoRepository,
+            $middleware = new RequireOauthSessionLoginRedirectMiddleware(
                 authHookFactory: $mockStack->authHookFactory,
+                userInfoRepository: $mockStack->userInfoRepository,
+                sendToLoginResponseFactory: $mockStack->sendToLoginResponseFactory,
             );
 
             $response = $middleware->process(
