@@ -6,6 +6,7 @@ declare(strict_types=1);
 
 namespace RxAnte\OAuth\TokenRepository\Refresh\Lock;
 
+use Closure;
 use Redis;
 use RuntimeException;
 
@@ -15,8 +16,15 @@ use function sleep;
 
 readonly class RedisRefreshLock implements RefreshLock
 {
-    public function __construct(private Redis $redis)
-    {
+    private Closure $sleep;
+
+    public function __construct(
+        private Redis $redis,
+        Closure|null $sleep = null,
+    ) {
+        $sleep ??= static fn (int $seconds) => sleep($seconds);
+
+        $this->sleep = $sleep;
     }
 
     public function acquire(string $accessToken): void
@@ -43,7 +51,7 @@ readonly class RedisRefreshLock implements RefreshLock
 
             $tries += 1;
 
-            sleep(1);
+            ($this->sleep)(1);
         } while ($tries < 65);
 
         if ($acquiredLock) {

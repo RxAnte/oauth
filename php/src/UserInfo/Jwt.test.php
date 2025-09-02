@@ -5,6 +5,8 @@ declare(strict_types=1);
 use RxAnte\OAuth\UserInfo\Jwt;
 
 describe('Jwt', function (): void {
+    uses()->group('Jwt');
+
     it('can be instantiated with default values', function (): void {
         $jwt = new Jwt();
 

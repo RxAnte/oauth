@@ -5,6 +5,8 @@ declare(strict_types=1);
 use RxAnte\OAuth\UserInfo\OauthUserInfo;
 
 describe('OauthUserInfo', function (): void {
+    uses()->group('OauthUserInfo');
+
     it(
         'constructs with default values',
         function (): void {
