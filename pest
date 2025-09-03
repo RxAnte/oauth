@@ -58,6 +58,10 @@ class Pest
 
     public bool $coverage = false;
 
+    private bool $displayDeprecations = false;
+
+    private bool $failOnDeprecation = false;
+
     public string|null $filter = null;
 
     public array|null $group = [];
@@ -89,6 +93,18 @@ class Pest
             if ($arg === '--coverage') {
                 unset($args[$key]);
                 $this->coverage = true;
+                continue;
+            }
+
+            if ($arg === '--display-deprecations') {
+                unset($args[$key]);
+                $this->displayDeprecations = true;
+                continue;
+            }
+
+            if ($arg === '--fail-on-deprecation') {
+                unset($args[$key]);
+                $this->failOnDeprecation = true;
                 continue;
             }
 
@@ -132,7 +148,7 @@ class Pest
         $this->remainingArgs = array_values($args);
     }
 
-    public function run()
+    public function run(): void
     {
         $env = [];
 
@@ -149,6 +165,14 @@ class Pest
             $cmd[] = 'php/tests/code-coverage/';
 
             $env['XDEBUG_MODE'] = 'coverage';
+        }
+
+        if ($this->displayDeprecations) {
+            $cmd[] = '--display-deprecations';
+        }
+
+        if ($this->failOnDeprecation) {
+            $cmd[] = '--fail-on-deprecation';
         }
 
         if ($this->filter !== null) {
