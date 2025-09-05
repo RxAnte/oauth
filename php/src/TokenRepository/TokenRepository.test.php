@@ -13,7 +13,7 @@ use RxAnte\OAuth\TokenRepository\TokenRepository;
 describe('TokenRepository', function (): void {
     uses()->group('TokenRepository');
 
-    it(
+    test(
         'createSessionIdWithAccessToken() creates a session id and stores the access token',
         function (): void {
             $uuid = Uuid::fromString(
@@ -57,7 +57,7 @@ describe('TokenRepository', function (): void {
         },
     );
 
-    it(
+    test(
         'setAccessTokenFromSessionId() sets access token from session id',
         function (): void {
             $accessToken = Mockery::mock(AccessTokenInterface::class);
@@ -87,7 +87,7 @@ describe('TokenRepository', function (): void {
         },
     );
 
-    it(
+    test(
         'getTokenBySessionId() gets token by session id',
         function (): void {
             $accessToken = Mockery::mock(AccessTokenInterface::class);
@@ -114,7 +114,7 @@ describe('TokenRepository', function (): void {
         },
     );
 
-    it(
+    test(
         'refreshAccessTokenBySessionId() refreshes access token by session id',
         function (): void {
             $refresh = Mockery::mock(
