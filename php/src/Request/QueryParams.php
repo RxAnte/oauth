@@ -35,7 +35,7 @@ readonly class QueryParams
         return new self($params);
     }
 
-    public function withoutQueryParam(string $key): QueryParams
+    public function withoutParam(string $key): QueryParams
     {
         $params = $this->params;
 
