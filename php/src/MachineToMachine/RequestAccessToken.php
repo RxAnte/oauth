@@ -21,9 +21,8 @@ use const CURLOPT_TIMEOUT;
 
 readonly class RequestAccessToken
 {
-    public function __construct(
-        private ClientFactory $clientFactory,
-    ) {
+    public function __construct(private ClientFactory $clientFactory)
+    {
     }
 
     public function fetch(AccessTokenRequestConfig $config): AccessToken
