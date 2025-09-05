@@ -17,7 +17,7 @@ describe('QueryParams', function (): void {
     );
 
     it(
-        'constructs with input params',
+        'constructs with specified params',
         function (): void {
             $sut = new QueryParams([
                 'foo' => 'bar',
@@ -96,7 +96,7 @@ describe('QueryParams', function (): void {
     );
 
     it(
-        'adds multiple params as once',
+        'adds multiple params at once',
         function (): void {
             $sut = new QueryParams([
                 'foo' => 'bar',
