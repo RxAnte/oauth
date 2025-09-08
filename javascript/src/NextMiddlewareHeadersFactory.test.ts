@@ -1,30 +1,30 @@
 import { describe, it, expect } from 'vitest';
 import { NextMiddlewareHeadersFactory } from './NextMiddlewareHeadersFactory';
 
-function makeMockRequest (
-    {
-        url,
-        headers = {},
-        pathname = '/',
-        searchParams = '',
-    }: {
-        url: string;
-        headers?: Record<string, string>;
-        pathname?: string;
-        searchParams?: string;
-    },
-) {
-    return {
-        url,
-        headers: new Headers(headers),
-        nextUrl: {
-            pathname,
-            searchParams: new URLSearchParams(searchParams),
-        },
-    };
-}
-
 describe('NextMiddlewareHeadersFactory', () => {
+    function makeMockRequest (
+        {
+            url,
+            headers = {},
+            pathname = '/',
+            searchParams = '',
+        }: {
+            url: string;
+            headers?: Record<string, string>;
+            pathname?: string;
+            searchParams?: string;
+        },
+    ) {
+        return {
+            url,
+            headers: new Headers(headers),
+            nextUrl: {
+                pathname,
+                searchParams: new URLSearchParams(searchParams),
+            },
+        };
+    }
+
     it('should return original headers when url includes "_next"', () => {
         const req = makeMockRequest({
             url: 'https://example.com/_next/static/chunk.js',

@@ -1,0 +1,131 @@
+#!/usr/bin/env php
+<?php
+
+declare(strict_types=1);
+
+use Symfony\Component\Process\Process;
+
+require_once __DIR__ . '/vendor/autoload.php';
+
+class StreamCommand
+{
+    /**
+     * @param string[]|string $command
+     * @param mixed[]|null    $env
+     */
+    public static function stream(
+        array|string $command,
+        string|null $cwd = null,
+        array|null $env = null,
+        bool $exitOnError = true,
+    ): int {
+        if ($cwd === null) {
+            $cwd = __DIR__ . '/javascript';
+        }
+
+        if (is_string($command)) {
+            $process = Process::fromShellCommandline(
+                command: $command,
+                cwd: $cwd,
+                env: $env,
+                timeout: null,
+            );
+        } else {
+            $process = new Process(
+                command: $command,
+                cwd: $cwd,
+                env: $env,
+                timeout: null,
+            );
+        }
+
+        $existStatus = $process->setTty(Process::isTtySupported())
+            ->run(static function ($type, $buffer): void {
+                echo $buffer;
+            });
+
+        if (! $exitOnError || $existStatus === 0) {
+            return $existStatus;
+        }
+
+        exit($existStatus);
+    }
+}
+
+class Vitest
+{
+    public bool $dumpCommand = false;
+
+    public bool $coverage = false;
+
+    private array $remainingArgs = [];
+
+    public function __construct(array $args)
+    {
+        unset($args[0]);
+
+        $skipNext = false;
+
+        foreach ($args as $key => $arg) {
+            if ($skipNext === true) {
+                $skipNext = false;
+
+                continue;
+            }
+
+            if (
+                $arg === '--dump-command' ||
+                strtolower($arg) === '--dumpcommand'
+            ) {
+                unset($args[$key]);
+                $this->dumpCommand = true;
+                continue;
+            }
+
+            if ($arg === '--coverage') {
+                unset($args[$key]);
+                $this->coverage = true;
+                continue;
+            }
+        }
+
+        $this->remainingArgs = array_values($args);
+    }
+
+    public function run(): void
+    {
+        $env = [];
+
+        $cmd = [
+            'npx',
+            'vitest',
+            'run',
+        ];
+
+        if ($this->coverage === true) {
+            $cmd[] = '--coverage';
+        }
+
+        $cmd = array_merge($cmd, $this->remainingArgs);
+
+        if ($this->dumpCommand === true) {
+            foreach ($env as $envKey => $envItem) {
+                $cmd = array_merge([
+                    $envKey . '=' . $envItem,
+                ], $cmd);
+            }
+
+            echo implode(' ', $cmd);
+            exit;
+        }
+
+        StreamCommand::stream(
+            command: $cmd,
+            env: $env,
+        );
+    }
+}
+
+$vitest = new Vitest($argv);
+
+$vitest->run();
