@@ -9,7 +9,10 @@ use Hyperf\Guzzle\ClientFactory;
 use Psr\Cache\CacheItemPoolInterface;
 use RuntimeException;
 
+use function array_key_exists;
 use function assert;
+use function implode;
+use function is_string;
 use function json_decode;
 use function json_validate;
 use function md5;
@@ -27,9 +30,10 @@ readonly class WellKnownRepository
     {
         $url = $this->config->wellKnownUrl;
 
-        $cache = $this->cachePool->getItem(
-            $this->config->wellKnownCacheKey . '_' . md5($url),
-        );
+        $cache = $this->cachePool->getItem(implode('_', [
+            $this->config->wellKnownCacheKey,
+            md5($url),
+        ]));
 
         if ($cache->isHit()) {
             $wellKnown = $cache->get();
@@ -38,19 +42,21 @@ readonly class WellKnownRepository
             return $wellKnown;
         }
 
-        $response = $this->clientFactory->create()->get(
-            $url,
-            [
-                RequestOptions::HEADERS => ['Accept' => 'application/json'],
-                RequestOptions::HTTP_ERRORS => false,
-            ],
-        );
+        $response = $this->clientFactory->create()->get($url, [
+            RequestOptions::HEADERS => ['Accept' => 'application/json'],
+            RequestOptions::HTTP_ERRORS => false,
+        ]);
 
         $statusCode = $response->getStatusCode();
 
         if ($statusCode !==  200) {
             throw new RuntimeException(
-                'Unable to get RxAnte Well Known from ' . $url,
+                implode(' ', [
+                    'Unable to get WellKnown from',
+                    $url . '.',
+                    'Well Known URL returned a non-200 status code.',
+                ]),
+                $statusCode,
             );
         }
 
@@ -58,7 +64,11 @@ readonly class WellKnownRepository
 
         if (! json_validate($body)) {
             throw new RuntimeException(
-                'Unable to get Well Known from ' . $url,
+                implode(' ', [
+                    'Unable to get WellKnown from',
+                    $url . '.',
+                    'Well Known response is not valid JSON.',
+                ]),
             );
         }
 
@@ -71,6 +81,25 @@ readonly class WellKnownRepository
          * } $json
          */
         $json = (array) json_decode($body, true);
+
+        if (
+            ! array_key_exists('issuer', $json) ||
+            ! is_string($json['issuer']) ||
+            ! array_key_exists('authorization_endpoint', $json) ||
+            ! is_string($json['authorization_endpoint']) ||
+            ! array_key_exists('token_endpoint', $json) ||
+            ! is_string($json['token_endpoint']) ||
+            ! array_key_exists('userinfo_endpoint', $json) ||
+            ! is_string($json['userinfo_endpoint'])
+        ) {
+            throw new RuntimeException(
+                implode(' ', [
+                    'Unable to get WellKnown from',
+                    $url . '.',
+                    'Well Known response JSON does not contain needed data.',
+                ]),
+            );
+        }
 
         $wellKnown = new WellKnown(
             issuer: $json['issuer'],

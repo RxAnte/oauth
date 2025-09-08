@@ -17,6 +17,11 @@
         <exclude>
             <directory suffix="test.php">./php</directory>
             <directory>./php/tests</directory>
+
+            <!-- TODO: Deprecated code, remove these when code is removed -->
+            <directory>./php/src/Handlers/FusionAuth</directory>
+            <directory>./php/src/Handlers/Auth0</directory>
+            <file>./php/src/Handlers/Common/ExtractToken.php</file>
         </exclude>
     </source>
 </phpunit>
