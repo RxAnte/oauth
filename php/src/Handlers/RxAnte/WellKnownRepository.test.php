@@ -13,6 +13,8 @@ use RxAnte\OAuth\Handlers\RxAnte\RxAnteConfig;
 use RxAnte\OAuth\Handlers\RxAnte\WellKnown;
 use RxAnte\OAuth\Handlers\RxAnte\WellKnownRepository;
 
+// phpcs:disable Squiz.PHP.InnerFunctions.NotAllowed
+
 describe('WellKnownRepository', function (): void {
     uses()->group('WellKnownRepository');
 
