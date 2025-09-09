@@ -20,6 +20,7 @@ readonly class CacheResponseWithSystemCache implements CacheResponse
     public function cache(JwtToken $jwt, RxAnteResponse $response): void
     {
         $expirationDate = $jwt->claims()->get('exp');
+
         assert(
             $expirationDate === null ||
             $expirationDate instanceof DateTimeImmutable,
