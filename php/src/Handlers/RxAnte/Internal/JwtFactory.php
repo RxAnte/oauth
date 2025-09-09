@@ -30,11 +30,9 @@ readonly class JwtFactory
 
             assert($jwt instanceof JwtToken);
 
-            $constraints = $jwtConfiguration->validationConstraints();
-
             $jwtConfiguration->validator()->assert(
                 $jwt,
-                ...$constraints,
+                ...$jwtConfiguration->validationConstraints(),
             );
 
             return $jwt;
