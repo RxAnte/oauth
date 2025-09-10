@@ -6,6 +6,7 @@ import { GetTokenFromCookies } from './GetTokenFromCookies';
 import { FindTokenFromCookies } from './FindTokenFromCookies';
 import type { TokenData } from '../../TokenData';
 
+vi.mock('ioredis');
 vi.mock('./FindTokenFromCookies');
 
 beforeEach(() => {

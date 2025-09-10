@@ -13,6 +13,7 @@ import { SetTokenBasedOnCookies } from './SetTokenBasedOnCookies';
 import { User } from '../../User';
 import { TokenData } from '../../TokenData';
 
+vi.mock('ioredis');
 vi.mock('./CreateSessionIdWithToken');
 vi.mock('./FindTokenBySessionId');
 vi.mock('./FindTokenFromCookies');

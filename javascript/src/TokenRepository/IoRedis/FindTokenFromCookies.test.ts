@@ -7,6 +7,7 @@ import { GetIdFromCookies } from './GetIdFromCookies';
 import { FindTokenBySessionId } from './FindTokenBySessionId';
 import type { TokenData } from '../../TokenData';
 
+vi.mock('ioredis');
 vi.mock('./GetIdFromCookies');
 vi.mock('./FindTokenBySessionId');
 
