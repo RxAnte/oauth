@@ -12,9 +12,9 @@ use Psr\Http\Message\ServerRequestInterface;
 readonly class SendToLogInCookieChain
 {
     public function __construct(
-        private OauthLoginReturnCookieHandler $loginReturn,
-        private OauthPkceCodeCookieHandler $pkceCode,
-        private OauthStateCookieHandler $state,
+        private OauthLoginReturnCookieHandler $loginReturnCookieHandler,
+        private OauthPkceCodeCookieHandler $pkceCodeCookieHandler,
+        private OauthStateCookieHandler $stateCookieHandler,
     ) {
     }
 
@@ -30,17 +30,17 @@ readonly class SendToLogInCookieChain
             $loginReturn .= '?' . $request->getUri()->getQuery();
         }
 
-        $response = $this->loginReturn->setResponseCookie(
+        $response = $this->loginReturnCookieHandler->setResponseCookie(
             $response,
             $loginReturn,
         );
 
-        $response = $this->pkceCode->setResponseCookie(
+        $response = $this->pkceCodeCookieHandler->setResponseCookie(
             $response,
             $oauthPkceCode,
         );
 
-        $response = $this->state->setResponseCookie(
+        $response = $this->stateCookieHandler->setResponseCookie(
             $response,
             $oauthState,
         );
