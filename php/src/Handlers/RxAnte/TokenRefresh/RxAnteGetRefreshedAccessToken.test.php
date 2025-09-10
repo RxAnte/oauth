@@ -6,6 +6,7 @@ use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
 use Hyperf\Guzzle\ClientFactory;
 use League\OAuth2\Client\Token\AccessToken;
+use League\OAuth2\Client\Token\AccessTokenInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 use RxAnte\OAuth\Handlers\Common\ProviderOptionsReader;
@@ -188,6 +189,7 @@ describe('RxAnteGetRefreshedAccessToken', function (): void {
         );
 
         $result = $sut->get($inputToken);
+        assert($result instanceof AccessTokenInterface);
 
         expect($result->getToken())->toBe(
             'mock-new-access-token',
