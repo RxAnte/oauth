@@ -14,5 +14,6 @@ export default defineConfig({
                 'src/Request/RefreshAccessToken/RefreshAccessTokenWithAuth0Factory.ts',
             ],
         },
+        setupFiles: ['./setup.ts'],
     },
 });
