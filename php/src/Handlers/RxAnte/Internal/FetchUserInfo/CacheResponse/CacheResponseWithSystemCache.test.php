@@ -2,22 +2,14 @@
 
 declare(strict_types=1);
 
-namespace RxAnte\OAuth\Tests\Handlers\RxAnte\Internal\FetchUserInfo\CacheResponse;
-
-use DateTimeImmutable;
 use Lcobucci\JWT\Token\DataSet;
 use Lcobucci\JWT\UnencryptedToken as JwtToken;
-use Mockery;
 use Mockery\MockInterface;
 use Psr\Cache\CacheItemInterface;
 use Psr\Cache\CacheItemPoolInterface;
 use RxAnte\OAuth\Handlers\RxAnte\Internal\FetchUserInfo\CacheResponse\CacheKey;
 use RxAnte\OAuth\Handlers\RxAnte\Internal\FetchUserInfo\CacheResponse\CacheResponseWithSystemCache;
 use RxAnte\OAuth\Handlers\RxAnte\Internal\FetchUserInfo\GetResponse\RxAnteResponse;
-
-use function describe;
-use function it;
-use function uses;
 
 // phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 // phpcs:disable Squiz.Classes.ClassFileName.NoMatch

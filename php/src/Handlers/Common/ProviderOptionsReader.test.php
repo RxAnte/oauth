@@ -2,15 +2,8 @@
 
 declare(strict_types=1);
 
-namespace RxAnte\OAuth\Tests\Handlers\Common;
-
 use League\OAuth2\Client\Provider\GenericProvider;
 use RxAnte\OAuth\Handlers\Common\ProviderOptionsReader;
-
-use function describe;
-use function expect;
-use function it;
-use function uses;
 
 // phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 // phpcs:disable Squiz.Classes.ClassFileName.NoMatch

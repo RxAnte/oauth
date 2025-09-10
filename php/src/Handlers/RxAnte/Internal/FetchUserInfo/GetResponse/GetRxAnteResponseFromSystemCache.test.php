@@ -2,11 +2,7 @@
 
 declare(strict_types=1);
 
-namespace RxAnte\OAuth\Tests\Handlers\RxAnte\Internal\FetchUserInfo\GetResponse;
-
-use Exception;
 use Lcobucci\JWT\UnencryptedToken as JwtToken;
-use Mockery;
 use Mockery\MockInterface;
 use Psr\Cache\CacheItemInterface;
 use Psr\Cache\CacheItemPoolInterface;
@@ -16,11 +12,6 @@ use RxAnte\OAuth\Handlers\RxAnte\Internal\FetchUserInfo\GetResponse\GetRxAnteRes
 use RxAnte\OAuth\Handlers\RxAnte\Internal\FetchUserInfo\GetResponse\GetRxAnteResponseFromSystemCache;
 use RxAnte\OAuth\Handlers\RxAnte\Internal\FetchUserInfo\GetResponse\RxAnteResponse;
 use RxAnte\OAuth\Handlers\RxAnte\Internal\FetchUserInfo\GetResponse\RxAnteResponseWrapper;
-
-use function describe;
-use function expect;
-use function it;
-use function uses;
 
 // phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 // phpcs:disable Squiz.Classes.ClassFileName.NoMatch

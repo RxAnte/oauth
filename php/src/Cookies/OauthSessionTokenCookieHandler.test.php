@@ -2,16 +2,8 @@
 
 declare(strict_types=1);
 
-namespace RxAnte\OAuth\Tests\Cookies;
-
-use Mockery;
 use Psr\Clock\ClockInterface;
 use RxAnte\OAuth\Cookies\OauthSessionTokenCookieHandler;
-
-use function describe;
-use function expect;
-use function it;
-use function uses;
 
 // phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 // phpcs:disable Squiz.Classes.ClassFileName.NoMatch

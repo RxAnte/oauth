@@ -2,20 +2,12 @@
 
 declare(strict_types=1);
 
-namespace RxAnte\OAuth\Tests\Handlers\RxAnte\Internal\FetchUserInfo\CacheResponse;
-
-use Mockery;
 use Mockery\MockInterface;
 use RxAnte\OAuth\Handlers\RxAnte\Internal\FetchUserInfo\CacheResponse\CacheResponseFactory;
 use RxAnte\OAuth\Handlers\RxAnte\Internal\FetchUserInfo\CacheResponse\CacheResponseNoOp;
 use RxAnte\OAuth\Handlers\RxAnte\Internal\FetchUserInfo\CacheResponse\CacheResponseWithSystemCache;
 use RxAnte\OAuth\Handlers\RxAnte\Internal\FetchUserInfo\GetResponse\RxAnteResponse;
 use RxAnte\OAuth\Handlers\RxAnte\Internal\FetchUserInfo\GetResponse\RxAnteResponseWrapper;
-
-use function describe;
-use function expect;
-use function it;
-use function uses;
 
 // phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 // phpcs:disable Squiz.Classes.ClassFileName.NoMatch

@@ -2,20 +2,11 @@
 
 declare(strict_types=1);
 
-namespace RxAnte\OAuth\Tests\Handlers\Common;
-
 use Lcobucci\JWT\Configuration as JwtConfiguration;
-use Mockery;
 use Mockery\MockInterface;
 use Psr\Clock\ClockInterface;
-use RuntimeException;
 use RxAnte\OAuth\Handlers\Common\JwtConfigurationFactory;
 use RxAnte\OAuth\Handlers\Common\OauthPublicKey;
-
-use function describe;
-use function expect;
-use function it;
-use function uses;
 
 // phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 // phpcs:disable Squiz.Classes.ClassFileName.NoMatch

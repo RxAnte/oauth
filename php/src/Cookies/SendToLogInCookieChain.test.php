@@ -2,9 +2,6 @@
 
 declare(strict_types=1);
 
-namespace RxAnte\OAuth\Tests\Cookies;
-
-use Mockery;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Message\UriInterface;
@@ -12,11 +9,6 @@ use RxAnte\OAuth\Cookies\OauthLoginReturnCookieHandler;
 use RxAnte\OAuth\Cookies\OauthPkceCodeCookieHandler;
 use RxAnte\OAuth\Cookies\OauthStateCookieHandler;
 use RxAnte\OAuth\Cookies\SendToLogInCookieChain;
-
-use function describe;
-use function expect;
-use function it;
-use function uses;
 
 // phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 // phpcs:disable Squiz.Classes.ClassFileName.NoMatch

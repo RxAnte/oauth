@@ -2,23 +2,15 @@
 
 declare(strict_types=1);
 
-namespace RxAnte\OAuth\Tests\Handlers\RxAnte\Internal\FetchUserInfo\GetResponse;
-
 use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
 use Hyperf\Guzzle\ClientFactory;
 use Lcobucci\JWT\UnencryptedToken as JwtToken;
-use Mockery;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
 use RxAnte\OAuth\Handlers\RxAnte\Internal\FetchUserInfo\GetResponse\GetRxAnteResponseFromRxAnte;
 use RxAnte\OAuth\Handlers\RxAnte\WellKnown;
 use RxAnte\OAuth\Handlers\RxAnte\WellKnownRepository;
-
-use function describe;
-use function expect;
-use function it;
-use function uses;
 
 // phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 // phpcs:disable Squiz.Classes.ClassFileName.NoMatch
