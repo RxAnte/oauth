@@ -2,13 +2,9 @@
 
 declare(strict_types=1);
 
-namespace RxAnte\OAuth\Tests\Callback;
-
 use Dflydev\FigCookies\Cookie;
-use Exception;
 use League\OAuth2\Client\Provider\AbstractProvider;
 use League\OAuth2\Client\Token\AccessToken;
-use Mockery;
 use Mockery\MockInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use RxAnte\OAuth\Callback\GetCallbackResponder;
@@ -21,11 +17,6 @@ use RxAnte\OAuth\Cookies\OauthPkceCodeCookieHandler;
 use RxAnte\OAuth\Cookies\OauthSessionTokenCookieHandler;
 use RxAnte\OAuth\Cookies\OauthStateCookieHandler;
 use RxAnte\OAuth\TokenRepository\TokenRepository;
-
-use function describe;
-use function expect;
-use function it;
-use function uses;
 
 // phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 // phpcs:disable Squiz.Classes.ClassFileName.NoMatch
