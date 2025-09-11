@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
-## 2.0.0 — 2025-08-26
+## 2.0.0 — 2025-09-11
 ### Deprecated
 - The use of the `next-auth` package has been deprecated (next-auth is bad and it should feel bad).
 - The entirety of the PHP classes and functionality in the `\RxAnte\OAuth\Handlers\Auth0` and `\RxAnte\OAuth\Handlers\FusionAuth` namespace have been deprecated. Use the new generic handler classes in the `\RxAnte\OAuth\Handlers\RxAnte` namespace
