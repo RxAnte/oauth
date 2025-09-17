@@ -8,14 +8,14 @@ type ErrorJson = {
     error_description?: string;
 };
 
-type TokenResponseJson = {
+export type TokenResponseJson = {
     token_type: string;
     expires_in: number;
     access_token: string;
     refresh_token: string;
 };
 
-type UserInfoJson = {
+export type UserInfoJson = {
     sub: string;
     email: string;
     name: string;
@@ -32,6 +32,12 @@ export default async function RespondToAuthCodeCallback (
     clientId: string,
     clientSecret: string,
     callbackUri: string = '/api/auth/callback',
+    onBeforeSuccessRedirect: (params: {
+        sessionId: string;
+        token: TokenData;
+        userInfoJson: UserInfoJson;
+        tokenJson: TokenResponseJson;
+    }) => void = () => {},
 ): Promise<Response> {
     const appUrlUrl = new URL(appUrl);
 
@@ -147,6 +153,13 @@ export default async function RespondToAuthCodeCallback (
             path: '/',
             maxAge: 2628000, // One month for good measure
             secure: true,
+        });
+
+        onBeforeSuccessRedirect({
+            sessionId,
+            token,
+            userInfoJson,
+            tokenJson,
         });
 
         return Response.redirect(authReturn);

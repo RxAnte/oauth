@@ -1,6 +1,6 @@
 # Resource Server Usage
 
-RxAnte uses PHP for our resource servers. And we use [Slim](https://www.slimframework.com/) to back our HTTP PHP applications with the [PSR-11](https://www.php-fig.org/psr/psr-11/) compliant dependency injection container, [PHP-DI]https://php-di.org/). All examples assume Slim with a PSR-11 compliant DI container.
+RxAnte uses PHP for our resource servers. And we use [Slim](https://www.slimframework.com/) to back our HTTP PHP applications with the [PSR-11](https://www.php-fig.org/psr/psr-11/) compliant dependency injection container, [PHP-DI](https://php-di.org/). All examples assume Slim with a PSR-11 compliant DI container.
 
 In order to protect resource routes and require a bearer token, you can use the `\RxAnte\OAuth\RequireOauthTokenHeaderMiddleware` with your route.
 

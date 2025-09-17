@@ -116,7 +116,30 @@ export async function GET (request: Request) {
 
 ### Making Requests
 
-Now that we are able to sign in and acquire a token, we can make requests. To make requests, you can use the `RequestFactory` to create the Request api.
+Now that we are able to sign in and acquire a token, we can make requests. To make requests, you can use the `RequestFactory` to create the Request api. You'll also need to add the `NextMiddlewareHeadersFactory` to Next.
+
+#### `NextMiddlewareHeadersFactory`
+
+In your next project, create if it does not exist: `middleware.ts`. Add the call for `NextMiddlewareHeadersFactory` like this:
+
+(Please note at the moment, `NextMiddlewareHeadersFactory` is being imported from `rxante-oauth/dist/NextMiddlewareHeadersFactory` rather than from the index `rxante-oauth`. This is due to some bug or conflict that we have yet to resolve where Next will not compile correctly and tries to import `node:crypto` into the client side Javascript. Importing directly from `dist` works to get around this problem for now.
+
+```typescript
+import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
+import { NextMiddlewareHeadersFactory } from 'rxante-oauth/dist/NextMiddlewareHeadersFactory';
+
+export async function middleware (req: NextRequest) {
+    return NextResponse.next({
+        request: {
+            headers: NextMiddlewareHeadersFactory(
+                // @ts-expect-error TS2345
+                req,
+            ),
+        },
+    });
+}
+```
 
 #### `RequestFactory`
 

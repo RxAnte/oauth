@@ -114,3 +114,59 @@ export async function GET (request: Request) {
     return (await AuthCodeGrantApiFactory()).respondToAuthCodeCallback(request);
 }
 ```
+
+If your application needs to respond to a successful callback, add a second argument to `respondToAuthCodeCallback`, which accepts a method. The incoming argument will be an object:
+
+```typescript
+{
+    sessionId: string;
+    token: TokenData;
+    userInfoJson: UserInfoJson;
+    tokenJson: TokenResponseJson;
+}
+```
+
+```typescript
+import { cookies } from 'next/headers';
+
+import { AuthCodeGrantApiFactory } from '../AuthCodeGrantApiFactory';
+import { ConnectionWhiteList } from '../ConnectionWhiteList';
+
+export async function GET (request: Request) {
+    const cookieStore = await cookies();
+
+    return (await AuthCodeGrantApiFactory()).respondToAuthCodeCallback(
+        request,
+        ({ token }) => {
+            cookieStore.set({
+                name: 'login_tracking',
+                value: '1',
+                sameSite: 'none',
+                secure: true,
+            });
+
+            const idParts = token.user.id.split('|');
+
+            const idConnection = idParts.filter(
+                (str) => ConnectionWhiteList.indexOf(str) > -1,
+            ).at(0);
+
+            if (!idConnection) {
+                return;
+            }
+
+            const aYearFromNow = new Date();
+            aYearFromNow.setFullYear(aYearFromNow.getFullYear() + 1);
+
+            cookieStore.set({
+                name: 'connection',
+                value: idConnection,
+                expires: aYearFromNow,
+                path: '/',
+                sameSite: 'none',
+                secure: true,
+            });
+        },
+    );
+}
+```

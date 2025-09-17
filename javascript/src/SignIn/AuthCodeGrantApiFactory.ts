@@ -1,7 +1,8 @@
 import { AuthCodeGrantApi } from './AuthCodeGrantApi';
 import CreateSignInRouteResponse from './Internal/CreateSignInRouteResponse';
-import RespondToAuthCodeCallback from './Internal/RespondToAuthCodeCallback';
+import RespondToAuthCodeCallback, { TokenResponseJson, UserInfoJson } from './Internal/RespondToAuthCodeCallback';
 import { TokenRepository } from '../TokenRepository/TokenRepository';
+import { TokenData } from '../TokenData';
 
 export function AuthCodeGrantApiFactory (
     {
@@ -41,6 +42,12 @@ export function AuthCodeGrantApiFactory (
         ),
         respondToAuthCodeCallback: async (
             request: Request,
+            onBeforeSuccessRedirect: (params: {
+                sessionId: string;
+                token: TokenData;
+                userInfoJson: UserInfoJson;
+                tokenJson: TokenResponseJson;
+            }) => void = () => {},
         ) => RespondToAuthCodeCallback(
             tokenRepository,
             request,
@@ -50,6 +57,7 @@ export function AuthCodeGrantApiFactory (
             clientId,
             clientSecret,
             callbackUri,
+            onBeforeSuccessRedirect,
         ),
     };
 }

@@ -90,6 +90,7 @@ describe('AuthCodeGrantApiFactory', () => {
                 'mock-client-id',
                 'mock-client-secret',
                 '/mock/callback/uri',
+                expect.any(Function),
             );
 
             expect(await authCodeResponse.text()).toBe(
@@ -133,8 +134,11 @@ describe('AuthCodeGrantApiFactory', () => {
 
             const authCodeMockRequest = new Request('https://authCode');
 
+            const onBeforeSuccessRedirect = () => {};
+
             const authCodeResponse = await api.respondToAuthCodeCallback(
                 authCodeMockRequest,
+                onBeforeSuccessRedirect,
             );
 
             expect(RespondToAuthCodeCallback).toHaveBeenCalledWith(
@@ -146,6 +150,7 @@ describe('AuthCodeGrantApiFactory', () => {
                 'client-id',
                 'client-secret',
                 '/api/auth/callback',
+                onBeforeSuccessRedirect,
             );
 
             expect(await authCodeResponse.text()).toBe(

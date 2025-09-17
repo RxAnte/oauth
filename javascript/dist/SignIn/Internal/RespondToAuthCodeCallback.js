@@ -13,7 +13,7 @@ exports.default = RespondToAuthCodeCallback;
 const headers_1 = require("next/headers");
 const crypto_1 = require("crypto");
 function RespondToAuthCodeCallback(tokenRepository_1, request_1, appUrl_1, tokenUrl_1, userInfoUrl_1, clientId_1, clientSecret_1) {
-    return __awaiter(this, arguments, void 0, function* (tokenRepository, request, appUrl, tokenUrl, userInfoUrl, clientId, clientSecret, callbackUri = '/api/auth/callback') {
+    return __awaiter(this, arguments, void 0, function* (tokenRepository, request, appUrl, tokenUrl, userInfoUrl, clientId, clientSecret, callbackUri = '/api/auth/callback', onBeforeSuccessRedirect = () => { }) {
         var _a, _b;
         const appUrlUrl = new URL(appUrl);
         const cookieStore = yield (0, headers_1.cookies)();
@@ -91,6 +91,12 @@ function RespondToAuthCodeCallback(tokenRepository_1, request_1, appUrl_1, token
                 path: '/',
                 maxAge: 2628000, // One month for good measure
                 secure: true,
+            });
+            onBeforeSuccessRedirect({
+                sessionId,
+                token,
+                userInfoJson,
+                tokenJson,
             });
             return Response.redirect(authReturn);
         }

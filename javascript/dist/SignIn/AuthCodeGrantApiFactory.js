@@ -20,8 +20,8 @@ function AuthCodeGrantApiFactory({ tokenRepository, appUrl, authorizeUrl, tokenU
         createSignInRouteResponse: (request_1, ...args_1) => __awaiter(this, [request_1, ...args_1], void 0, function* (request, modifyAuthorizeUrl = () => { }) {
             return (0, CreateSignInRouteResponse_1.default)(request, appUrl, authorizeUrl, clientId, callbackUri, audience, modifyAuthorizeUrl);
         }),
-        respondToAuthCodeCallback: (request) => __awaiter(this, void 0, void 0, function* () {
-            return (0, RespondToAuthCodeCallback_1.default)(tokenRepository, request, appUrl, tokenUrl, userInfoUrl, clientId, clientSecret, callbackUri);
+        respondToAuthCodeCallback: (request_1, ...args_1) => __awaiter(this, [request_1, ...args_1], void 0, function* (request, onBeforeSuccessRedirect = () => { }) {
+            return (0, RespondToAuthCodeCallback_1.default)(tokenRepository, request, appUrl, tokenUrl, userInfoUrl, clientId, clientSecret, callbackUri, onBeforeSuccessRedirect);
         }),
     };
 }

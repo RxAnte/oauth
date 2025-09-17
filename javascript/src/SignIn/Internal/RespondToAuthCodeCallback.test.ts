@@ -103,6 +103,8 @@ describe('RespondToAuthCodeCallback', () => {
 
             values.authorizeStateCookie = { value: 'mock-state' };
 
+            const onBeforeSuccessRedirect = vi.fn();
+
             const response = await RespondToAuthCodeCallback(
                 mockTokenRepository,
                 new Request(
@@ -113,6 +115,8 @@ describe('RespondToAuthCodeCallback', () => {
                 'http://localhost/userinfo',
                 'mock-client-id',
                 'mock-client-secret',
+                '/auth/callback',
+                onBeforeSuccessRedirect,
             );
 
             expect(mockFetch).toHaveBeenCalledWith(
@@ -125,7 +129,7 @@ describe('RespondToAuthCodeCallback', () => {
                     method: 'POST',
                     body: JSON.stringify({
                         grant_type: 'authorization_code',
-                        redirect_uri: 'http://localhost/api/auth/callback',
+                        redirect_uri: 'http://localhost/auth/callback',
                         client_id: 'mock-client-id',
                         client_secret: 'mock-client-secret',
                         code: 'mock-code',
@@ -165,6 +169,19 @@ describe('RespondToAuthCodeCallback', () => {
                 expect.any(String),
                 expect.any(Object),
             );
+
+            expect(onBeforeSuccessRedirect).toHaveBeenCalledWith({
+                sessionId: expect.any(String),
+                token: expect.objectContaining({
+                    accessToken: 'mock-access-token',
+                }),
+                userInfoJson: expect.objectContaining({
+                    sub: 'mock-sub',
+                }),
+                tokenJson: expect.objectContaining({
+                    access_token: 'mock-access-token',
+                }),
+            });
 
             expect(response.headers.get('location')).toBe(
                 'http://localhost/authReturnValue',
