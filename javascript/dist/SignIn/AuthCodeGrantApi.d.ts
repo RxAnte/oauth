@@ -8,4 +8,5 @@ export type AuthCodeGrantApi = {
         userInfoJson: UserInfoJson;
         tokenJson: TokenResponseJson;
     }) => void) => Promise<Response>;
+    deleteSessionAndCookie: () => Promise<void>;
 };

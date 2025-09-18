@@ -10,6 +10,8 @@ import { GetTokenFromCookies } from './GetTokenFromCookies';
 import { TokenData } from '../../TokenData';
 import { SetTokenBasedOnCookies } from './SetTokenBasedOnCookies';
 import { SetTokenFromSessionId } from './SetTokenFromSessionId';
+import DeleteTokenBySessionId from './DeleteTokenBySessionId';
+import DeleteTokenFromCookies from './DeleteTokenFromCookies';
 
 export function IoRedisTokenRepositoryFactory (
     {
@@ -65,6 +67,15 @@ export function IoRedisTokenRepositoryFactory (
             redis,
             redisTokenExpireTimeInSeconds,
             secret,
+        ),
+        deleteTokenBySessionId: async (
+            sessionId: string,
+        ) => DeleteTokenBySessionId(
+            sessionId,
+            redis,
+        ),
+        deleteTokenFromCookies: async () => DeleteTokenFromCookies(
+            redis,
         ),
     };
 }

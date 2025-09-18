@@ -225,6 +225,10 @@ export default async function Page () {
 }
 ```
 
+### Sign Out
+
+To sign out, from the server side of your Next application, call `await (await AuthCodeGrantApiFactory()).deleteSessionAndCookie()`
+
 ## PHP
 
 At RxAnte, we use [Slim](https://www.slimframework.com/) to back our HTTP PHP applications with the [PSR-11](https://www.php-fig.org/psr/psr-11/) compliant dependency injection container, [PHP-DI]https://php-di.org/). All examples assume Slim with a PSR-11 compliant DI container.

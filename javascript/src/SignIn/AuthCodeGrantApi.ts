@@ -1,5 +1,8 @@
 import { TokenData } from '../TokenData';
-import { TokenResponseJson, UserInfoJson } from './Internal/RespondToAuthCodeCallback';
+import {
+    TokenResponseJson,
+    UserInfoJson,
+} from './Internal/RespondToAuthCodeCallback';
 
 export type AuthCodeGrantApi = {
     createSignInRouteResponse: (
@@ -15,4 +18,5 @@ export type AuthCodeGrantApi = {
             tokenJson: TokenResponseJson;
         }) => void,
     ) => Promise<Response>;
+    deleteSessionAndCookie: () => Promise<void>;
 };

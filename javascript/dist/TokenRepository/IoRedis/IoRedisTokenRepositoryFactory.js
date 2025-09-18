@@ -8,6 +8,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.IoRedisTokenRepositoryFactory = IoRedisTokenRepositoryFactory;
 const CreateSessionIdWithToken_1 = require("./CreateSessionIdWithToken");
@@ -16,6 +19,8 @@ const FindTokenFromCookies_1 = require("./FindTokenFromCookies");
 const GetTokenFromCookies_1 = require("./GetTokenFromCookies");
 const SetTokenBasedOnCookies_1 = require("./SetTokenBasedOnCookies");
 const SetTokenFromSessionId_1 = require("./SetTokenFromSessionId");
+const DeleteTokenBySessionId_1 = __importDefault(require("./DeleteTokenBySessionId"));
+const DeleteTokenFromCookies_1 = __importDefault(require("./DeleteTokenFromCookies"));
 function IoRedisTokenRepositoryFactory({ redis, 
 /** @deprecated secret is no longer require unless still using next-auth */
 secret, redisTokenExpireTimeInSeconds, }) {
@@ -38,6 +43,12 @@ secret, redisTokenExpireTimeInSeconds, }) {
         }),
         setTokenBasedOnCookies: (token) => __awaiter(this, void 0, void 0, function* () {
             return (0, SetTokenBasedOnCookies_1.SetTokenBasedOnCookies)(token, redis, redisTokenExpireTimeInSeconds, secret);
+        }),
+        deleteTokenBySessionId: (sessionId) => __awaiter(this, void 0, void 0, function* () {
+            return (0, DeleteTokenBySessionId_1.default)(sessionId, redis);
+        }),
+        deleteTokenFromCookies: () => __awaiter(this, void 0, void 0, function* () {
+            return (0, DeleteTokenFromCookies_1.default)(redis);
         }),
     };
 }

@@ -4,6 +4,7 @@ import {
 import { AuthCodeGrantApiFactory } from './AuthCodeGrantApiFactory';
 import CreateSignInRouteResponse from './Internal/CreateSignInRouteResponse';
 import RespondToAuthCodeCallback from './Internal/RespondToAuthCodeCallback';
+import DeleteSessionAndCookie from './Internal/DeleteSessionAndCookie';
 import { TokenRepository } from '../TokenRepository/TokenRepository';
 
 vi.mock('./Internal/CreateSignInRouteResponse', () => ({
@@ -11,6 +12,10 @@ vi.mock('./Internal/CreateSignInRouteResponse', () => ({
 }));
 
 vi.mock('./Internal/RespondToAuthCodeCallback', () => ({
+    default: vi.fn(),
+}));
+
+vi.mock('./Internal/DeleteSessionAndCookie', () => ({
     default: vi.fn(),
 }));
 
@@ -37,67 +42,79 @@ describe('AuthCodeGrantApiFactory', () => {
         ));
     });
 
-    it(
-        'creates an AuthCodeGrantApi with createSignInRouteResponse and respondToAuthCodeCallback methods',
-        async () => {
-            const api = AuthCodeGrantApiFactory({
-                tokenRepository: mockTokenRepository,
-                appUrl: 'https://localhost',
-                authorizeUrl: 'https://auth.com/authorize',
-                tokenUrl: 'https://auth.com/token',
-                userInfoUrl: 'https://auth.com/userinfo',
-                clientId: 'mock-client-id',
-                clientSecret: 'mock-client-secret',
-                callbackUri: '/mock/callback/uri',
-                audience: 'mock-audience',
-            });
+    it('creates an AuthCodeGrantApi', async () => {
+        const api = AuthCodeGrantApiFactory({
+            tokenRepository: mockTokenRepository,
+            appUrl: 'https://localhost',
+            authorizeUrl: 'https://auth.com/authorize',
+            tokenUrl: 'https://auth.com/token',
+            userInfoUrl: 'https://auth.com/userinfo',
+            clientId: 'mock-client-id',
+            clientSecret: 'mock-client-secret',
+            callbackUri: '/mock/callback/uri',
+            audience: 'mock-audience',
+        });
 
-            const signInMockRequest = new Request('https://signin');
+        /**
+         * createSignInRouteResponse
+         */
 
-            const modifyAuthUrl = () => {};
+        const signInMockRequest = new Request('https://signin');
 
-            const signInResponse = await api.createSignInRouteResponse(
-                signInMockRequest,
-                modifyAuthUrl,
-            );
+        const modifyAuthUrl = () => {};
 
-            expect(CreateSignInRouteResponse).toHaveBeenCalledWith(
-                signInMockRequest,
-                'https://localhost',
-                'https://auth.com/authorize',
-                'mock-client-id',
-                '/mock/callback/uri',
-                'mock-audience',
-                modifyAuthUrl,
-            );
+        const signInResponse = await api.createSignInRouteResponse(
+            signInMockRequest,
+            modifyAuthUrl,
+        );
 
-            expect(await signInResponse.text()).toBe(
-                'signInRouteResponse',
-            );
+        expect(CreateSignInRouteResponse).toHaveBeenCalledWith(
+            signInMockRequest,
+            'https://localhost',
+            'https://auth.com/authorize',
+            'mock-client-id',
+            '/mock/callback/uri',
+            'mock-audience',
+            modifyAuthUrl,
+        );
 
-            const authCodeMockRequest = new Request('https://authCode');
+        expect(await signInResponse.text()).toBe(
+            'signInRouteResponse',
+        );
 
-            const authCodeResponse = await api.respondToAuthCodeCallback(
-                authCodeMockRequest,
-            );
+        /**
+         * respondToAuthCodeCallback
+         */
 
-            expect(RespondToAuthCodeCallback).toHaveBeenCalledWith(
-                mockTokenRepository,
-                authCodeMockRequest,
-                'https://localhost',
-                'https://auth.com/token',
-                'https://auth.com/userinfo',
-                'mock-client-id',
-                'mock-client-secret',
-                '/mock/callback/uri',
-                expect.any(Function),
-            );
+        const authCodeMockRequest = new Request('https://authCode');
 
-            expect(await authCodeResponse.text()).toBe(
-                'authCodeCallbackResponse',
-            );
-        },
-    );
+        const authCodeResponse = await api.respondToAuthCodeCallback(
+            authCodeMockRequest,
+        );
+
+        expect(RespondToAuthCodeCallback).toHaveBeenCalledWith(
+            mockTokenRepository,
+            authCodeMockRequest,
+            'https://localhost',
+            'https://auth.com/token',
+            'https://auth.com/userinfo',
+            'mock-client-id',
+            'mock-client-secret',
+            '/mock/callback/uri',
+            expect.any(Function),
+        );
+
+        expect(await authCodeResponse.text()).toBe(
+            'authCodeCallbackResponse',
+        );
+
+        /**
+         * deleteSessionAndCookie
+         */
+        await api.deleteSessionAndCookie();
+
+        expect(DeleteSessionAndCookie).toHaveBeenCalledWith(mockTokenRepository);
+    });
 
     it(
         'creates an AuthCodeGrantApi using defaults with createSignInRouteResponse and respondToAuthCodeCallback methods',

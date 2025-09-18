@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthCodeGrantApiFactory = AuthCodeGrantApiFactory;
 const CreateSignInRouteResponse_1 = __importDefault(require("./Internal/CreateSignInRouteResponse"));
 const RespondToAuthCodeCallback_1 = __importDefault(require("./Internal/RespondToAuthCodeCallback"));
+const DeleteSessionAndCookie_1 = __importDefault(require("./Internal/DeleteSessionAndCookie"));
 function AuthCodeGrantApiFactory({ tokenRepository, appUrl, authorizeUrl, tokenUrl, userInfoUrl, clientId, clientSecret, callbackUri = '/api/auth/callback', audience, }) {
     return {
         createSignInRouteResponse: (request_1, ...args_1) => __awaiter(this, [request_1, ...args_1], void 0, function* (request, modifyAuthorizeUrl = () => { }) {
@@ -22,6 +23,9 @@ function AuthCodeGrantApiFactory({ tokenRepository, appUrl, authorizeUrl, tokenU
         }),
         respondToAuthCodeCallback: (request_1, ...args_1) => __awaiter(this, [request_1, ...args_1], void 0, function* (request, onBeforeSuccessRedirect = () => { }) {
             return (0, RespondToAuthCodeCallback_1.default)(tokenRepository, request, appUrl, tokenUrl, userInfoUrl, clientId, clientSecret, callbackUri, onBeforeSuccessRedirect);
+        }),
+        deleteSessionAndCookie: () => __awaiter(this, void 0, void 0, function* () {
+            return (0, DeleteSessionAndCookie_1.default)(tokenRepository);
         }),
     };
 }

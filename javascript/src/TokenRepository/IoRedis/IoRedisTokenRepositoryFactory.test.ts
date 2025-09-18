@@ -12,6 +12,8 @@ import { SetTokenFromSessionId } from './SetTokenFromSessionId';
 import { SetTokenBasedOnCookies } from './SetTokenBasedOnCookies';
 import { User } from '../../User';
 import { TokenData } from '../../TokenData';
+import DeleteTokenBySessionId from './DeleteTokenBySessionId';
+import DeleteTokenFromCookies from './DeleteTokenFromCookies';
 
 vi.mock('ioredis');
 vi.mock('./CreateSessionIdWithToken');
@@ -20,6 +22,8 @@ vi.mock('./FindTokenFromCookies');
 vi.mock('./GetTokenFromCookies');
 vi.mock('./SetTokenFromSessionId');
 vi.mock('./SetTokenBasedOnCookies');
+vi.mock('./DeleteTokenBySessionId');
+vi.mock('./DeleteTokenFromCookies');
 
 describe('IoRedisTokenRepositoryFactory', () => {
     it('should create a TokenRepository with the correct methods', async () => {
@@ -98,5 +102,16 @@ describe('IoRedisTokenRepositoryFactory', () => {
             redisTokenExpireTimeInSeconds,
             secret,
         );
+
+        // Test deleteTokenBySessionId
+        await repository.deleteTokenBySessionId('mock-session-id');
+        expect(DeleteTokenBySessionId).toHaveBeenCalledWith(
+            'mock-session-id',
+            mockRedis,
+        );
+
+        // Test deleteTokenFromCookies
+        await repository.deleteTokenFromCookies();
+        expect(DeleteTokenFromCookies).toHaveBeenCalledWith(mockRedis);
     });
 });

@@ -3,6 +3,7 @@ import CreateSignInRouteResponse from './Internal/CreateSignInRouteResponse';
 import RespondToAuthCodeCallback, { TokenResponseJson, UserInfoJson } from './Internal/RespondToAuthCodeCallback';
 import { TokenRepository } from '../TokenRepository/TokenRepository';
 import { TokenData } from '../TokenData';
+import DeleteSessionAndCookie from './Internal/DeleteSessionAndCookie';
 
 export function AuthCodeGrantApiFactory (
     {
@@ -58,6 +59,9 @@ export function AuthCodeGrantApiFactory (
             clientSecret,
             callbackUri,
             onBeforeSuccessRedirect,
+        ),
+        deleteSessionAndCookie: async () => DeleteSessionAndCookie(
+            tokenRepository,
         ),
     };
 }

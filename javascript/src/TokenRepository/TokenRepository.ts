@@ -10,4 +10,6 @@ export type TokenRepository = {
     getTokenFromCookies: () => Promise<TokenData>;
     setTokenFromSessionId: (token: TokenData, id: string) => Promise<void>;
     setTokenBasedOnCookies: (token: TokenData) => Promise<void>;
+    deleteTokenBySessionId: (sessionId: string) => Promise<void>;
+    deleteTokenFromCookies: () => Promise<void>;
 };
