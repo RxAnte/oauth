@@ -5,21 +5,35 @@ declare(strict_types=1);
 namespace RxAnte\OAuth\Handlers\RxAnte\Internal\FetchUserInfo;
 
 use Lcobucci\JWT\UnencryptedToken as JwtToken;
+use Psr\Container\ContainerInterface;
+use RxAnte\OAuth\Handlers\RxAnte\Internal\FetchUserInfo\CacheResponse\CacheKey;
 use RxAnte\OAuth\Handlers\RxAnte\Internal\FetchUserInfo\CacheResponse\CacheResponseFactory;
 use RxAnte\OAuth\Handlers\RxAnte\Internal\FetchUserInfo\GetResponse\GetRxAnteResponseFactory;
 use RxAnte\OAuth\UserInfo\OauthUserInfo;
+use RxAnte\OAuth\UserInfo\RateLimit;
 
 use function is_array;
 use function json_decode;
 
 readonly class FetchUserInfoFromRxAnteAuth implements FetchUserInfo
 {
+    private UserInfoFetchLock $fetchLock;
+
     public function __construct(
+        ContainerInterface $di,
         private CacheResponseFactory $cacheResponseFactory,
         private GetRxAnteResponseFactory $getResponseFactory,
     ) {
+        if ($di->has(UserInfoFetchLock::class)) {
+            $this->fetchLock = $di->get(UserInfoFetchLock::class);
+
+            return;
+        }
+
+        $this->fetchLock = $di->get(UserInfoFetchNoOp::class);
     }
 
+    /** @throws RateLimit */
     public function fetch(JwtToken $jwt): OauthUserInfo
     {
         $responseWrapper = $this->getResponseFactory
@@ -28,6 +42,13 @@ readonly class FetchUserInfoFromRxAnteAuth implements FetchUserInfo
 
         $this->cacheResponseFactory->create($responseWrapper)
             ->cache($jwt, $responseWrapper->response);
+
+        // Always make sure the lock is released here in case it got set
+        $this->fetchLock->release(CacheKey::get($jwt));
+
+        if ($responseWrapper->response->statusCode === 429) {
+            throw new RateLimit();
+        }
 
         if ($responseWrapper->response->isNotValid()) {
             return new OauthUserInfo();

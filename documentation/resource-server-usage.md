@@ -16,6 +16,8 @@ use Psr\Clock\ClockInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ResponseFactoryInterface;
 use RxAnte\OAuth\Handlers\Common\OauthPublicKey;
+use RxAnte\OAuth\Handlers\RxAnte\Internal\FetchUserInfo\RedisUserInfoFetchLock;
+use RxAnte\OAuth\Handlers\RxAnte\Internal\FetchUserInfo\UserInfoFetchLock;
 use RxAnte\OAuth\Handlers\RxAnte\RxAnteConfig;
 use RxAnte\OAuth\Handlers\RxAnte\RxAnteUserInfoRepository;
 use RxAnte\OAuth\UserInfo\OauthUserInfoRepositoryInterface;
@@ -62,6 +64,11 @@ $container->set(
     static function (): ClockInterface {
         return SystemClock::fromUTC();
     },
+);
+
+$bindings->addBinding(
+    UserInfoFetchLock::class,
+    $bindings->resolveFromContainer(RedisUserInfoFetchLock::class),
 );
 
 /**
