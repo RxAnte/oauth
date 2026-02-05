@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ## 2.3.0 — 2026-02-04
 ### Added
-- Added a user info fetch lock to prevent multiple concurrent requests for the same user info. See [UserInfoFetchLock fetch lock binding example in the Resource Server Usage documentation](./documentation/resource-server-usage.md)
+- Added a user info fetch lock to prevent multiple concurrent requests for the same user info. See [UserInfoFetchLock binding example in the Resource Server Usage documentation](./documentation/resource-server-usage.md)
 
 ## 2.2.0 — 2025-09-18
 ### Added
