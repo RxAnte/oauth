@@ -10,6 +10,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use RxAnte\OAuth\UserInfo\OauthUserInfoRepositoryInterface;
+use RxAnte\OAuth\UserInfo\RateLimit;
 
 use function json_encode;
 
@@ -26,9 +27,13 @@ readonly class RequireOauthTokenHeaderMiddleware implements MiddlewareInterface
         ServerRequestInterface $request,
         RequestHandlerInterface $handler,
     ): ResponseInterface {
-        $userInfo = $this->userInfoRepository->getUserInfoFromRequestToken(
-            $request,
-        );
+        try {
+            $userInfo = $this->userInfoRepository->getUserInfoFromRequestToken(
+                $request,
+            );
+        } catch (RateLimit $error) {
+            return $this->sendRateLimited($error);
+        }
 
         if (! $userInfo->isValid) {
             return $this->sendAccessDenied();
@@ -56,7 +61,7 @@ readonly class RequireOauthTokenHeaderMiddleware implements MiddlewareInterface
 
     private function sendAccessDenied(): ResponseInterface
     {
-        $response = $this->responseFactory->createResponse();
+        $response = $this->responseFactory->createResponse(401);
 
         $response = $response->withHeader(
             'Content-type',
@@ -70,5 +75,21 @@ readonly class RequireOauthTokenHeaderMiddleware implements MiddlewareInterface
         ]));
 
         return $response->withStatus(401);
+    }
+
+    private function sendRateLimited(RateLimit $error): ResponseInterface
+    {
+        $response = $this->responseFactory->createResponse(429);
+
+        $response->getBody()->write((string) json_encode([
+            'error' => 'rate_limited',
+            'error_description' => $error->getMessage(),
+            'message' => $error->getMessage(),
+        ]));
+
+        return $response->withHeader(
+            'Content-type',
+            'application/json',
+        );
     }
 }

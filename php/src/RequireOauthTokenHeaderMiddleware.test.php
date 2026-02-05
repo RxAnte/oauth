@@ -14,6 +14,7 @@ use RxAnte\OAuth\CustomAuthenticationResult;
 use RxAnte\OAuth\RequireOauthTokenHeaderMiddleware;
 use RxAnte\OAuth\UserInfo\OauthUserInfo;
 use RxAnte\OAuth\UserInfo\OauthUserInfoRepositoryInterface;
+use RxAnte\OAuth\UserInfo\RateLimit;
 
 // phpcs:disable PSR1.Classes.ClassDeclaration.MissingNamespace
 // phpcs:disable Squiz.Classes.ClassFileName.NoMatch
@@ -119,6 +120,8 @@ describe('RequireOauthTokenHeaderMiddleware', function (): void {
                         int $code = 200,
                         string $reasonPhrase = '',
                     ) use ($response): ResponseInterface {
+                        $this->responseStatus = $code;
+
                         return $response;
                     },
                 );
@@ -299,6 +302,39 @@ describe('RequireOauthTokenHeaderMiddleware', function (): void {
             );
 
             expect($response)->toBe($returnResponse);
+        },
+    );
+
+    it(
+        'returns 429 if RateLimit is thrown',
+        function (): void {
+            $mockStack = new RequireOauthTokenHeaderMiddlewareMockStack();
+
+            $mockStack->userInfoRepository
+                ->expects('getUserInfoFromRequestToken')
+                ->with($mockStack->request)
+                ->andThrow(new RateLimit());
+
+            $middleware = new RequireOauthTokenHeaderMiddleware(
+                responseFactory: $mockStack->responseFactory,
+                userInfoRepository: $mockStack->userInfoRepository,
+                authHookFactory: $mockStack->authHookFactory,
+            );
+
+            $response = $middleware->process(
+                request: $mockStack->request,
+                handler: $mockStack->handler,
+            );
+
+            expect($response->getStatusCode())->toBe(429);
+
+            expect($response->getHeaders())->toBe([
+                ['Content-type' => 'application/json'],
+            ]);
+
+            expect($response->getBody()->__toString())->toBe(
+                '{"error":"rate_limited","error_description":"The UserInfo request has been rate-limited","message":"The UserInfo request has been rate-limited"}',
+            );
         },
     );
 });
