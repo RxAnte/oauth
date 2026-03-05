@@ -63,6 +63,6 @@ readonly class RedisUserInfoFetchLock implements UserInfoFetchLock
 
     public function release(string $key): void
     {
-        $this->redis->del('fetch_user_info_from_auth0_lock:' . $key);
+        $this->redis->del('fetch_user_info_lock:' . $key);
     }
 }

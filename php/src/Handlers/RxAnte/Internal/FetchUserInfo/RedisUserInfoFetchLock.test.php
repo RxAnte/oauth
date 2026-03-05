@@ -113,7 +113,7 @@ describe('RedisUserInfoFetchLock', function (): void {
         function (): void {
             $redis = Mockery::mock(Redis::class);
             $redis->expects('del')
-                ->with('fetch_user_info_from_auth0_lock:test-key')
+                ->with('fetch_user_info_lock:test-key')
                 ->once();
 
             $sut = new RedisUserInfoFetchLock(redis: $redis);
