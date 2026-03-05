@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 2.4.0 — 2026-03-05
+### Added
+- Added `RequireM2MOauthTokenHeaderMiddleware`. [Documentation](./documentation/php/require-m2m-oauth-token-header-middleware.md).
+### Fixed
+- Fixed a bug/typo in the RxAnte Handler `RedisUserInfoFetchLock` that caused the lock to never be released.
+
 ## 2.3.0 — 2026-02-05
 ### Added
 - Added a user info fetch lock to prevent multiple concurrent requests for the same user info. See [UserInfoFetchLock binding example in the Resource Server Usage documentation](./documentation/resource-server-usage.md)
