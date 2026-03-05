@@ -38,6 +38,7 @@
     "require-dev": {
         "buzzingpixel/symfony-var-dumper-decorator": "^1.0",
         "mockery/mockery": "^1.6",
+        "nyholm/psr7": "^1.8",
         "pestphp/pest": "^3.8",
         "rxante/coding-standards": "^1.1.2",
         "symfony/process": "^7.3",

@@ -110,6 +110,7 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/zoltanka/bypass-readonly" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/buzzingpixel/symfony-var-dumper-decorator" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/symfony/var-dumper" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/nyholm/psr7" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

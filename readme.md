@@ -13,6 +13,7 @@
 
 - [SendToLoginCreateAuthUrlEvent](documentation/php/send-to-login-create-auth-url-event.md)
 - [RequireOauthTokenHeaderMiddleware](documentation/php/require-oauth-token-header-middleware.md)
+- [RequireM2MOauthTokenHeaderMiddleware](documentation/php/require-m2m-oauth-token-header-middleware.md)
 - [RequireOauthSessionLoginRedirectMiddleware](documentation/php/require-oauth-session-login-redirect-middleware.md)
 - [RequireOauthSessionAccessDeniedMiddleware](documentation/php/require-oauth-session-access-denied-middleware.md)
 - [Custom Authentication Hook](documentation/php/custom-auth-hook.md)
