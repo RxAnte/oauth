@@ -34,6 +34,7 @@ export function RequestFactory (
                 payload = {},
                 cacheTags = [],
                 cacheSeconds = 300,
+                headers = {},
             }: RequestPropertiesOptional,
         ) => MakeWithoutToken(
             {
@@ -43,6 +44,7 @@ export function RequestFactory (
                 payload,
                 cacheTags,
                 cacheSeconds,
+                headers,
             },
             requestBaseUrl,
         ),
@@ -54,6 +56,7 @@ export function RequestFactory (
                 payload = {},
                 cacheTags = [],
                 cacheSeconds = 300,
+                headers = {},
             }: RequestPropertiesOptional,
         ) => MakeWithToken(
             {
@@ -63,6 +66,7 @@ export function RequestFactory (
                 payload,
                 cacheTags,
                 cacheSeconds,
+                headers,
             },
             requestBaseUrl,
             nextAuthProviderId,
@@ -77,6 +81,7 @@ export function RequestFactory (
                 payload = {},
                 cacheTags = [],
                 cacheSeconds = 300,
+                headers = {},
             }: RequestPropertiesOptional,
         ) => MakeWithSignInRedirect(
             {
@@ -86,6 +91,7 @@ export function RequestFactory (
                 payload,
                 cacheTags,
                 cacheSeconds,
+                headers,
             },
             appUrl,
             requestBaseUrl,

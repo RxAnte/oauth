@@ -8,6 +8,7 @@ export type RequestProperties = {
     payload: Record<never, never>;
     cacheTags: Array<string>;
     cacheSeconds: number | false;
+    headers: Record<string, string>;
 };
 
 export type RequestPropertiesOptional = {
@@ -17,6 +18,7 @@ export type RequestPropertiesOptional = {
     payload?: Record<never, never>;
     cacheTags?: Array<string>;
     cacheSeconds?: number | false;
+    headers?: Record<string, string>;
 };
 
 export type RequestPropertiesWithToken = RequestProperties & {

@@ -19,7 +19,7 @@ const MakeWithToken_1 = require("./Make/MakeWithToken");
 const MakeWithSignInRedirect_1 = require("./Make/MakeWithSignInRedirect");
 function RequestFactory({ appUrl, requestBaseUrl, tokenRepository, nextAuthProviderId, refreshAccessToken, signInUri = '/api/auth/sign-in', }) {
     return {
-        makeWithoutToken: (_a) => __awaiter(this, [_a], void 0, function* ({ uri = '', method = RequestMethods_1.default.GET, queryParams = new URLSearchParams(), payload = {}, cacheTags = [], cacheSeconds = 300, }) {
+        makeWithoutToken: (_a) => __awaiter(this, [_a], void 0, function* ({ uri = '', method = RequestMethods_1.default.GET, queryParams = new URLSearchParams(), payload = {}, cacheTags = [], cacheSeconds = 300, headers = {}, }) {
             return (0, MakeWithoutToken_1.MakeWithoutToken)({
                 uri,
                 method,
@@ -27,9 +27,10 @@ function RequestFactory({ appUrl, requestBaseUrl, tokenRepository, nextAuthProvi
                 payload,
                 cacheTags,
                 cacheSeconds,
+                headers,
             }, requestBaseUrl);
         }),
-        makeWithToken: (_a) => __awaiter(this, [_a], void 0, function* ({ uri = '', method = RequestMethods_1.default.GET, queryParams = new URLSearchParams(), payload = {}, cacheTags = [], cacheSeconds = 300, }) {
+        makeWithToken: (_a) => __awaiter(this, [_a], void 0, function* ({ uri = '', method = RequestMethods_1.default.GET, queryParams = new URLSearchParams(), payload = {}, cacheTags = [], cacheSeconds = 300, headers = {}, }) {
             return (0, MakeWithToken_1.MakeWithToken)({
                 uri,
                 method,
@@ -37,9 +38,10 @@ function RequestFactory({ appUrl, requestBaseUrl, tokenRepository, nextAuthProvi
                 payload,
                 cacheTags,
                 cacheSeconds,
+                headers,
             }, requestBaseUrl, nextAuthProviderId, tokenRepository, refreshAccessToken);
         }),
-        makeWithSignInRedirect: (_a) => __awaiter(this, [_a], void 0, function* ({ uri = '', method = RequestMethods_1.default.GET, queryParams = new URLSearchParams(), payload = {}, cacheTags = [], cacheSeconds = 300, }) {
+        makeWithSignInRedirect: (_a) => __awaiter(this, [_a], void 0, function* ({ uri = '', method = RequestMethods_1.default.GET, queryParams = new URLSearchParams(), payload = {}, cacheTags = [], cacheSeconds = 300, headers = {}, }) {
             return (0, MakeWithSignInRedirect_1.MakeWithSignInRedirect)({
                 uri,
                 method,
@@ -47,6 +49,7 @@ function RequestFactory({ appUrl, requestBaseUrl, tokenRepository, nextAuthProvi
                 payload,
                 cacheTags,
                 cacheSeconds,
+                headers,
             }, appUrl, requestBaseUrl, nextAuthProviderId, tokenRepository, refreshAccessToken, signInUri);
         }),
     };

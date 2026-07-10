@@ -40,6 +40,7 @@ describe('MakeWithSignInRedirect', () => {
         payload: {},
         cacheTags: [],
         cacheSeconds: 0,
+        headers: {},
     };
 
     beforeEach(() => {

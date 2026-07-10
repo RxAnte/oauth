@@ -17,7 +17,7 @@ const RequestAuthenticationError_1 = __importDefault(require("../RequestAuthenti
 const AccessDeniedResponse_1 = require("./AccessDeniedResponse");
 const ParseResponse_1 = require("./ParseResponse");
 function sendRequest(_a, requestBaseUrl_1) {
-    return __awaiter(this, arguments, void 0, function* ({ uri, method, queryParams, payload, cacheTags, cacheSeconds, token, }, requestBaseUrl, 
+    return __awaiter(this, arguments, void 0, function* ({ uri, method, queryParams, payload, cacheTags, cacheSeconds, headers: customHeaders, token, }, requestBaseUrl, 
     /** @deprecated RxAnte Oauth is moving away from next-auth. */
     nextAuthProviderId = undefined) {
         const { accessToken } = token;
@@ -25,12 +25,12 @@ function sendRequest(_a, requestBaseUrl_1) {
             throw new RequestAuthenticationError_1.default('Could not get access token');
         }
         const url = new URL(`${requestBaseUrl}${uri}?${queryParams.toString()}`);
-        const headers = {
-            Authorization: `Bearer ${accessToken}`,
-            RequestType: 'api',
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-        };
+        /**
+         * Caller supplied headers are merged in first so that the headers this
+         * package manages (Authorization, RequestType, Accept, Content-Type and
+         * Provider) always take precedence and can never be silently overridden.
+         */
+        const headers = Object.assign(Object.assign({}, customHeaders), { Authorization: `Bearer ${accessToken}`, RequestType: 'api', Accept: 'application/json', 'Content-Type': 'application/json' });
         if (nextAuthProviderId) {
             headers.Provider = nextAuthProviderId;
         }

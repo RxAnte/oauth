@@ -14,6 +14,7 @@ async function sendRequest (
         payload,
         cacheTags,
         cacheSeconds,
+        headers: customHeaders,
         token,
     }: RequestPropertiesWithToken,
     requestBaseUrl: string,
@@ -30,7 +31,13 @@ async function sendRequest (
 
     const url = new URL(`${requestBaseUrl}${uri}?${queryParams.toString()}`);
 
-    const headers: HeadersInit = {
+    /**
+     * Caller supplied headers are merged in first so that the headers this
+     * package manages (Authorization, RequestType, Accept, Content-Type and
+     * Provider) always take precedence and can never be silently overridden.
+     */
+    const headers: Record<string, string> = {
+        ...customHeaders,
         Authorization: `Bearer ${accessToken}`,
         RequestType: 'api',
         Accept: 'application/json',

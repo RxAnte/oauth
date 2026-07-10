@@ -78,3 +78,49 @@ Makes a token authenticated HTTP request. If there is no token or the token is i
 ## `makeWithSignInRedirect`
 
 Makes a token authenticated HTTP request, and if there's no token or the token is invalid, it will redirect to the sign-in oauth flow.
+
+## Request Method Parameters
+
+All three request methods accept the same optional properties object:
+
+### `uri`: `string`
+
+Optional. The URI to append to the `requestBaseUrl`. Defaults to `''`.
+
+### `method`: `RequestMethods`
+
+Optional. The HTTP method. Defaults to `GET`.
+
+### `queryParams`: `URLSearchParams`
+
+Optional. Query params to append to the URL.
+
+### `payload`: `Record<string, unknown>`
+
+Optional. The request body. Only sent for methods other than `GET` and `HEAD`.
+
+### `cacheTags`: `Array<string>`
+
+Optional. Next.js cache tags for the request.
+
+### `cacheSeconds`: `number | false`
+
+Optional. Next.js revalidation time in seconds (or `false` to disable). Defaults to `300`.
+
+### `headers`: `Record<string, string>`
+
+Optional. Extra request headers to merge into the request.
+
+```typescript
+await RequestFactory().makeWithToken({
+    uri: '/some/uri',
+    headers: {
+        SomeHeader: 'some-value',
+    },
+});
+```
+
+The headers this package manages (`Authorization`, `RequestType`, `Accept`,
+`Content-Type` and `Provider`) always take precedence and can never be
+overridden by a custom header of the same name. This guarantees, for example,
+that a caller can never accidentally clobber the `Authorization` bearer token.

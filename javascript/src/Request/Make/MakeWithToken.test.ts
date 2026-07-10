@@ -34,6 +34,7 @@ describe('MakeWithToken', () => {
         payload: { foo: 'bar' },
         cacheTags: [],
         cacheSeconds: 0,
+        headers: {},
     };
 
     beforeEach(() => {
@@ -252,6 +253,78 @@ describe('MakeWithToken', () => {
 
             const [, options] = fetchMock.mock.calls[0];
             expect(options.headers.get('Provider')).toBe(customProviderId);
+        },
+    );
+
+    it(
+        'merges caller supplied custom headers into the request',
+        async () => {
+            tokenRepository = {
+                findTokenFromCookies: vi.fn().mockResolvedValue(validToken),
+            };
+
+            fetchMock.mockResolvedValue({
+                status: 200,
+                ok: true,
+                json: async () => ({ data: 'ok' }),
+            });
+
+            await MakeWithToken(
+                { ...props, headers: { PRPClient: 'some-client' } },
+                baseUrl,
+                nextAuthProviderId,
+                tokenRepository,
+                refreshAccessToken,
+            );
+
+            const [, options] = fetchMock.mock.calls[0];
+
+            expect(options.headers.get('PRPClient')).toBe('some-client');
+        },
+    );
+
+    it(
+        'does not allow custom headers to override managed headers',
+        async () => {
+            tokenRepository = {
+                findTokenFromCookies: vi.fn().mockResolvedValue(validToken),
+            };
+
+            fetchMock.mockResolvedValue({
+                status: 200,
+                ok: true,
+                json: async () => ({ data: 'ok' }),
+            });
+
+            await MakeWithToken(
+                {
+                    ...props,
+                    headers: {
+                        Authorization: 'Bearer tampered',
+                        RequestType: 'not-api',
+                        'Content-Type': 'text/plain',
+                        Provider: 'not-auth0',
+                    },
+                },
+                baseUrl,
+                'auth0',
+                tokenRepository,
+                refreshAccessToken,
+            );
+
+            const [, options] = fetchMock.mock.calls[0];
+
+            expect(options.headers.get('Authorization')).toBe(
+                `Bearer ${validToken.accessToken}`,
+            );
+
+            expect(options.headers.get('RequestType')).toBe('api');
+
+            expect(options.headers.get('Content-Type')).toBe(
+                'application/json',
+            );
+
+            expect(options.headers.get('Provider')).toBe('auth0');
         },
     );
 });

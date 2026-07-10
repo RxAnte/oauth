@@ -40,6 +40,7 @@ describe('MakeWithoutToken', () => {
                 payload: { hello: 'world' },
                 cacheTags: ['tag1'],
                 cacheSeconds: 60,
+                headers: {},
             };
 
             const result = await MakeWithoutToken(props, baseUrl);
@@ -78,6 +79,7 @@ describe('MakeWithoutToken', () => {
             payload: {},
             cacheTags: [],
             cacheSeconds: 0,
+            headers: {},
         };
 
         await MakeWithoutToken(props, baseUrl);
@@ -87,5 +89,49 @@ describe('MakeWithoutToken', () => {
         expect(options.method).toBe('GET');
 
         expect(options.body).toBeUndefined();
+    });
+
+    it('merges caller supplied custom headers', async () => {
+        const props: RequestProperties = {
+            uri: '/test',
+            method: RequestMethods.GET,
+            queryParams: new URLSearchParams(),
+            payload: {},
+            cacheTags: [],
+            cacheSeconds: 0,
+            headers: { PRPClient: 'some-client' },
+        };
+
+        await MakeWithoutToken(props, baseUrl);
+
+        const [, options] = fetchMock.mock.calls[0];
+
+        expect(options.headers.get('PRPClient')).toBe('some-client');
+    });
+
+    it('does not allow custom headers to override managed headers', async () => {
+        const props: RequestProperties = {
+            uri: '/test',
+            method: RequestMethods.GET,
+            queryParams: new URLSearchParams(),
+            payload: {},
+            cacheTags: [],
+            cacheSeconds: 0,
+            headers: {
+                RequestType: 'not-api',
+                Provider: 'not-auth0',
+                'Content-Type': 'text/plain',
+            },
+        };
+
+        await MakeWithoutToken(props, baseUrl);
+
+        const [, options] = fetchMock.mock.calls[0];
+
+        expect(options.headers.get('RequestType')).toBe('api');
+
+        expect(options.headers.get('Provider')).toBe('auth0');
+
+        expect(options.headers.get('Content-Type')).toBe('application/json');
     });
 });

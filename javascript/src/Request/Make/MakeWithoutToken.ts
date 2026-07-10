@@ -10,6 +10,7 @@ async function sendRequest (
         payload,
         cacheTags,
         cacheSeconds,
+        headers: customHeaders,
     }: RequestProperties,
     requestBaseUrl: string,
 ) {
@@ -17,7 +18,13 @@ async function sendRequest (
         `${requestBaseUrl}${uri}?${queryParams.toString()}`,
     );
 
+    /**
+     * Caller supplied headers are merged in first so that the headers this
+     * package manages (RequestType, Accept, Content-Type and Provider) always
+     * take precedence and can never be silently overridden.
+     */
     const headers = new Headers({
+        ...customHeaders,
         RequestType: 'api',
         Accept: 'application/json',
         'Content-Type': 'application/json',

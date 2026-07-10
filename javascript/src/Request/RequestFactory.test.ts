@@ -69,6 +69,7 @@ describe('RequestFactory', () => {
                     payload: expect.anything(),
                     cacheTags: expect.anything(),
                     cacheSeconds: expect.anything(),
+                    headers: expect.anything(),
                 },
                 'https://api.example.com',
             );
@@ -111,6 +112,7 @@ describe('RequestFactory', () => {
                     payload: expect.anything(),
                     cacheTags: expect.anything(),
                     cacheSeconds: expect.anything(),
+                    headers: expect.anything(),
                 },
                 'https://api.example.com',
                 'next-auth',
@@ -156,6 +158,7 @@ describe('RequestFactory', () => {
                     payload: expect.anything(),
                     cacheTags: expect.anything(),
                     cacheSeconds: expect.anything(),
+                    headers: expect.anything(),
                 },
                 'https://app.example.com',
                 'https://api.example.com',
