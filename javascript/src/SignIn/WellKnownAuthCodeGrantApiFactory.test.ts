@@ -30,6 +30,7 @@ describe('WellKnownAuthCodeGrantApiFactory', () => {
     const authCodeGrantApiFactoryReturn: AuthCodeGrantApi = {
         createSignInRouteResponse: async () => new Response(),
         respondToAuthCodeCallback: async () => new Response(),
+        deleteSessionAndCookie: async () => undefined,
     };
 
     beforeEach(() => {
