@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 2.5.0 — 2026-07-10
+### Added
+- Added support for supplying custom request headers to the JS `RequestFactory` request methods (`makeWithoutToken`, `makeWithToken`, `makeWithSignInRedirect`) via an optional `headers` property. Package managed headers (`Authorization`, `RequestType`, `Accept`, `Content-Type`, `Provider`) always take precedence and cannot be overridden. [Documentation](./documentation/javascript/request-factory.md).
+
 ## 2.4.0 — 2026-03-05
 ### Added
 - Added `RequireM2MOauthTokenHeaderMiddleware`. [Documentation](./documentation/php/require-m2m-oauth-token-header-middleware.md).
