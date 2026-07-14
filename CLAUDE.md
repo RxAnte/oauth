@@ -1,0 +1,1 @@
+@ai-project-architecture-guidance/CLAUDE.md
