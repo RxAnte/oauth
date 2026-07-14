@@ -2,7 +2,9 @@ import { RequestPropertiesOptional } from './RequestProperties';
 import { RequestForSessionId } from './RequestForSessionId';
 import RequestMethods from './RequestMethods';
 import { TokenRepository } from '../TokenRepository/TokenRepository';
+import { PagesRequest } from '../TokenRepository/OAuthSessionIdCookie';
 import { MakeWithTokenForSessionId } from './Make/MakeWithTokenForSessionId';
+import { MakeWithSignInRedirectForSessionId } from './Make/MakeWithSignInRedirectForSessionId';
 import { RefreshAccessTokenForSessionId } from './RefreshAccessToken/RefreshAccessTokenForSessionId';
 
 export function RequestForSessionIdFactory (
@@ -11,12 +13,14 @@ export function RequestForSessionIdFactory (
         tokenRepository,
         nextAuthProviderId,
         refreshAccessToken,
+        signInUri = '/api/auth/sign-in',
     }: {
         requestBaseUrl: string;
         tokenRepository: TokenRepository;
         /** @deprecated RxAnte Oauth is moving away from next-auth. */
         nextAuthProviderId?: string;
         refreshAccessToken: RefreshAccessTokenForSessionId;
+        signInUri?: string;
     },
 ): RequestForSessionId {
     return {
@@ -46,6 +50,34 @@ export function RequestForSessionIdFactory (
             tokenRepository,
             refreshAccessToken,
             sessionId,
+        ),
+        makeWithSignInRedirect: async (
+            req: PagesRequest,
+            {
+                uri = '',
+                method = RequestMethods.GET,
+                queryParams = new URLSearchParams(),
+                payload = {},
+                cacheTags = [],
+                cacheSeconds = 300,
+                headers = {},
+            }: RequestPropertiesOptional,
+        ) => MakeWithSignInRedirectForSessionId(
+            {
+                uri,
+                method,
+                queryParams,
+                payload,
+                cacheTags,
+                cacheSeconds,
+                headers,
+            },
+            req,
+            requestBaseUrl,
+            nextAuthProviderId,
+            tokenRepository,
+            refreshAccessToken,
+            signInUri,
         ),
     };
 }

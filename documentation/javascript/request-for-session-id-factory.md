@@ -7,8 +7,6 @@ The `RequestForSessionIdFactory` is a session-id-driven counterpart to the [Requ
 
 Instead of reading the session id from the request cookies via `next/headers`, this path takes the session id as an explicit argument. It is backed by the same Redis-based token store, refresh, and lock as the App Router path — it never touches cookies, and refreshing a token persists the new token to Redis under the same session id without rotating the `oauthSessionId` cookie.
 
-There is intentionally no `makeWithoutToken` or `makeWithSignInRedirect` on this path. A Pages Router caller issues its own redirect via `getServerSideProps`'s `{ redirect }` return, so there's no need for `next/navigation` here.
-
 ## `SessionIdFromPagesRequest`
 
 Reads the `oauthSessionId` cookie value out of a Pages Router request object (`context.req` in `getServerSideProps`, or a Pages API route's `req`).
@@ -27,9 +25,7 @@ The cookie name (`'oauthSessionId'`) used to store the session id. Exported  so 
 
 ## `RefreshAccessTokenForSessionIdFactory`
 
-The session-id counterpart to [`RefreshAccessTokenFactory`](refresh-access-token.md). Behaves identically,
-except it reads/writes the token in Redis by session id (`findTokenBySessionId` / `setTokenFromSessionId`) rather than through
-cookies. If no token is found for the session id, it returns without attempting a refresh.
+The session-id counterpart to [`RefreshAccessTokenFactory`](refresh-access-token.md). Behaves identically, except it reads/writes the token in Redis by session id (`findTokenBySessionId` / `setTokenFromSessionId`) rather than through cookies. If no token is found for the session id, it returns without attempting a refresh.
 
 ### Config Argument Parameters
 
@@ -82,6 +78,10 @@ The ID of the provider you are using. Not needed unless you have legacy next-aut
 
 A function returned from [`RefreshAccessTokenForSessionIdFactory`](#refreshaccesstokenforsessionidfactory).
 
+#### `signInUri`: `string`
+
+Optional. The `redirect.destination` used by `makeWithSignInRedirect` when there's no session or the session is unauthenticated. Defaults to `/api/auth/sign-in`.
+
 ## `RequestForSessionId` Type
 
 ### `makeWithToken`
@@ -94,11 +94,60 @@ const response = await request.makeWithToken(sessionId, {
 });
 ```
 
+### `makeWithSignInRedirect`
+
+Makes a token authenticated HTTP request, reading the session id straight from the Pages Router request object. If there's no `oauthSessionId` cookie, or the request comes back `401` even after a refresh attempt, it returns a `getServerSideProps`-compatible `{ redirect: { destination, permanent: false } }` object pointing at `signInUri` instead of a `RequestResponse`. This collapses the two redirect checks a `getServerSideProps` implementation would otherwise have to write by hand into a single `'redirect' in result` guard.
+
+```typescript
+const result = await request.makeWithSignInRedirect(context.req, {
+    uri: '/some-backend-path',
+});
+
+if ('redirect' in result) {
+    return result;
+}
+
+// result is a RequestResponse here
+```
+
 ## Request Method Parameters
 
-The `sessionId` is passed as the first argument. The second argument accepts  the same optional properties object as [`RequestFactory`](request-factory.md#request-method-parameters): `uri`, `method`, `queryParams`, `payload`, `cacheTags`, `cacheSeconds`, and `headers`.
+For `makeWithToken`, the `sessionId` is passed as the first argument. For `makeWithSignInRedirect`, the Pages Router request object (anything with a `cookies` property, such as `context.req`) is passed as the first argument instead — the session id is resolved from it internally via [`SessionIdFromPagesRequest`](#sessionidfrompagesrequest). Both methods accept the same optional properties object as their second argument, matching [`RequestFactory`](request-factory.md#request-method-parameters): `uri`, `method`, `queryParams`, `payload`, `cacheTags`, `cacheSeconds`, and `headers`.
 
 ## Usage in `getServerSideProps`
+
+```typescript
+export async function getServerSideProps (context) {
+    const request = RequestForSessionIdFactory({
+        requestBaseUrl: 'https://RESOURCE_SERVER_URL_HERE.tld',
+        tokenRepository,
+        refreshAccessToken: RefreshAccessTokenForSessionIdFactory({
+            tokenRepository,
+            refreshLock: IoRedisRefreshLockFactory({ redis }),
+            wellKnownUrl,
+            clientId,
+            clientSecret,
+            redis,
+        }),
+    });
+
+    const result = await request.makeWithSignInRedirect(context.req, {
+        uri: '/some-backend-path',
+    });
+
+    if ('redirect' in result) {
+        return result;
+    }
+
+    return {
+        props: {
+            data: result.json,
+        },
+    };
+}
+```
+
+If you need to distinguish the "no session" and "401 after refresh" cases, or want to make more than one request in the same page, use `SessionIdFromPagesRequest` and `makeWithToken` directly instead:
 
 ```typescript
 export async function getServerSideProps (context) {

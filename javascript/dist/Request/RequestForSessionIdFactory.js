@@ -15,7 +15,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.RequestForSessionIdFactory = RequestForSessionIdFactory;
 const RequestMethods_1 = __importDefault(require("./RequestMethods"));
 const MakeWithTokenForSessionId_1 = require("./Make/MakeWithTokenForSessionId");
-function RequestForSessionIdFactory({ requestBaseUrl, tokenRepository, nextAuthProviderId, refreshAccessToken, }) {
+const MakeWithSignInRedirectForSessionId_1 = require("./Make/MakeWithSignInRedirectForSessionId");
+function RequestForSessionIdFactory({ requestBaseUrl, tokenRepository, nextAuthProviderId, refreshAccessToken, signInUri = '/api/auth/sign-in', }) {
     return {
         makeWithToken: (sessionId_1, _a) => __awaiter(this, [sessionId_1, _a], void 0, function* (sessionId, { uri = '', method = RequestMethods_1.default.GET, queryParams = new URLSearchParams(), payload = {}, cacheTags = [], cacheSeconds = 300, headers = {}, }) {
             return (0, MakeWithTokenForSessionId_1.MakeWithTokenForSessionId)({
@@ -27,6 +28,17 @@ function RequestForSessionIdFactory({ requestBaseUrl, tokenRepository, nextAuthP
                 cacheSeconds,
                 headers,
             }, requestBaseUrl, nextAuthProviderId, tokenRepository, refreshAccessToken, sessionId);
+        }),
+        makeWithSignInRedirect: (req_1, _a) => __awaiter(this, [req_1, _a], void 0, function* (req, { uri = '', method = RequestMethods_1.default.GET, queryParams = new URLSearchParams(), payload = {}, cacheTags = [], cacheSeconds = 300, headers = {}, }) {
+            return (0, MakeWithSignInRedirectForSessionId_1.MakeWithSignInRedirectForSessionId)({
+                uri,
+                method,
+                queryParams,
+                payload,
+                cacheTags,
+                cacheSeconds,
+                headers,
+            }, req, requestBaseUrl, nextAuthProviderId, tokenRepository, refreshAccessToken, signInUri);
         }),
     };
 }

@@ -7,6 +7,7 @@ import {
 
 import { RequestForSessionIdFactory } from './RequestForSessionIdFactory';
 import * as MakeWithTokenForSessionIdModule from './Make/MakeWithTokenForSessionId';
+import * as MakeWithSignInRedirectForSessionIdModule from './Make/MakeWithSignInRedirectForSessionId';
 
 const mockTokenRepository = {};
 const mockRefreshAccessToken = {};
@@ -16,6 +17,7 @@ const baseProps = {
     tokenRepository: mockTokenRepository,
     nextAuthProviderId: 'next-auth',
     refreshAccessToken: mockRefreshAccessToken,
+    signInUri: '/api/auth/sign-in',
 };
 
 describe('RequestForSessionIdFactory', () => {
@@ -26,6 +28,8 @@ describe('RequestForSessionIdFactory', () => {
             const factory = RequestForSessionIdFactory(baseProps);
 
             expect(typeof factory.makeWithToken).toBe('function');
+
+            expect(typeof factory.makeWithSignInRedirect).toBe('function');
         },
     );
 
@@ -66,6 +70,56 @@ describe('RequestForSessionIdFactory', () => {
                 mockTokenRepository,
                 mockRefreshAccessToken,
                 'session-123',
+            );
+
+            expect(result).toEqual({
+                ok: true,
+            });
+
+            spy.mockRestore();
+        },
+    );
+
+    it(
+        'delegates to MakeWithSignInRedirectForSessionId with correct arguments',
+        async () => {
+            const spy = vi.spyOn(
+                MakeWithSignInRedirectForSessionIdModule,
+                'MakeWithSignInRedirectForSessionId',
+            ).mockResolvedValue(
+                // @ts-expect-error TS2345
+                {
+                    ok: true,
+                },
+            );
+
+            // @ts-expect-error TS2345
+            const factory = RequestForSessionIdFactory(baseProps);
+
+            const props = {
+                uri: '/bar',
+            };
+
+            const req = { cookies: {} };
+
+            const result = await factory.makeWithSignInRedirect(req, props);
+
+            expect(spy).toHaveBeenCalledWith(
+                {
+                    uri: '/bar',
+                    method: expect.anything(),
+                    queryParams: expect.anything(),
+                    payload: expect.anything(),
+                    cacheTags: expect.anything(),
+                    cacheSeconds: expect.anything(),
+                    headers: expect.anything(),
+                },
+                req,
+                'https://api.example.com',
+                'next-auth',
+                mockTokenRepository,
+                mockRefreshAccessToken,
+                '/api/auth/sign-in',
             );
 
             expect(result).toEqual({

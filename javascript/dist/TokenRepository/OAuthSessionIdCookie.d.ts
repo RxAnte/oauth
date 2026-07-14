@@ -1,4 +1,5 @@
 export declare const OAUTH_SESSION_ID_COOKIE = "oauthSessionId";
-export declare function SessionIdFromPagesRequest({ cookies }: {
+export type PagesRequest = {
     cookies: Partial<Record<string, string>>;
-}): string | null;
+};
+export declare function SessionIdFromPagesRequest({ cookies }: PagesRequest): string | null;
