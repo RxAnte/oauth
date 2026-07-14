@@ -18,15 +18,20 @@ export { FusionAuthProviderFactory as NextAuthFusionAuthProviderFactory } from '
  */
 export type { TokenRepository } from './TokenRepository/TokenRepository';
 export { IoRedisTokenRepositoryFactory as TokenRepositoryForIoRedisFactory } from './TokenRepository/IoRedis/IoRedisTokenRepositoryFactory';
+export { OAUTH_SESSION_ID_COOKIE, SessionIdFromPagesRequest } from './TokenRepository/OAuthSessionIdCookie';
 /**
  * Request
  */
 export { RequestFactory } from './Request/RequestFactory';
+export type { RequestForSessionId } from './Request/RequestForSessionId';
+export { RequestForSessionIdFactory } from './Request/RequestForSessionIdFactory';
 /**
  * Refresh
  */
 export type { RefreshAccessToken } from './Request/RefreshAccessToken/RefreshAccessToken';
 export { RefreshAccessTokenFactory } from './Request/RefreshAccessToken/RefreshAccessTokenFactory';
+export type { RefreshAccessTokenForSessionId } from './Request/RefreshAccessToken/RefreshAccessTokenForSessionId';
+export { RefreshAccessTokenForSessionIdFactory } from './Request/RefreshAccessToken/RefreshAccessTokenForSessionIdFactory';
 /** @deprecated */
 export { RefreshAccessTokenWithAuth0Factory } from './Request/RefreshAccessToken/RefreshAccessTokenWithAuth0Factory';
 export type { RefreshLock } from './Request/RefreshAccessToken/Lock/RefreshLock';

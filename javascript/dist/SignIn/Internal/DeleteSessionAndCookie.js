@@ -11,10 +11,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = DeleteSessionAndCookie;
 const headers_1 = require("next/headers");
+const OAuthSessionIdCookie_1 = require("../../TokenRepository/OAuthSessionIdCookie");
 function DeleteSessionAndCookie(tokenRepository) {
     return __awaiter(this, void 0, void 0, function* () {
         yield tokenRepository.deleteTokenFromCookies();
         const cookieStore = yield (0, headers_1.cookies)();
-        cookieStore.delete('oauthSessionId');
+        cookieStore.delete(OAuthSessionIdCookie_1.OAUTH_SESSION_ID_COOKIE);
     });
 }

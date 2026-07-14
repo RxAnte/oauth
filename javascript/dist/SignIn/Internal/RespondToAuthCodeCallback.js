@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = RespondToAuthCodeCallback;
 const headers_1 = require("next/headers");
 const crypto_1 = require("crypto");
+const OAuthSessionIdCookie_1 = require("../../TokenRepository/OAuthSessionIdCookie");
 function RespondToAuthCodeCallback(tokenRepository_1, request_1, appUrl_1, tokenUrl_1, userInfoUrl_1, clientId_1, clientSecret_1) {
     return __awaiter(this, arguments, void 0, function* (tokenRepository, request, appUrl, tokenUrl, userInfoUrl, clientId, clientSecret, callbackUri = '/api/auth/callback', onBeforeSuccessRedirect = () => { }) {
         var _a, _b;
@@ -86,7 +87,7 @@ function RespondToAuthCodeCallback(tokenRepository_1, request_1, appUrl_1, token
             };
             const sessionId = (0, crypto_1.randomBytes)(32).toString('hex');
             yield tokenRepository.setTokenFromSessionId(token, sessionId);
-            cookieStore.set('oauthSessionId', sessionId, {
+            cookieStore.set(OAuthSessionIdCookie_1.OAUTH_SESSION_ID_COOKIE, sessionId, {
                 httpOnly: true,
                 path: '/',
                 maxAge: 2628000, // One month for good measure

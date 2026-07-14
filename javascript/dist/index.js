@@ -3,7 +3,7 @@
  * NextAuth
  */
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.WellKnownAuthCodeGrantApiFactory = exports.AuthCodeGrantApiFactory = exports.NextMiddlewareHeadersFactory = exports.IoRedisRefreshLockFactory = exports.RefreshAccessTokenWithAuth0Factory = exports.RefreshAccessTokenFactory = exports.RequestFactory = exports.TokenRepositoryForIoRedisFactory = exports.NextAuthFusionAuthProviderFactory = exports.NextAuthAuth0ProviderFactory = exports.NextAuthOptionsConfigFactory = void 0;
+exports.WellKnownAuthCodeGrantApiFactory = exports.AuthCodeGrantApiFactory = exports.NextMiddlewareHeadersFactory = exports.IoRedisRefreshLockFactory = exports.RefreshAccessTokenWithAuth0Factory = exports.RefreshAccessTokenForSessionIdFactory = exports.RefreshAccessTokenFactory = exports.RequestForSessionIdFactory = exports.RequestFactory = exports.SessionIdFromPagesRequest = exports.OAUTH_SESSION_ID_COOKIE = exports.TokenRepositoryForIoRedisFactory = exports.NextAuthFusionAuthProviderFactory = exports.NextAuthAuth0ProviderFactory = exports.NextAuthOptionsConfigFactory = void 0;
 /**
  * @deprecated RxAnte Oauth is moving away from next-auth. Use the AuthCodeGrantApi instead
  */
@@ -21,13 +21,20 @@ var FusionAuthProviderFactory_1 = require("./NextAuth/FusionAuthProviderFactory"
 Object.defineProperty(exports, "NextAuthFusionAuthProviderFactory", { enumerable: true, get: function () { return FusionAuthProviderFactory_1.FusionAuthProviderFactory; } });
 var IoRedisTokenRepositoryFactory_1 = require("./TokenRepository/IoRedis/IoRedisTokenRepositoryFactory");
 Object.defineProperty(exports, "TokenRepositoryForIoRedisFactory", { enumerable: true, get: function () { return IoRedisTokenRepositoryFactory_1.IoRedisTokenRepositoryFactory; } });
+var OAuthSessionIdCookie_1 = require("./TokenRepository/OAuthSessionIdCookie");
+Object.defineProperty(exports, "OAUTH_SESSION_ID_COOKIE", { enumerable: true, get: function () { return OAuthSessionIdCookie_1.OAUTH_SESSION_ID_COOKIE; } });
+Object.defineProperty(exports, "SessionIdFromPagesRequest", { enumerable: true, get: function () { return OAuthSessionIdCookie_1.SessionIdFromPagesRequest; } });
 /**
  * Request
  */
 var RequestFactory_1 = require("./Request/RequestFactory");
 Object.defineProperty(exports, "RequestFactory", { enumerable: true, get: function () { return RequestFactory_1.RequestFactory; } });
+var RequestForSessionIdFactory_1 = require("./Request/RequestForSessionIdFactory");
+Object.defineProperty(exports, "RequestForSessionIdFactory", { enumerable: true, get: function () { return RequestForSessionIdFactory_1.RequestForSessionIdFactory; } });
 var RefreshAccessTokenFactory_1 = require("./Request/RefreshAccessToken/RefreshAccessTokenFactory");
 Object.defineProperty(exports, "RefreshAccessTokenFactory", { enumerable: true, get: function () { return RefreshAccessTokenFactory_1.RefreshAccessTokenFactory; } });
+var RefreshAccessTokenForSessionIdFactory_1 = require("./Request/RefreshAccessToken/RefreshAccessTokenForSessionIdFactory");
+Object.defineProperty(exports, "RefreshAccessTokenForSessionIdFactory", { enumerable: true, get: function () { return RefreshAccessTokenForSessionIdFactory_1.RefreshAccessTokenForSessionIdFactory; } });
 /** @deprecated */
 var RefreshAccessTokenWithAuth0Factory_1 = require("./Request/RefreshAccessToken/RefreshAccessTokenWithAuth0Factory");
 Object.defineProperty(exports, "RefreshAccessTokenWithAuth0Factory", { enumerable: true, get: function () { return RefreshAccessTokenWithAuth0Factory_1.RefreshAccessTokenWithAuth0Factory; } });

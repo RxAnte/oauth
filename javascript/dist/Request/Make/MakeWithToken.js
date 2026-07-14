@@ -8,48 +8,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MakeWithToken = MakeWithToken;
-const RequestAuthenticationError_1 = __importDefault(require("../RequestAuthenticationError"));
 const AccessDeniedResponse_1 = require("./AccessDeniedResponse");
 const ParseResponse_1 = require("./ParseResponse");
-function sendRequest(_a, requestBaseUrl_1) {
-    return __awaiter(this, arguments, void 0, function* ({ uri, method, queryParams, payload, cacheTags, cacheSeconds, headers: customHeaders, token, }, requestBaseUrl, 
-    /** @deprecated RxAnte Oauth is moving away from next-auth. */
-    nextAuthProviderId = undefined) {
-        const { accessToken } = token;
-        if (accessToken === null) {
-            throw new RequestAuthenticationError_1.default('Could not get access token');
-        }
-        const url = new URL(`${requestBaseUrl}${uri}?${queryParams.toString()}`);
-        /**
-         * Caller supplied headers are merged in first so that the headers this
-         * package manages (Authorization, RequestType, Accept, Content-Type and
-         * Provider) always take precedence and can never be silently overridden.
-         */
-        const headers = Object.assign(Object.assign({}, customHeaders), { Authorization: `Bearer ${accessToken}`, RequestType: 'api', Accept: 'application/json', 'Content-Type': 'application/json' });
-        if (nextAuthProviderId) {
-            headers.Provider = nextAuthProviderId;
-        }
-        const body = JSON.stringify(payload);
-        const options = {
-            redirect: 'manual',
-            method,
-            headers: new Headers(headers),
-            next: {
-                tags: cacheTags,
-                revalidate: cacheSeconds,
-            },
-        };
-        if ((method !== 'HEAD' && method !== 'GET')) {
-            options.body = body;
-        }
-        return fetch(url, options);
-    });
-}
+const SendRequest_1 = require("./SendRequest");
 function MakeWithToken(props, requestBaseUrl, 
 /** @deprecated RxAnte Oauth is moving away from next-auth. */
 nextAuthProviderId, tokenRepository, refreshAccessToken) {
@@ -61,7 +24,7 @@ nextAuthProviderId, tokenRepository, refreshAccessToken) {
         }
         // Now we know we have a token, so we'll make the request
         let response = yield (0, ParseResponse_1.ParseResponse)(() => __awaiter(this, void 0, void 0, function* () {
-            return sendRequest(Object.assign(Object.assign({}, props), { token }), requestBaseUrl, nextAuthProviderId);
+            return (0, SendRequest_1.SendRequest)(Object.assign(Object.assign({}, props), { token }), requestBaseUrl, nextAuthProviderId);
         }));
         // If there's no authentication issue, return the response, whatever it is
         if (response.status !== 401) {
@@ -83,7 +46,7 @@ nextAuthProviderId, tokenRepository, refreshAccessToken) {
             }
             // eslint-disable-next-line no-await-in-loop
             response = yield (0, ParseResponse_1.ParseResponse)(() => __awaiter(this, void 0, void 0, function* () {
-                return sendRequest(Object.assign(Object.assign({}, props), { token: newToken }), requestBaseUrl, nextAuthProviderId);
+                return (0, SendRequest_1.SendRequest)(Object.assign(Object.assign({}, props), { token: newToken }), requestBaseUrl, nextAuthProviderId);
             }));
             tries += 1;
         } while (tries < 2 && response.status === 401);

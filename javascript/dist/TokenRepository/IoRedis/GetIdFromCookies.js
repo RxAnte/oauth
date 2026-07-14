@@ -12,13 +12,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.GetIdFromCookies = GetIdFromCookies;
 const headers_1 = require("next/headers");
 const jwt_1 = require("next-auth/jwt");
+const OAuthSessionIdCookie_1 = require("../OAuthSessionIdCookie");
 function GetIdFromCookies(
 /** @deprecated secret is no longer require unless still using next-auth */
 secret) {
     return __awaiter(this, void 0, void 0, function* () {
         // In Next15, `cookies()` must be awaited
         const cookieStore = yield (0, headers_1.cookies)();
-        const sessionId = cookieStore.get('oauthSessionId');
+        const sessionId = cookieStore.get(OAuthSessionIdCookie_1.OAUTH_SESSION_ID_COOKIE);
         if (sessionId) {
             return sessionId.value;
         }

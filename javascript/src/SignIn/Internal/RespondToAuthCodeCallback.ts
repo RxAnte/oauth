@@ -2,6 +2,7 @@ import { cookies } from 'next/headers';
 import { randomBytes } from 'crypto';
 import { TokenRepository } from '../../TokenRepository/TokenRepository';
 import { TokenData } from '../../TokenData';
+import { OAUTH_SESSION_ID_COOKIE } from '../../TokenRepository/OAuthSessionIdCookie';
 
 type ErrorJson = {
     error?: string;
@@ -148,7 +149,7 @@ export default async function RespondToAuthCodeCallback (
             sessionId,
         );
 
-        cookieStore.set('oauthSessionId', sessionId, {
+        cookieStore.set(OAUTH_SESSION_ID_COOKIE, sessionId, {
             httpOnly: true,
             path: '/',
             maxAge: 2628000, // One month for good measure

@@ -1,5 +1,6 @@
 import { cookies } from 'next/headers';
 import { TokenRepository } from '../../TokenRepository/TokenRepository';
+import { OAUTH_SESSION_ID_COOKIE } from '../../TokenRepository/OAuthSessionIdCookie';
 
 export default async function DeleteSessionAndCookie (
     tokenRepository: TokenRepository,
@@ -8,5 +9,5 @@ export default async function DeleteSessionAndCookie (
 
     const cookieStore = await cookies();
 
-    cookieStore.delete('oauthSessionId');
+    cookieStore.delete(OAUTH_SESSION_ID_COOKIE);
 }

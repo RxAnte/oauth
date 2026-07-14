@@ -12,12 +12,16 @@ describe('package exports (index.ts)', () => {
 
             // TokenRepository
             'TokenRepositoryForIoRedisFactory',
+            'OAUTH_SESSION_ID_COOKIE',
+            'SessionIdFromPagesRequest',
 
             // Request
             'RequestFactory',
+            'RequestForSessionIdFactory',
 
             // Refresh
             'RefreshAccessTokenFactory',
+            'RefreshAccessTokenForSessionIdFactory',
             'RefreshAccessTokenWithAuth0Factory',
             'IoRedisRefreshLockFactory',
 
@@ -46,5 +50,9 @@ describe('package exports (index.ts)', () => {
         expect(pkg.RefreshLock).toBeUndefined();
         // @ts-expect-error TS2339
         expect(pkg.AuthCodeGrantApi).toBeUndefined();
+        // @ts-expect-error TS2339
+        expect(pkg.RequestForSessionId).toBeUndefined();
+        // @ts-expect-error TS2339
+        expect(pkg.RefreshAccessTokenForSessionId).toBeUndefined();
     });
 });
