@@ -5,6 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 2.6.0 — 2026-07-14
+### Added
+- Added Pages Router / `getServerSideProps` request support: `RequestForSessionIdFactory`, `RefreshAccessTokenForSessionIdFactory`, `SessionIdFromPagesRequest`, and `OAUTH_SESSION_ID_COOKIE`. Lets Pages Router apps make authenticated server-side requests without `next/headers`. [Documentation](./documentation/javascript/request-for-session-id-factory.md).
+
 ## 2.5.0 — 2026-07-10
 ### Added
 - Added support for supplying custom request headers to the JS `RequestFactory` request methods (`makeWithoutToken`, `makeWithToken`, `makeWithSignInRedirect`) via an optional `headers` property. Package managed headers (`Authorization`, `RequestType`, `Accept`, `Content-Type`, `Provider`) always take precedence and cannot be overridden. [Documentation](./documentation/javascript/request-factory.md).

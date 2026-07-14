@@ -26,6 +26,7 @@
 - [AuthCodeGrantApi](documentation/javascript/auth-code-grant-api.md)
 - [TokenRepository](documentation/javascript/token-repository.md)
 - [RequestFactory](documentation/javascript/request-factory.md)
+- [RequestForSessionIdFactory (Pages Router)](documentation/javascript/request-for-session-id-factory.md)
 - [RefreshAccessToken](documentation/javascript/refresh-access-token.md)
 - [RefreshLock](documentation/javascript/refresh-lock.md)
 - [NextMiddlewareHeadersFactory](documentation/javascript/next-middleware-headers-factory.md)
