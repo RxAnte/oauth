@@ -1,5 +1,6 @@
 import { RequestResponse } from '../RequestResponse';
 import { RequestProperties } from '../RequestProperties';
+import RequestMethods from '../RequestMethods';
 import { ParseResponse } from './ParseResponse';
 
 async function sendRequest (
@@ -43,7 +44,7 @@ async function sendRequest (
         },
     } as RequestInit;
 
-    if ((method !== 'HEAD' && method !== 'GET')) {
+    if (method !== RequestMethods.HEAD && method !== RequestMethods.GET) {
         options.body = body;
     }
 

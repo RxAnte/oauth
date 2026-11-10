@@ -1,5 +1,3 @@
-// eslint-disable-next-line eslint-comments/disable-enable-pair
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
     describe, it, expect, vi, beforeEach, afterEach,
 } from 'vitest';
@@ -8,7 +6,7 @@ import { RequestProperties } from '../RequestProperties';
 import RequestMethods from '../RequestMethods';
 
 vi.mock('./ParseResponse', () => ({
-    ParseResponse: async (fn: any) => fn(),
+    ParseResponse: async (fn: () => Promise<unknown>) => fn(),
 }));
 
 describe('MakeWithoutToken', () => {

@@ -9,7 +9,7 @@ import RequestMethods from '../RequestMethods';
 import RequestAuthenticationError from '../RequestAuthenticationError';
 
 vi.mock('./ParseResponse', () => ({
-    ParseResponse: async (fn: any) => fn(),
+    ParseResponse: async (fn: () => Promise<unknown>) => fn(),
 }));
 
 describe('MakeWithTokenForSessionId', () => {

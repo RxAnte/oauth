@@ -1,5 +1,5 @@
 import { Account, AuthOptions, Session } from 'next-auth';
-import { Provider } from 'next-auth/providers';
+import type { Provider } from 'next-auth/providers/index';
 import { JWT } from 'next-auth/jwt';
 import { User } from '../User';
 import { TokenRepository } from '../TokenRepository/TokenRepository';

@@ -1,4 +1,4 @@
-import { Provider } from 'next-auth/providers';
+import type { Provider } from 'next-auth/providers/index';
 
 /**
  * @deprecated RxAnte Oauth is moving away from next-auth. Use the AuthCodeGrantApi instead
@@ -54,7 +54,7 @@ export function Auth0ProviderFactory (
         },
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        profile (profile) {
+        profile (profile: Record<string, string>) {
             return {
                 id: profile.sub,
                 ...profile,

@@ -114,7 +114,7 @@ export function RefreshAccessTokenForSessionIdFactory (
         const tokenCheck = await tokenRepository.findTokenBySessionId(sessionId);
 
         // If the token was already refreshed while we awaited a lock
-        if (!tokenCheck || tokenCheck.accessToken !== token.accessToken) {
+        if (tokenCheck?.accessToken !== token.accessToken) {
             await refreshLock.release(token.accessToken);
 
             return;

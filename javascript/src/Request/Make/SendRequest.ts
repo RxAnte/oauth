@@ -1,4 +1,5 @@
 import { RequestPropertiesWithToken } from '../RequestProperties';
+import RequestMethods from '../RequestMethods';
 import RequestAuthenticationError from '../RequestAuthenticationError';
 
 export async function SendRequest (
@@ -55,7 +56,7 @@ export async function SendRequest (
         },
     } as RequestInit;
 
-    if ((method !== 'HEAD' && method !== 'GET')) {
+    if (method !== RequestMethods.HEAD && method !== RequestMethods.GET) {
         options.body = body;
     }
 

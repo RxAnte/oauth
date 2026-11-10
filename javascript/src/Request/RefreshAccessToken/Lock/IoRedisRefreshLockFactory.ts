@@ -11,7 +11,7 @@ export function IoRedisRefreshLockFactory (
 ): RefreshLock {
     return {
         acquire: async (accessToken: string) => {
-            let resp = null;
+            let resp: 'OK' | null;
 
             let tries = 0;
 
