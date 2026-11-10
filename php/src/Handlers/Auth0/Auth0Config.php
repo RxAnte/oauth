@@ -18,14 +18,11 @@ readonly class Auth0Config
 {
     public DateInterval $wellKnownCacheExpiresAfter;
 
-    /**
-     * @param string|resource|OpenSSLAsymmetricKey|OpenSSLCertificate $signingCertificate
-     * @param string[]                                                $m2mAuthorizedSubjects
-     */
+    /** @param string[] $m2mAuthorizedSubjects */
     public function __construct(
         public string $userInfoUrl,
         public string $wellKnownUrl,
-        public mixed $signingCertificate,
+        public string|OpenSSLAsymmetricKey|OpenSSLCertificate $signingCertificate,
         public string $signingCertificateAlgorithm = 'RS256',
         public string $wellKnownCacheKey = 'auth_0_well_known',
         DateInterval|null $wellKnownCacheExpiresAfter = null,

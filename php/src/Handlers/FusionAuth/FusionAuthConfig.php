@@ -18,13 +18,10 @@ readonly class FusionAuthConfig
 {
     public DateInterval $wellKnownCacheExpiresAfter;
 
-    /**
-     * @param string|resource|OpenSSLAsymmetricKey|OpenSSLCertificate $signingCertificate
-     * @param string[]                                                $m2mAuthorizedSubjects
-     */
+    /** @param string[] $m2mAuthorizedSubjects */
     public function __construct(
         public string $wellKnownUrl,
-        public mixed $signingCertificate,
+        public string|OpenSSLAsymmetricKey|OpenSSLCertificate $signingCertificate,
         public bool $sslVerify = true,
         public string $signingCertificateAlgorithm = 'RS256',
         public string $wellKnownCacheKey = 'fusion_auth_well_known',

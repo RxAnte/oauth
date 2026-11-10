@@ -23,7 +23,7 @@ describe('MakeWithoutToken', () => {
             json: async () => ({ data: 'ok' }),
         });
 
-        global.fetch = fetchMock;
+        vi.stubGlobal('fetch', fetchMock);
     });
 
     afterEach(() => {

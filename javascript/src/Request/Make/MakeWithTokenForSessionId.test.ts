@@ -42,7 +42,7 @@ describe('MakeWithTokenForSessionId', () => {
     beforeEach(() => {
         fetchMock = vi.fn();
 
-        global.fetch = fetchMock;
+        vi.stubGlobal('fetch', fetchMock);
 
         refreshAccessToken = vi.fn();
     });
