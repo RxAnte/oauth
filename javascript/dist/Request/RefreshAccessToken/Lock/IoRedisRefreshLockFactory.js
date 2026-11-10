@@ -17,7 +17,7 @@ const sleep_promise_1 = __importDefault(require("sleep-promise"));
 function IoRedisRefreshLockFactory({ redis, }) {
     return {
         acquire: (accessToken) => __awaiter(this, void 0, void 0, function* () {
-            let resp = null;
+            let resp;
             let tries = 0;
             let acquiredLock = false;
             do {

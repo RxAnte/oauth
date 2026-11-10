@@ -1,4 +1,4 @@
-import { Provider } from 'next-auth/providers';
+import type { Provider } from 'next-auth/providers/index';
 /**
  * @deprecated RxAnte Oauth is moving away from next-auth. Use the AuthCodeGrantApi instead
  */

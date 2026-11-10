@@ -8,8 +8,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MakeWithoutToken = MakeWithoutToken;
+const RequestMethods_1 = __importDefault(require("../RequestMethods"));
 const ParseResponse_1 = require("./ParseResponse");
 function sendRequest(_a, requestBaseUrl_1) {
     return __awaiter(this, arguments, void 0, function* ({ uri, method, queryParams, payload, cacheTags, cacheSeconds, headers: customHeaders, }, requestBaseUrl) {
@@ -30,7 +34,7 @@ function sendRequest(_a, requestBaseUrl_1) {
                 revalidate: cacheSeconds,
             },
         };
-        if ((method !== 'HEAD' && method !== 'GET')) {
+        if (method !== RequestMethods_1.default.HEAD && method !== RequestMethods_1.default.GET) {
             options.body = body;
         }
         return fetch(url, options);

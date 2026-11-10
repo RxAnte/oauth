@@ -58,7 +58,7 @@ function RefreshAccessTokenForSessionIdFactory({ tokenRepository, refreshLock, w
          */
         const tokenCheck = yield tokenRepository.findTokenBySessionId(sessionId);
         // If the token was already refreshed while we awaited a lock
-        if (!tokenCheck || tokenCheck.accessToken !== token.accessToken) {
+        if ((tokenCheck === null || tokenCheck === void 0 ? void 0 : tokenCheck.accessToken) !== token.accessToken) {
             yield refreshLock.release(token.accessToken);
             return;
         }

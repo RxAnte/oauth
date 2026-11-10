@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SendRequest = SendRequest;
+const RequestMethods_1 = __importDefault(require("../RequestMethods"));
 const RequestAuthenticationError_1 = __importDefault(require("../RequestAuthenticationError"));
 function SendRequest(_a, requestBaseUrl_1) {
     return __awaiter(this, arguments, void 0, function* ({ uri, method, queryParams, payload, cacheTags, cacheSeconds, headers: customHeaders, token, }, requestBaseUrl, 
@@ -42,7 +43,7 @@ function SendRequest(_a, requestBaseUrl_1) {
                 revalidate: cacheSeconds,
             },
         };
-        if ((method !== 'HEAD' && method !== 'GET')) {
+        if (method !== RequestMethods_1.default.HEAD && method !== RequestMethods_1.default.GET) {
             options.body = body;
         }
         return fetch(url, options);
