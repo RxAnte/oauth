@@ -1,6 +1,6 @@
 import { Account } from 'next-auth';
 import { randomUUID } from 'crypto';
-// eslint-disable-next-line import/no-extraneous-dependencies
+
 import Redis from 'ioredis';
 import { User } from '../../User';
 

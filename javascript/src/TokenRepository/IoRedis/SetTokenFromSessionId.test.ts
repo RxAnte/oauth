@@ -65,7 +65,7 @@ describe('SetTokenFromSessionId', () => {
 
         await expect(
             SetTokenFromSessionId(
-                token as TokenData,
+                token,
                 'sid',
                 redisSpy as never,
                 10,

@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import Redis from 'ioredis';
 import { TokenRepository } from '../../TokenRepository/TokenRepository';
 import { RefreshLock } from './Lock/RefreshLock';

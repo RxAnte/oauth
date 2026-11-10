@@ -1,7 +1,7 @@
 import {
     describe, it, expect, vi, beforeEach,
 } from 'vitest';
-import * as crypto from 'crypto';
+import { randomUUID } from 'crypto';
 import Redis from 'ioredis';
 import { Account } from 'next-auth';
 import { CreateSessionIdWithToken } from './CreateSessionIdWithToken';
@@ -45,7 +45,7 @@ describe('CreateSessionIdWithToken', () => {
             vi.mocked(mockRedis.set).mockResolvedValue('OK');
 
             // @ts-expect-error TS2345
-            vi.mocked(crypto.randomUUID).mockReturnValue(mockUUID);
+            vi.mocked(randomUUID).mockReturnValue(mockUUID);
 
             const result = await CreateSessionIdWithToken(
                 token,
@@ -54,7 +54,7 @@ describe('CreateSessionIdWithToken', () => {
                 redisTokenExpireTimeInSeconds,
             );
 
-            expect(crypto.randomUUID).toHaveBeenCalled();
+            expect(randomUUID).toHaveBeenCalled();
 
             expect(mockRedis.set).toHaveBeenCalledWith(
                 `user_token:${mockUUID}`,
@@ -101,7 +101,7 @@ describe('CreateSessionIdWithToken', () => {
             );
 
             // @ts-expect-error TS2345
-            vi.mocked(crypto.randomUUID).mockReturnValue(mockUUID);
+            vi.mocked(randomUUID).mockReturnValue(mockUUID);
 
             await expect(
                 CreateSessionIdWithToken(
@@ -112,7 +112,7 @@ describe('CreateSessionIdWithToken', () => {
                 ),
             ).rejects.toThrow('Redis error');
 
-            expect(crypto.randomUUID).toHaveBeenCalled();
+            expect(randomUUID).toHaveBeenCalled();
 
             expect(mockRedis.set).toHaveBeenCalledWith(
                 `user_token:${mockUUID}`,

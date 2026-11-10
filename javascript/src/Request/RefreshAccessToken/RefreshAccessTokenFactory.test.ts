@@ -22,8 +22,8 @@ describe('RefreshAccessTokenFactory', () => {
     };
 
     const mockRefreshLock: RefreshLock = {
-        acquire: vi.fn(() => Promise.resolve()),
-        release: vi.fn(() => Promise.resolve()),
+        acquire: vi.fn(async () => Promise.resolve()),
+        release: vi.fn(async () => Promise.resolve()),
     };
 
     // @ts-expect-error TS2739
@@ -212,7 +212,7 @@ describe('RefreshAccessTokenFactory', () => {
 
             (global.fetch as any).mockResolvedValue({
                 ok: true,
-                json: () => Promise.resolve({
+                json: async () => Promise.resolve({
                     access_token: 'new-access-token',
                     expires_in: 987,
                     refresh_token: 'new-refresh-token',

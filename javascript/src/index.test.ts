@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 
-import * as pkg from './index';
+import * as pkg from '.';
 
 describe('package exports (index.ts)', () => {
     it('should match the expected public API surface', () => {

@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import Redis from 'ioredis';
 import { Account } from 'next-auth';
 import { TokenRepository } from '../TokenRepository';

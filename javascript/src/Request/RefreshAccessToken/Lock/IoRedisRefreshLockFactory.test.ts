@@ -18,7 +18,7 @@ describe('IoRedisRefreshLockFactory', () => {
         };
 
         vi.mock('sleep-promise', () => ({
-            default: () => Promise.resolve(),
+            default: async () => Promise.resolve(),
         }));
 
         vi.clearAllMocks();

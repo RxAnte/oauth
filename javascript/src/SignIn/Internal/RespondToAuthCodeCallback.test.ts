@@ -32,11 +32,11 @@ describe('RespondToAuthCodeCallback', () => {
     beforeEach(() => {
         vi.resetAllMocks();
 
-        vi.mocked(mockFetch).mockImplementation((url) => {
+        vi.mocked(mockFetch).mockImplementation(async (url) => {
             if (url.includes('bad-token-response')) {
                 return Promise.resolve({
                     status: 503,
-                    json: () => Promise.resolve({
+                    json: async () => Promise.resolve({
                         error: 'A token error occurred',
                         error_description: "We don't know more than that",
                     }),
@@ -45,14 +45,14 @@ describe('RespondToAuthCodeCallback', () => {
             if (url.includes('bad-token-json')) {
                 return Promise.resolve({
                     status: 200,
-                    json: () => Promise.reject(new Error('Bad json')),
+                    json: async () => Promise.reject(new Error('Bad json')),
                 });
             }
 
             if (url.includes('token')) {
                 return Promise.resolve({
                     status: 200,
-                    json: () => Promise.resolve({
+                    json: async () => Promise.resolve({
                         token_type: 'Bearer',
                         expires_in: 3600,
                         access_token: 'mock-access-token',
@@ -64,7 +64,7 @@ describe('RespondToAuthCodeCallback', () => {
             if (url.includes('userinfo')) {
                 return Promise.resolve({
                     status: 200,
-                    json: () => Promise.resolve({
+                    json: async () => Promise.resolve({
                         sub: 'mock-sub',
                         email: 'mock@example.com',
                         name: 'Mock User',

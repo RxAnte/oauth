@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import Redis from 'ioredis';
 import { FindTokenFromCookies } from './FindTokenFromCookies';
 import { TokenData } from '../../TokenData';

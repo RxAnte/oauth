@@ -105,7 +105,7 @@ describe('ParseResponse', () => {
                     && !Array.isArray(result.json)
                     && typeof result.json === 'object'
             ) {
-                expect((result.json as Record<string, unknown>).error).toBe(
+                expect((result.json).error).toBe(
                     'invalid_response',
                 );
             } else {
@@ -147,7 +147,7 @@ describe('ParseResponse', () => {
                     && !Array.isArray(result.json)
                     && typeof result.json === 'object'
             ) {
-                expect((result.json as Record<string, unknown>).error).toBe(
+                expect((result.json).error).toBe(
                     'unknown_error',
                 );
             } else {

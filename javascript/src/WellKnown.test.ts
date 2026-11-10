@@ -34,7 +34,7 @@ describe('GetWellKnown', () => {
 
         // Setup fetch mock
         (global.fetch as any).mockResolvedValue({
-            json: () => Promise.resolve(mockWellKnownResponse),
+            json: async () => Promise.resolve(mockWellKnownResponse),
         });
     });
 
