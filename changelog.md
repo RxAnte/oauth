@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## 2.7.0 — 2026-11-10
+### Security
+- PHP: Updated `firebase/php-jwt` to `^7.2.1`. Versions before 7.0 have a security advisory (no minimum key size) and Composer now blocks them by default, which stopped apps from updating their dependencies.
+- JS: Raised the minimum `next` version to `15.5.28` and `next-auth` to `4.24.15`. Earlier versions have critical security advisories. Next 14 is no longer supported and so has no updates for the afore-mentioned security advisories.
+### Added
+- JS: Support for Next 16 (`^16.4.1`). Apps on Next 16 previously got a second copy of Next installed inside this package.
+- JS: `ioredis` is declared as an optional peer dependency. The IoRedis token repository and refresh lock already needed it; nothing new is installed.
+### Changed
+- PHP: `Auth0Config` and `FusionAuthConfig` now type `$signingCertificate` as `string|OpenSSLAsymmetricKey|OpenSSLCertificate`. Anything else, including a `resource`, now throws a `TypeError` when the config is created, instead of every token check failing.
+- PHP: With php-jwt 7, the deprecated Auth0 and FusionAuth handlers reject tokens when the signing key is smaller than the algorithm's minimum. Standard 2048-bit RS256 keys are unaffected.
+
 ## 2.6.0 — 2026-07-14
 ### Added
 - Added Pages Router / `getServerSideProps` request support: `RequestForSessionIdFactory`, `RefreshAccessTokenForSessionIdFactory`, `SessionIdFromPagesRequest`, and `OAUTH_SESSION_ID_COOKIE`. Lets Pages Router apps make authenticated server-side requests without `next/headers`. [Documentation](./documentation/javascript/request-for-session-id-factory.md).
